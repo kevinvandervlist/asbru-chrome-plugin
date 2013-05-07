@@ -10,4 +10,4 @@ sendMessage = (message) ->
 MessageEventCallback = (message) ->
   console.log "Message received: "
   console.log message
-  hoocsd.port.postMessage type: "fooo"
+  hoocsd.port.postMessage type: "Hello!"

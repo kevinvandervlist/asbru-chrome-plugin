@@ -17,9 +17,17 @@ class Data
       height: 600
 
   # Chrome debug protocol version
-  debug_proto_version: ->
+  debugProtoVersion: ->
     "1.0"
 
   # Debugger URL name
   debuggerURL: ->
     "views/debugger.html"
+
+  # Default global state
+  defaultGlobalState: ->
+    debugging: false
+    attachedTab: null
+    debuggerWindow: null
+    debuggerView: null
+    port: null

@@ -13,12 +13,14 @@ clickCallback = (tab) ->
 
 # Attach debugger and open main window
 startDebugging = (debuggeeId) ->
-  hoocsd.debugging = true
   data = new Data
+
+  window.hoocsd = data.defaultGlobalState()
+  hoocsd.debugging = true
 
   chrome.debugger.attach(
     debuggeeId
-    data.debug_proto_version()
+    data.debugProtoVersion()
     onDebuggerAttached.bind(null, debuggeeId))
 
   chrome.windows.create(
@@ -55,8 +57,6 @@ stopDebugging = (debuggeeId) ->
   chrome.windows.remove hoocsd.debuggerWindow.id
   chrome.debugger.detach(debuggeeId, onDetachCallback.bind(null, debuggeeId));
   hoocsd.debugging = false
-  hoocsd.attachedTab = null
-  hoocsd.debuggerWindow = null
 
 # Debugger is detached event
 onDetachCallback = (debuggeeId) ->
