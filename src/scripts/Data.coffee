@@ -2,7 +2,7 @@
 window.hoocsd =
   debugging: false
   attachedTab: null
-  debuggerTab: null
+  debuggerWindow: null
 
 # Data class for some data objects
 class Data
