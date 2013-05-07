@@ -1,5 +1,5 @@
-chrome.debugger.onEvent.addListener(onEventCallback)
-chrome.debugger.onDetach.addListener(onDetachCallback)
+# Detach debugger callback
+chrome.debugger.onDetach.addListener onDetachCallback
 
 # Listener for the icon it the toolbar
 chrome.browserAction.onClicked.addListener ->
@@ -19,20 +19,18 @@ startDebugging = (debuggeeId) ->
   chrome.debugger.attach(
     debuggeeId
     data.debug_proto_version()
-    onDebuggerAttached.bind(null, debuggeeId)
-  )
+    onDebuggerAttached.bind(null, debuggeeId))
 
   chrome.windows.create(
     data.debuggerPopup()
     ((window) ->
       hoocsd.debuggerWindow = window
+      # Bind up hoocsd.debuggerView for direct access to the client.
+      # Message passing is preferred though
       str = new String data.debuggerURL()
       for view in chrome.extension.getViews()
         do (view) ->
-          if str.substringOf view.location.href
-            hoocsd.debuggerView = view
-    )
-  )
+          hoocsd.debuggerView = view if str.substringOf view.location.href))
 
 # Debugger attachment callback
 onDebuggerAttached = (debuggeeId) ->
@@ -44,19 +42,17 @@ onDebuggerAttached = (debuggeeId) ->
 
   chrome.browserAction.setIcon(
     tabId: tabId
-    path: "images/debuggerPausing.png"
-  )
+    path: "images/debuggerPausing.png")
+
   chrome.browserAction.setTitle(
     tabId: tabId
-    title: chrome.i18n.getMessage "pauseDesc"
-  )
+    title: chrome.i18n.getMessage "pauseDesc")
 
   chrome.debugger.sendCommand(
     debuggeeId,
     "Debugger.enable",
     {},
-    onDebuggerEnabled.bind(null, debuggeeId)
-  )
+    onDebuggerEnabled.bind(null, debuggeeId))
 
 # callback for enabling the debugger. Pause ASAP
 onDebuggerEnabled = (debuggeeId) ->
@@ -75,9 +71,8 @@ onDetachCallback = (debuggeeId) ->
   tabId = debuggeeId.tabId
   chrome.browserAction.setIcon(
     tabId: tabId
-    path: "images/debuggerPause.png"
-  )
+    path: "images/debuggerPause.png")
+
   chrome.browserAction.setTitle(
     tabId: tabId
-    title: chrome.i18n.getMessage "pauseDesc"
-  )
+    title: chrome.i18n.getMessage "pauseDesc")

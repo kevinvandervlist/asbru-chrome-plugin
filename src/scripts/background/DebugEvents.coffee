@@ -1,9 +1,9 @@
-# Incoming debug events
-onEventCallback = (debuggeeId, method, params) ->
+# Debugger events
+chrome.debugger.onEvent.addListener ((debuggeeId, method, params) ->
   switch method
     when "Debugger.paused" then debuggerPaused debuggeeId
     when "Debugger.scriptParsed" then scriptParsed debuggeeId, params
-    else console.log "Method #{method} is still unsupported."
+    else console.log "Method #{method} is still unsupported.")
 
 # Update UI state on pause
 debuggerPaused = (debuggeeId) ->

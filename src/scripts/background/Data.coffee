@@ -3,6 +3,8 @@ window.hoocsd =
   debugging: false
   attachedTab: null
   debuggerWindow: null
+  debuggerView: null
+  port: null
 
 # Data class for some data objects
 class Data
