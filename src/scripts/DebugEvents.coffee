@@ -5,6 +5,7 @@ onEventCallback = (debuggeeId, method, params) ->
     when "Debugger.scriptParsed" then scriptParsed debuggeeId, params
     else console.log "Method #{method} is still unsupported."
 
+# Update UI state on pause
 debuggerPaused = (debuggeeId) ->
   tabId = debuggeeId.tabId
   chrome.browserAction.setIcon(
@@ -16,6 +17,7 @@ debuggerPaused = (debuggeeId) ->
     title: chrome.i18n.getMessage "resumeDesc__"
   )
 
+# Catch emitted events regarding JS files
 scriptParsed = (debuggeeId, params) ->
   console.log params
   chrome.debugger.sendCommand(

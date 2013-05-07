@@ -17,3 +17,7 @@ class Data
   # Chrome debug protocol version
   debug_proto_version: ->
     "1.0"
+
+  # Debugger URL name
+  debuggerURL: ->
+    "views/debugger.html"
