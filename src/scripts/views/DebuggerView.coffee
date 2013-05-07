@@ -1,0 +1,3 @@
+$ ->
+  window.hoocsd = {}
+  initMessaging "hoocsd"

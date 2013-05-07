@@ -23,14 +23,7 @@ startDebugging = (debuggeeId) ->
 
   chrome.windows.create(
     data.debuggerPopup()
-    ((window) ->
-      hoocsd.debuggerWindow = window
-      # Bind up hoocsd.debuggerView for direct access to the client.
-      # Message passing is preferred though
-      str = new String data.debuggerURL()
-      for view in chrome.extension.getViews()
-        do (view) ->
-          hoocsd.debuggerView = view if str.substringOf view.location.href))
+    ((w) -> hoocsd.debuggerWindow = w))
 
 # Debugger attachment callback
 onDebuggerAttached = (debuggeeId) ->
@@ -58,13 +51,12 @@ onDebuggerAttached = (debuggeeId) ->
 onDebuggerEnabled = (debuggeeId) ->
   chrome.debugger.sendCommand(debuggeeId, "Debugger.pause")
 
-
 stopDebugging = (debuggeeId) ->
+  chrome.windows.remove hoocsd.debuggerWindow.id
+  chrome.debugger.detach(debuggeeId, onDetachCallback.bind(null, debuggeeId));
   hoocsd.debugging = false
   hoocsd.attachedTab = null
   hoocsd.debuggerWindow = null
-  chrome.windows.remove hoocsd.debuggerWindow.id
-  chrome.debugger.detach(debuggeeId, onDetachCallback.bind(null, debuggeeId));
 
 # Debugger is detached event
 onDetachCallback = (debuggeeId) ->

@@ -2,9 +2,12 @@
 chrome.runtime.onConnect.addListener ((port) ->
   if port.name is "hoocsd"
     hoocsd.port = port
-    port.onMessage.addListener onMessageCallback)
+    port.onMessage.addListener MessageEventCallback)
 
-onMessageCallback = (message) ->
+sendMessage = (message) ->
+  hoocsd.port.postMessage message
+
+MessageEventCallback = (message) ->
   console.log "Message received: "
   console.log message
-  hoocsd.port.postMessage foo: "bar"
+  hoocsd.port.postMessage type: "fooo"
