@@ -26,13 +26,11 @@ startDebugging = (debuggeeId) ->
     data.debuggerPopup()
     ((window) ->
       hoocsd.debuggerWindow = window
-      console.log "Hi!"
       str = new String data.debuggerURL()
       for view in chrome.extension.getViews()
         do (view) ->
           if str.substringOf view.location.href
             hoocsd.debuggerView = view
-            console.log "Gotcha!"
     )
   )
 
