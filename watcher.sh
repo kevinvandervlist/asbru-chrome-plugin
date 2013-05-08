@@ -4,7 +4,7 @@ source ${CWD}/.settings
 
 function bake_cake {
 		cd ${EXT_DIR}
-		cake build
+		./compile.sh
 		echo "Cake done at $(date)"
 }
 

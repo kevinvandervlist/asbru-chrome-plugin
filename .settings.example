@@ -1,3 +1,9 @@
 # The directory containing the chrome extension
 # e.g. ~/src/chrome-extension
 EXT_DIR=/export/scratch1/src/extension
+
+# The build folder
+DEST_DIR=${EXT_DIR}/build
+
+# Source folder
+SRC_DIR=${EXT_DIR}/src
