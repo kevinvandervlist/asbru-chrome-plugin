@@ -41,6 +41,7 @@ test "Circular Buffer push/pop behaviour with small buffer", ->
   c = "c" in x and "d" in x and "e" in x
   cb.pop()
   d = cb.peek() is "d"
-  e = cb.peek() is "e"
-  f = cb.isEmpty()
-  ok a and b and c and d and e and f
+  e = cb.pop() is "d"
+  f = cb.pop() is "e"
+  g = cb.isEmpty()
+  ok a and b and c and d and e and f and g
