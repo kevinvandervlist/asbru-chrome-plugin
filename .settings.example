@@ -1,0 +1,3 @@
+# The directory containing the chrome extension
+# e.g. ~/src/chrome-extension
+EXT_DIR=/export/scratch1/src/extension

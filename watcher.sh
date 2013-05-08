@@ -1,9 +1,9 @@
 #!/bin/bash
 CWD=$(pwd)
-DIR=/export/scratch1/src/extension
+source ${CWD}/.settings
 
 function bake_cake {
-		cd ${DIR}
+		cd ${EXT_DIR}
 		cake build
 		echo "Cake done at $(date)"
 }
@@ -30,9 +30,15 @@ function _exit {
 trap trapHUP SIGUSR1
 trap _exit SIGINT
 
+if [ ! -f ${CWD}/.settings ]; then
+  echo "Settings file not found."
+  echo "cp .settings.example .settings"
+  echo "and configure"
+fi
+
 bake_cake
 
-info
+info 
 
 while true; do
   sleep 1
