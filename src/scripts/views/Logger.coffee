@@ -9,5 +9,5 @@ class Logger
   update: ->
     f = (el, index) ->
       console.log "I: #{index}, el: #{el}"
-    @cb.foreach f, this
+    @cb.forEach f, this
     #$(@id).append "<p>#{message}</p>"

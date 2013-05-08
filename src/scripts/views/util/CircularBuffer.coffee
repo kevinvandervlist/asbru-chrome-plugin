@@ -30,7 +30,7 @@ class CircularBuffer
 
     @store[slot] unless slot >= @tail and slot < @head
 
-  foreach: (func, ctx) ->
+  forEach: (func, ctx) ->
     func.call(ctx, @peek(index), index) for index in [0...@count()]
 
   isEmpty: ->
