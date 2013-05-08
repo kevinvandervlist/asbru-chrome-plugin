@@ -16,7 +16,7 @@ class CircularBuffer
     @head = @next(@head) if @tail is @head
 
   pop: ->
-    if @isEmpty then throw "Empty circular buffer"
+    if @isEmpty() then throw "Empty circular buffer"
     tmp = @head
     @head = @next(@head)
     @store[tmp]
