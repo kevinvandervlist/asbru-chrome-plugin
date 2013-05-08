@@ -11,3 +11,5 @@ $ ->
     value = $("#console-line")[0].value
     hoocsd.cli.evaluate value
     false)
+
+  hoocsd.messaging.sendMessage type: "js.ListJSFiles"
