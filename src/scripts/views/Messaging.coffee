@@ -1,18 +1,21 @@
-initMessaging = (name) ->
-  hoocsd.port = chrome.runtime.connect name: name
-  hoocsd.port.onMessage.addListener MessageEventCallback
-  sendMessage type: "js.ListJSFiles"
+class Messaging
+  constructor: (@portName, @logger) ->
+    @port = chrome.runtime.connect name: name
+    @port.onMessage.addListener MessageEventCallback
 
-sendMessage = (message) ->
-  hoocsd.port.postMessage message
+  sendMessage: (message) ->
+    hoocsd.port.postMessage message
 
-MessageEventCallback = (message) ->
-  console.log "Received: #{message.type}"
-  if not message.type?
-    console.log "Message cannot be understood. Received: "
-    console.log message
-    undefined
-  switch message.type
-    when "foo" then sendMessage message: "received"
-    when "js.ListJSFiles" then console.log message
-    else console.log "Message type #{message.type} is not supported yet."
+  MessageEventCallback = (message) ->
+    @logger.log "Received: #{message.type}"
+    if not message.type?
+      @logger.log "Message cannot be understood. Received: "
+      @logger.log message
+      undefined
+    switch message.type
+      when "foo" then sendMessage message: "received"
+      when "js.ListJSFile" then @handleJSFile message
+      else @logger.log "Message type #{message.type} is not supported yet."
+
+  handleJSFile = (message) ->
+    @logger.log message

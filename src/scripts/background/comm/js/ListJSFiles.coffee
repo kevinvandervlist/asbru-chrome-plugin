@@ -3,7 +3,7 @@
 js_ListJSFiles = (message) ->
   f = (js) ->
     sendMessage
-      type: "js.ListJSFiles"
+      type: "js.ListJSFile"
       scriptId: js.scriptId
       url: js.url
       code: js.code
