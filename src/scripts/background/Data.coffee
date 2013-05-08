@@ -1,10 +1,5 @@
 # Some global state for the debugger
-window.hoocsd =
-  debugging: false
-  attachedTab: null
-  debuggerWindow: null
-  debuggerView: null
-  port: null
+window.hoocsd = {}
 
 # Data class for some data objects
 class Data
@@ -31,3 +26,4 @@ class Data
     debuggerWindow: null
     debuggerView: null
     port: null
+    jsFiles: []

@@ -55,7 +55,7 @@ onDebuggerEnabled = (debuggeeId) ->
 
 stopDebugging = (debuggeeId) ->
   chrome.windows.remove hoocsd.debuggerWindow.id
-  chrome.debugger.detach(debuggeeId, onDetachCallback.bind(null, debuggeeId));
+  chrome.debugger.detach(debuggeeId, onDetachCallback.bind(null, debuggeeId))
   hoocsd.debugging = false
 
 # Debugger is detached event
