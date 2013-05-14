@@ -19,10 +19,10 @@ class SourceFile
     .appendTo "#{vd.filelistContentId()} ul"
 
   _formatCode: ->
-    s = @code.split("\n")
     parent = $("<ol></ol>")
+    cnt = 0
 
-    for line in s
+    for line in @code.split("\n")
       linediv = $("<li></li>")
       loc = $("<pre></pre>")
 
@@ -31,4 +31,13 @@ class SourceFile
 
       linediv.append loc
       parent.append linediv
+
+      # Attach a click handler to enable the creation of breakpoints
+      f = (cnt) ->
+        linediv.click =>
+          console.log "#{@filename}:#{@id} at cnt #{cnt}"
+      f.call(linediv, cnt)
+
+      cnt++
+
     @formatted_code = parent
