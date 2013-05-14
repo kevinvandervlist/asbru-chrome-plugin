@@ -49,11 +49,10 @@ test "Circular Buffer push/pop behaviour with small buffer", ->
 test "Circular Buffer as array.", ->
   cb = new CircularBuffer 3
   org = ["Foo", "Bar", "BaZ"]
-  cb.push x for x in org
-  cbarr = cb.toArray()
 
-  cmp = org is cbarr
-  ok true
+  cb.push x for x in org
+
+  ok org.isEqual cb.toArray()
 
 test "Circular Buffer as array, overflowing.", ->
   cb = new CircularBuffer 3
@@ -62,7 +61,4 @@ test "Circular Buffer as array, overflowing.", ->
   cb.push x for x in org
   org.shift()
 
-  cbarr = cb.toArray()
-
-  cmp = org is cbarr
-  ok cmp
+  ok org.isEqual cb.toArray()

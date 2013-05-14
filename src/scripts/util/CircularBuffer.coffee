@@ -27,7 +27,13 @@ class CircularBuffer
     @size - 1
 
   count: ->
-    if @end < @start then @end + @start else @end - @start
+    s = @start
+    c = 0
+
+    while s != @end
+      s = (s + 1) % @size
+      c++
+    c
 
   peek: (index = 0) ->
     throw "Circular Buffer index out of range! #{index}" unless @count() > 0 and index < @count()
