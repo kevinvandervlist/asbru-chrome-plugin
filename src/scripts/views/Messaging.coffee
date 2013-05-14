@@ -18,4 +18,4 @@ class Messaging
       else @logger.log "Message type #{message.type} is not supported yet."
 
   _handleJSFile: (message) ->
-    @logger.log message
+    @logger.log message.url

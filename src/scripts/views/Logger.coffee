@@ -1,15 +1,11 @@
 class Logger
-  constructor: (@id) ->
-    @cb = new CircularBuffer 2
+  constructor: (@id, size = 50) ->
+    @cb = new CircularBuffer size
 
   log: (message) ->
     @cb.push message
     @update()
 
   update: ->
-    f = (el, index) ->
-      x.push el
-    x = []
-    @cb.forEach f, x
-
-    #$(@id).append "<p>#{message}</p>"
+    $(@id).empty()
+    $(@id).append "<p>#{x}</p>" for x in @cb.toArray()

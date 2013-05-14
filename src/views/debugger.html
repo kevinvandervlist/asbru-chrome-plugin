@@ -3,43 +3,90 @@
   <head>
     <meta charset="utf-8">
     <title>Debugger</title>
-    <link rel="stylesheet" href="../css/debugger.css">
-    <script src="../libs/jquery-2.0.0.js"></script>
-    <script src="../scripts/views.js"></script>
+    <link rel="stylesheet" href="../css/debugger.css" />
+    <link rel="stylesheet" href="../css/jquery-ui.css" />
+    <script type="text/javascript" src="../libs/jquery-2.0.0.js"></script>
+    <!-- <script type="text/javascript" src="../libs/jquery-1.9.1.js"></script> -->
+    <script type="text/javascript" src="../libs/jquery-ui-1.10.3.js"></script>
+    <script type="text/javascript" src="../scripts/views.js"></script>
   </head>
   <body>
 		<div id="main">
-			<section id="middle">
-
-				<div id="container">
-					<div id="content">
+			<div id="content" class="boxed ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+				<div class="boxed-header ui-widget-header ui-corner-all ">
+					<span class="ui-icon ui-icon-minusthick"></span>
+					<div>Content window</div>
+				</div>
+				<div id="content-window" class="boxed-content">
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tristique, urna a lacinia egestas, purus nunc suscipit nunc, at suscipit nibh tellus egestas sapien. Etiam arcu lorem, tempor ut luctus condimentum, lacinia in sem. Cras in purus in ligula congue sodales. Sed tempor lobortis libero, vel vulputate lectus blandit id. Fusce vel nibh justo, a mollis arcu. Nam nulla libero, fringilla vel ullamcorper non, ornare et nibh. Vivamus nisl sem, dapibus sed convallis id, lacinia sit amet urna. Nulla sed leo et lorem rutrum gravida. In euismod ullamcorper massa eget laoreet. Sed rhoncus lorem vitae neque pellentesque eleifend. Praesent sit amet nulla quis augue laoreet tempus.
-					</div><!-- #content-->
-				</div><!-- #container-->
-
-				<aside id="main_left">
-					<div id="main_left_top">
-						<p>main_left_top
-				  </div>
-					<div id="main_left_bottom">
-						<p>main_left_bottom
-				  </div>
-				</aside><!-- #main_left -->
-
-				<aside id="main_right">
-					<div id="main_right_top">
-						<p>main_right_top
-				  </div>
-					<div id="console-output">
-				  </div>
-				</aside><!-- #main_right -->
-			</section><!-- #middle-->
-		</div><!-- #main -->
-
-		<footer id="console">
-			<form id="console-form">
-				<span><input type="text" name="console-line" id="console-line"></span>
-			</form>
-		</footer><!-- #footer -->
+				</div>
+			</div><!-- #content-->
+			<div id="console-output" class="boxed">
+				<div class="boxed-header">
+					<span class="ui-icon ui-icon-minusthick"></span>
+					<div>Console output</div>
+				</div>
+				<div id="console-output-text" class="boxed-content">
+				</div>
+		  </div>
+			<footer id="console" class="boxed">
+				<div class="boxed-header">
+					<span class="ui-icon ui-icon-minusthick"></span>
+					<div>Console</div>
+				</div>
+				<form id="console-form" class="boxed-content">
+					<span><input type="text" name="console-line" id="console-line"></span>
+				</form>
+			</footer><!-- #footer -->
   </body>
 </html>
+
+
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="en"> -->
+<!--   <head> -->
+<!--     <meta charset="utf-8"> -->
+<!--     <title>Debugger</title> -->
+<!--     <\!-- <link rel="stylesheet" href="../css/debugger.css" /> -\-> -->
+<!--     <link rel="stylesheet" href="../css/jquery-ui.css" /> -->
+<!--     <script type="text/javascript" src="../libs/jquery-2.0.0.js"></script> -->
+<!--     <\!-- <script type="text/javascript" src="../libs/jquery-1.9.1.js"></script> -\-> -->
+<!--     <script type="text/javascript" src="../libs/jquery-ui-1.10.3.js"></script> -->
+<!--     <script type="text/javascript" src="../scripts/views.js"></script> -->
+<!--   </head> -->
+<!--   <body> -->
+<!-- 		<div id="main"> -->
+<!-- 			<section id="middle"> -->
+
+<!-- 				<div id="container"> -->
+<!-- 					<div id="content"> -->
+<!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tristique, urna a lacinia egestas, purus nunc suscipit nunc, at suscipit nibh tellus egestas sapien. Etiam arcu lorem, tempor ut luctus condimentum, lacinia in sem. Cras in purus in ligula congue sodales. Sed tempor lobortis libero, vel vulputate lectus blandit id. Fusce vel nibh justo, a mollis arcu. Nam nulla libero, fringilla vel ullamcorper non, ornare et nibh. Vivamus nisl sem, dapibus sed convallis id, lacinia sit amet urna. Nulla sed leo et lorem rutrum gravida. In euismod ullamcorper massa eget laoreet. Sed rhoncus lorem vitae neque pellentesque eleifend. Praesent sit amet nulla quis augue laoreet tempus. -->
+<!-- 					</div><\!-- #content-\-> -->
+<!-- 				</div><\!-- #container-\-> -->
+
+<!-- 				<aside id="main_left"> -->
+<!-- 					<div id="main_left_top"> -->
+<!-- 						<p>main_left_top -->
+<!-- 				  </div> -->
+<!-- 					<div id="main_left_bottom"> -->
+<!-- 						<p>main_left_bottom -->
+<!-- 				  </div> -->
+<!-- 				</aside><\!-- #main_left -\-> -->
+
+<!-- 				<aside id="main_right"> -->
+<!-- 					<div id="main_right_top"> -->
+<!-- 						<p>main_right_top -->
+<!-- 				  </div> -->
+<!-- 					<div id="console-output"> -->
+<!-- 				  </div> -->
+<!-- 				</aside><\!-- #main_right -\-> -->
+<!-- 			</section><\!-- #middle-\-> -->
+<!-- 		</div><\!-- #main -\-> -->
+
+<!-- 		<footer id="console"> -->
+<!-- 			<form id="console-form"> -->
+<!-- 				<span><input type="text" name="console-line" id="console-line"></span> -->
+<!-- 			</form> -->
+<!-- 		</footer><\!-- #footer -\-> -->
+<!--   </body> -->
+<!-- </html> -->
