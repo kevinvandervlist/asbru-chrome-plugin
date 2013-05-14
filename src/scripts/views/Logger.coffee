@@ -8,4 +8,4 @@ class Logger
 
   update: ->
     $(@id).empty()
-    $(@id).append "<p>#{x}</p>" for x in @cb.toArray()
+    $(@id).append "<p>#{x}</p>" for x in @cb.toArray().reverse()

@@ -15,7 +15,7 @@ class Console
     args = @getArgs(command)
     switch cmd
       when "sendmessage" then @_sendMessage args
-      else @logger.log "Command #{cmd} not yet implemented"
+      else @logger.log "Command [#{cmd}] not yet implemented"
 
   _sendMessage: (args) ->
     try

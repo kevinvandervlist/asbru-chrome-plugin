@@ -1,6 +1,12 @@
-.boxed {
-	border-style: solid;
-	border-size: 1px;
+#main {
+	float: left;
+	height: 100%;
+	min-height: 800px;
+	width: 100%;
+	min-width: 600px;
+	text-size: 0.5em;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: small;
 }
 
 .column { 
@@ -10,6 +16,9 @@
 }
 .boxed { 
 	margin: 0 1em 1em 0; 
+	overflow: hidden;
+	height: 250px;
+	width: 250px;
 }
 .boxed-header { 
 	margin: 0.3em; 
@@ -20,15 +29,35 @@
 	float: right; 
 }
 .boxed-content { 
-	padding: 0.4em; 
+	padding: 0.4em;
 }
 .ui-sortable-placeholder {
 	border: 1px dotted black; 
 	visibility: visible !important; 
-	height: 50px !important; 
+	height: 25px !important; 
 }
 .ui-sortable-placeholder * { 
 	visibility: hidden; 
+}
+
+#console-output {
+	background: #FFACAA;
+}
+
+#console-output-text {
+	line-height: 1px;
+	margin: 0;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+/* console iput draggable box */
+#console {
+	height: 5.5em;
+	background: #BFF08E;
+}
+#console input {
+  width: 99.5%;
 }
 
 /* * { */
