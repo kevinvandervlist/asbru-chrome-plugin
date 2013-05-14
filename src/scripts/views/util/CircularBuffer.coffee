@@ -22,7 +22,8 @@ class CircularBuffer
     @store[tmp]
 
   peek: (index = 0) ->
-    if Math.abs(index) > (@size - 2) and index isnt (1 - @size) then throw "Index out of range"
+    #if Math.abs(index) > (@size - 2) and index isnt (1 - @size) then throw "Index out of range: #{index} in h:#{@head}, t:#{@tail}"
+    #if Math.abs(index) > (@size - 1) then throw "Index out of range: #{index} in h:#{@head}, t:#{@tail}"
 
     # Negative means relative to newest, positive to oldest
     ref = if index < 0 then @tail else @head
@@ -32,6 +33,7 @@ class CircularBuffer
 
   forEach: (func, ctx) ->
     func.call(ctx, @peek(index), index) for index in [0...@count()]
+    #func.call(ctx, @peek(index), index) for index in @iterationOrder()
 
   isEmpty: ->
     @tail is @head
@@ -44,3 +46,21 @@ class CircularBuffer
 
   count: ->
     if @tail < @head then @tail + @head else @tail - @head
+
+  toArray: ->
+    f = (el, index) ->
+      x.push el
+    x = []
+    @forEach f, x
+    x
+
+  iterationOrder: ->
+    if @isEmpty() then throw "Empty circular buffer"
+    ret = []
+    lh = @head
+    lt = @tail
+    while lt isnt lh
+      ret.push lh
+      lh = @next(lh)
+    console.log ret
+    ret

@@ -8,6 +8,8 @@ class Logger
 
   update: ->
     f = (el, index) ->
-      console.log "I: #{index}, el: #{el}"
-    @cb.forEach f, this
+      x.push el
+    x = []
+    @cb.forEach f, x
+
     #$(@id).append "<p>#{message}</p>"
