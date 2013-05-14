@@ -33,10 +33,10 @@ class SourceFile
       parent.append linediv
 
       # Attach a click handler to enable the creation of breakpoints
-      f = (cnt) ->
+      f = (cnt, id, filename) ->
         linediv.click =>
-          console.log "#{@filename}:#{@id} at cnt #{cnt}"
-      f.call(linediv, cnt)
+          console.log "#{filename}:#{id} at cnt #{cnt}"
+      f.call(linediv, cnt, @id, @filename)
 
       cnt++
 

@@ -14,7 +14,7 @@ class Messaging
       undefined
     switch message.type
       when "foo" then sendMessage message: "received"
-      when "ListFile" then @_handleFile message
+      when "js.ListFile" then @_handleFile message
       else @logger.log "Message type #{message.type} is not supported yet."
 
   _handleFile: (message) ->

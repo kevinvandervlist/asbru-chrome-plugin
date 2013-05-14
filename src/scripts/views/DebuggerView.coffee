@@ -18,7 +18,7 @@ $ ->
   hoocsd.cli = new Console hoocsd.messaging, hoocsd.logger
 
   # Ask for resources
-  hoocsd.messaging.sendMessage type: "ListFiles"
+  hoocsd.messaging.sendMessage type: "js.ListFiles"
 
   $("#console-form").submit((e) ->
     e.preventDefault

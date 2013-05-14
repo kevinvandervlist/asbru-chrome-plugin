@@ -10,10 +10,11 @@ sendMessage = (message) ->
   hoocsd.port.postMessage message
 
 MessageEventCallback = (message) ->
+  js = new comm_JS
   if not message.type?
     console.log "Message cannot be understood. Received: "
     console.log message
     undefined
   else switch message.type
-    when "ListFiles" then ListFiles message
+    when "js.ListFiles" then js.ListFiles message
     else console.log "Message type #{message.type} is not supported yet."
