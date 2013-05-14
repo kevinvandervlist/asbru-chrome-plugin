@@ -15,5 +15,5 @@ MessageEventCallback = (message) ->
     console.log message
     undefined
   else switch message.type
-    when "js.ListJSFiles" then js_ListJSFiles message
+    when "ListFiles" then ListFiles message
     else console.log "Message type #{message.type} is not supported yet."

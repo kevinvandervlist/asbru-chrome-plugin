@@ -26,4 +26,4 @@ class Data
     debuggerWindow: null
     debuggerView: null
     port: null
-    jsFiles: []
+    files: []

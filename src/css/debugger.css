@@ -40,6 +40,13 @@
 	visibility: hidden; 
 }
 
+#content-window {
+	line-height: 1px;
+	margin: 0;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
 #console-output {
 	background: #FFACAA;
 }

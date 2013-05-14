@@ -26,7 +26,7 @@ scriptParsed = (debuggeeId, params) ->
     cacheParsedScript.bind(null, params))
 
 cacheParsedScript = (params, resource) ->
-  hoocsd.jsFiles.push (
+  hoocsd.files.push (
     scriptId: params.scriptId
     url: params.url
     code: resource.scriptSource)

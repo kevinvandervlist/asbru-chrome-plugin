@@ -14,8 +14,10 @@ class Messaging
       undefined
     switch message.type
       when "foo" then sendMessage message: "received"
-      when "js.ListJSFile" then @_handleJSFile message
+      when "ListFile" then @_handleFile message
       else @logger.log "Message type #{message.type} is not supported yet."
 
-  _handleJSFile: (message) ->
+  _handleFile: (message) ->
+    m = new SourceFile message
+    m.addToList()
     @logger.log message.url
