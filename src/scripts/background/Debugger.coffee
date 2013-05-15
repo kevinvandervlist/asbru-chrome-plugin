@@ -6,8 +6,9 @@ class Debugger
     # onDetach debugger callback. TODO: Remove when done
     chrome.debugger.onDetach.addListener @_onDetachCallback
 
-    # Attach debugger and open main interface window
+    # Dependencies
     @data = new Data
+    @messager = new Messager
 
     # make sure global debugger state is clean
     window.hoocsd = @data.defaultGlobalState()
