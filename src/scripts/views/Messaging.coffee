@@ -15,7 +15,9 @@ class Messaging
     switch message.type
       when "foo" then sendMessage message: "received"
       when "js.ListFile" then @_handleFile message
-      else @logger.log "Message type #{message.type} is not supported yet."
+      else
+        @logger.log "Message type #{message.type} is not supported yet."
+        console.log message
 
   _handleFile: (message) ->
     m = new SourceFile message

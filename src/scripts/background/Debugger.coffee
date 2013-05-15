@@ -8,7 +8,7 @@ class Debugger
 
     # Dependencies
     @data = new Data
-    @messager = new Messager
+    @messager = new Messager @
 
     # make sure global debugger state is clean
     window.hoocsd = @data.defaultGlobalState()
@@ -48,7 +48,7 @@ class Debugger
 
     # Finally enable it straight away.
     f = (debuggeeId) ->
-      chrome.debugger.sendCommand(debuggeeId, "Debugger.pause")
+      chrome.debugger.sendCommand debuggeeId, "Debugger.pause"
 
     chrome.debugger.sendCommand(
       debuggeeId,
@@ -66,3 +66,7 @@ class Debugger
       tabId: debuggeeId.tabId
       title: chrome.i18n.getMessage "pauseDesc")
     window.hoocsd.debugger = null
+
+  # External
+  sendCommand: (command, message, cb = null) ->
+    chrome.debugger.sendCommand @tabid, command, message, cb

@@ -40,9 +40,9 @@ class SourceFile
             type: "js.setBreakpointByUrl"
             lineNumber: cnt
             url: uri
-            urlRegex: ".*"
+            urlRegex: null
             columnNumber: 0
-            condition: ""
+            condition: null
       f.call(linediv, cnt, @id, @uri)
 
       cnt++

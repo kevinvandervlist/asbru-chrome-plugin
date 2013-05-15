@@ -1,5 +1,5 @@
 class Messager
-  constructor: ->
+  constructor: (@debugger) ->
     # Dependencies
     @js = new comm_JS @
 
@@ -8,8 +8,6 @@ class Messager
       @_messageEventCallback message
 
     conn = (p) =>
-      console.log "Onconnect this:"
-      console.log @
       if p.name is "hoocsd"
         @port = p
         @port.onMessage.addListener mec
@@ -17,9 +15,12 @@ class Messager
     # Register port for message passing
     chrome.runtime.onConnect.addListener conn
 
+  # Send a command to the chrome debugger
+  sendCommand: (command, message, cb = null) ->
+    @debugger.sendCommand command, message, cb
+
+  # Send a message to the popup window
   sendMessage: (message) ->
-    console.log "Sending message #{message.type}:"
-    console.log message
     @port.postMessage message
 
   _messageEventCallback: (message) ->
