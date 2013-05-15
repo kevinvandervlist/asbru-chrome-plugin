@@ -19,7 +19,7 @@ class SourceFile
     .appendTo "#{vd.filelistContentId()} ul"
 
   _formatCode: ->
-    parent = $("<ol></ol>")
+    sourcelist = $("<ol></ol>")
     cnt = 0
 
     for line in @code.split("\n")
@@ -30,14 +30,22 @@ class SourceFile
       loc[0].innerText = line
 
       linediv.append loc
-      parent.append linediv
+      sourcelist.append linediv
 
       # Attach a click handler to enable the creation of breakpoints
-      f = (cnt, id, filename) ->
+      # Make sure callback is in closure because of cnt dependence
+      f = (cnt, id, uri) ->
         linediv.click =>
-          console.log "#{filename}:#{id} at cnt #{cnt}"
-      f.call(linediv, cnt, @id, @filename)
+          window.hoocsd.messaging.sendMessage
+            type: "js.setBreakpointByUrl"
+            lineNumber: cnt
+            url: uri
+            urlRegex: ".*"
+            columnNumber: 0
+            condition: ""
+      f.call(linediv, cnt, @id, @uri)
 
       cnt++
 
-    @formatted_code = parent
+    @formatted_code = sourcelist
+

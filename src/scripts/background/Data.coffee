@@ -21,9 +21,6 @@ class Data
 
   # Default global state
   defaultGlobalState: ->
-    debugging: false
-    attachedTab: null
-    debuggerWindow: null
-    debuggerView: null
     port: null
     files: []
+    debugger: null

@@ -12,3 +12,6 @@ class comm_JS
         url: x.url
         code: x.code
     f x for x in hoocsd.files
+
+  setBreakpointByUrl: (message) ->
+    console.log message

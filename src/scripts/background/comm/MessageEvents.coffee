@@ -17,4 +17,5 @@ MessageEventCallback = (message) ->
     undefined
   else switch message.type
     when "js.ListFiles" then js.ListFiles message
+    when "js.setBreakpointByUrl" then js.setBreakpointByUrl message
     else console.log "Message type #{message.type} is not supported yet."

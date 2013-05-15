@@ -1,70 +1,86 @@
-# Detach debugger callback
-chrome.debugger.onDetach.addListener onDetachCallback
+# Base global program state structure.
+d = new Data
+window.hoocsd = d.defaultGlobalState()
 
-# Listener for the icon it the toolbar
+# Listener for the icon it the toolbar - start of the plugin
 chrome.browserAction.onClicked.addListener ->
   chrome.windows.getCurrent((win) ->
     chrome.tabs.getSelected(win.id, clickCallback))
 
+# The callback of the above
 clickCallback = (tab) ->
-  debuggeeId = tabId: tab.id
-  hoocsd.attachedTab = tab
-  if hoocsd.debugging then stopDebugging debuggeeId else startDebugging debuggeeId
+  if window.hoocsd.debugger?
+    window.hoocsd.debugger.stopDebugging()
+  else
+    # WTF. Somehow this doesn't work:
+    # window.hoocsd.debugger = new Debugger tab
+    x = new Debugger tab
+    window.hoocsd.debugger = x
 
-# Attach debugger and open main window
-startDebugging = (debuggeeId) ->
-  data = new Data
+class Debugger
+  constructor: (@tab) ->
+    # debuggeeId:
+    @tabid = tabId: tab.id
 
-  window.hoocsd = data.defaultGlobalState()
-  hoocsd.debugging = true
+    # onDetach debugger callback. TODO: Remove when done
+    chrome.debugger.onDetach.addListener @_onDetachCallback
 
-  chrome.debugger.attach(
-    debuggeeId
-    data.debugProtoVersion()
-    onDebuggerAttached.bind(null, debuggeeId))
+    # Attach debugger and open main interface window
+    @data = new Data
 
-  chrome.windows.create(
-    data.debuggerPopup()
-    ((w) -> hoocsd.debuggerWindow = w))
+    # make sure global debugger state is clean
+    window.hoocsd = @data.defaultGlobalState()
 
-# Debugger attachment callback
-onDebuggerAttached = (debuggeeId) ->
-  if chrome.runtime.lastError
-    console.log chrome.runtime.lastError.message
-    null
+    # Attach the debugger and a callback
+    chrome.debugger.attach(
+      @tabid
+      @data.debugProtoVersion()
+      @_onDebuggerAttached.bind(null, @tabid))
 
-  tabId = debuggeeId.tabId
+    # Bind this to the correct scope
+    f = (w) =>
+      @debuggerWindow = w
 
-  chrome.browserAction.setIcon(
-    tabId: tabId
-    path: "images/debuggerPausing.png")
+    chrome.windows.create(
+      @data.debuggerPopup()
+      f)
 
-  chrome.browserAction.setTitle(
-    tabId: tabId
-    title: chrome.i18n.getMessage "pauseDesc")
+  # Call this to stop the whole debugging session
+  stopDebugging: ->
+    chrome.windows.remove @debuggerWindow.id
+    chrome.debugger.detach(@tabid, @_onDetachCallback.bind(null, @tabid))
 
-  chrome.debugger.sendCommand(
-    debuggeeId,
-    "Debugger.enable",
-    {},
-    onDebuggerEnabled.bind(null, debuggeeId))
+  # Debugger attachment callback
+  _onDebuggerAttached: (debuggeeId) ->
+    if chrome.runtime.lastError
+      console.log chrome.runtime.lastError.message
+      null
 
-# callback for enabling the debugger. Pause ASAP
-onDebuggerEnabled = (debuggeeId) ->
-  chrome.debugger.sendCommand(debuggeeId, "Debugger.pause")
+    chrome.browserAction.setIcon(
+      tabId: debuggeeId.tabId
+      path: "images/debuggerPausing.png")
 
-stopDebugging = (debuggeeId) ->
-  chrome.windows.remove hoocsd.debuggerWindow.id
-  chrome.debugger.detach(debuggeeId, onDetachCallback.bind(null, debuggeeId))
-  hoocsd.debugging = false
+    chrome.browserAction.setTitle(
+      tabId: debuggeeId.tabId
+      title: chrome.i18n.getMessage "pauseDesc")
 
-# Debugger is detached event
-onDetachCallback = (debuggeeId) ->
-  tabId = debuggeeId.tabId
-  chrome.browserAction.setIcon(
-    tabId: tabId
-    path: "images/debuggerPause.png")
+    # Finally enable it straight away.
+    f = (debuggeeId) ->
+      chrome.debugger.sendCommand(debuggeeId, "Debugger.pause")
 
-  chrome.browserAction.setTitle(
-    tabId: tabId
-    title: chrome.i18n.getMessage "pauseDesc")
+    chrome.debugger.sendCommand(
+      debuggeeId,
+      "Debugger.enable",
+      {},
+      f.bind(null, debuggeeId))
+
+  # Debugger is detached event
+  _onDetachCallback: (debuggeeId) ->
+    chrome.browserAction.setIcon(
+      tabId: debuggeeId.tabId
+      path: "images/debuggerPause.png")
+
+    chrome.browserAction.setTitle(
+      tabId: debuggeeId.tabId
+      title: chrome.i18n.getMessage "pauseDesc")
+    window.hoocsd.debugger = null
