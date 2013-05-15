@@ -29,10 +29,11 @@ class comm_JS
   # { breakpointId: string, scriptId: int }
   _setBreakpointSuccess: (breakpointId) ->
     @messager.sendMessage
-      type: "js.seatBreakpointSuccess"
+      type: "js.setBreakpointSuccess"
       breakpointId: breakpointId
       scriptId: @_getScriptIdFromUrl breakpointId
 
+  # Hackily retrieve the scriptId based on a breakpoint URI
   _getScriptIdFromUrl: (breakpointId) ->
     t = breakpointId.split(":");
     url = t.shift() + ":" + t.shift()
