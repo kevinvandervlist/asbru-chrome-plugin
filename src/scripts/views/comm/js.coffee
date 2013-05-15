@@ -9,5 +9,4 @@ class comm_JS
     @messaging.log message.url
 
   setBreakpointSuccess: (message) =>
-    @messaging.log "Breakpoint successfully set!"
-
+    window.hoocsd.breakPoints.push new BreakPoint message

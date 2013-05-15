@@ -22,10 +22,11 @@ class Messaging
       @logger.log "Message cannot be understood..."
       console.log message
       undefined
-
+    @lookup_table[message.type] message
     try
-      @lookup_table[message.type] message
+      #@lookup_table[message.type] message
     catch error
+      console.log error
       @logger.log "Message type #{message.type} is not supported yet."
       console.log "Message type #{message.type} is not supported yet."
       console.log message

@@ -10,6 +10,7 @@ class ViewData
 
   defaultGlobalState: ->
     files: []
+    breakPoints: []
     logger: null
     messaging: null
     cli: null

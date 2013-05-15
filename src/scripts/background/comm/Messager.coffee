@@ -37,3 +37,4 @@ class Messager
     catch error
       console.log "Message type #{message.type} is not supported yet."
       console.log message
+      console.log error

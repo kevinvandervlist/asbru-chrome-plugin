@@ -5,9 +5,16 @@ class SourceFile
     @uri = file.url
     @filename = @uri.substr(@uri.lastIndexOf("/") + 1)
 
+    # Array to store the breakpoints
+    @breakpoints = []
+
+    # Cache a bunch of preformatted code views
     @_formatCode()
 
-    window.hoocsd.files.push @
+    window.hoocsd.files[@id] = @
+
+  addBreakpoint: (lineNumber, breakpoint) ->
+    @breakpoints[lineNumber] = breakpoint
 
   addToList: (docid, contentid) ->
     vd = new ViewData
@@ -29,23 +36,33 @@ class SourceFile
       # Prevent HTML markup at all cost
       loc[0].innerText = line
 
+      # But set a class for breakpoint indications
+      linediv.addClass "file-#{@id}-line-#{cnt}"
+
       linediv.append loc
       sourcelist.append linediv
 
-      # Attach a click handler to enable the creation of breakpoints
-      # Make sure callback is in closure because of cnt dependence
-      f = (cnt, id, uri) ->
-        linediv.click =>
-          window.hoocsd.messaging.sendMessage
-            type: "js.setBreakpointByUrl"
-            lineNumber: cnt
-            url: uri
-            urlRegex: null
-            columnNumber: 0
-            condition: null
-      f.call(linediv, cnt, @id, @uri)
+      #@_toggleBreakPoint.call(linediv, cnt, @id, @uri)
+      @_toggleBreakPoint linediv, cnt, @id, @uri
 
       cnt++
 
     @formatted_code = sourcelist
 
+  # Attach a click handler to enable the creation of breakpoints
+  # Make sure callback is in closure because of cnt dependence
+  _toggleBreakPoint: (linediv, cnt, id, uri) ->
+    # Existing breakpoint?
+    console.log "So"
+    linediv.click =>
+      if @breakpoints[cnt]?
+        @breakpoints[cnt].remove window.hoocsd.messaging
+        @breakpoints[cnt] = null
+      else
+        window.hoocsd.messaging.sendMessage
+          type: "js.setBreakpointByUrl"
+          lineNumber: cnt
+          url: uri
+          urlRegex: null
+          columnNumber: 0
+          condition: null

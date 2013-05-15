@@ -41,7 +41,7 @@
 }
 
 #content-window {
-	line-height: 1px;
+	line-height: 5px;
 	margin: 0;
 	overflow: hidden;
 	white-space: nowrap;
