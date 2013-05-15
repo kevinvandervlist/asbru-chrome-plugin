@@ -3,10 +3,11 @@ class comm_JS
     @table["js.ListFile"] = @listFile
     @table["js.setBreakpointSuccess"] = @setBreakpointSuccess
 
-  listFile: (message) ->
+  listFile: (message) =>
     m = new SourceFile message
     m.addToList()
-    @logger.log message.url
+    @messaging.log message.url
 
-  setBreakpointSuccess: (message) ->
-    console.log "Breakpoint success!"
+  setBreakpointSuccess: (message) =>
+    @messaging.log "Breakpoint successfully set!"
+

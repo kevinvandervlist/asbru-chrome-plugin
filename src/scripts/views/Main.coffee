@@ -17,14 +17,14 @@ $ ->
   hoocsd.messaging = new Messaging "hoocsd", hoocsd.logger
   hoocsd.cli = new Console hoocsd.messaging, hoocsd.logger
 
-  # Ask for resources
-  hoocsd.messaging.sendMessage type: "js.ListFiles"
-
   $("#console-form").submit((e) ->
     e.preventDefault
     value = $("#console-line")[0].value
     hoocsd.cli.evaluate value
     false)
+
+  # Ask for resources
+  hoocsd.messaging.sendMessage type: "js.ListFiles"
 
 setupGuiElements = (element) ->
   $(element).draggable(

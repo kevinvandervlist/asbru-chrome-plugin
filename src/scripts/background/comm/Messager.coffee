@@ -1,7 +1,10 @@
 class Messager
   constructor: (@debugger) ->
-    # Dependencies
-    @js = new comm_JS @
+      # Lookup table for extension
+    @lookup_table = {}
+
+    # All extension modules
+    @js = new comm_JS @, @lookup_table
 
     # Callback closure
     mec = (message) =>
@@ -29,7 +32,8 @@ class Messager
       console.log message
       undefined
 
-    switch message.type
-      when "js.ListFiles" then @js.ListFiles message
-      when "js.setBreakpointByUrl" then @js.setBreakpointByUrl message
-      else console.log "Message type #{message.type} is not supported yet."
+    try
+      @lookup_table[message.type](message)
+    catch error
+      console.log "Message type #{message.type} is not supported yet."
+      console.log message

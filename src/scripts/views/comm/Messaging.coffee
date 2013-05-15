@@ -13,6 +13,9 @@ class Messaging
   sendMessage: (message) ->
     @port.postMessage message
 
+  log: (message) ->
+    @logger.log message
+
   _MessageEventCallback: (message) ->
     @logger.log "Received: #{message.type}"
     if not message.type?

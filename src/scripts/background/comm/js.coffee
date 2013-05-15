@@ -1,9 +1,11 @@
 class comm_JS
-  constructor: (@messager) ->
+  constructor: (@messager, @table) ->
+    @table["js.ListFiles"] = @listFiles
+    @table["js.setBreakpointByUrl"] = @setBreakpointByUrl
 
   # js.ListFiles
   # [ { scriptId: int, url: URI, code: <code> }, { ... } .. ]
-  ListFiles: (message) ->
+  listFiles: (message) =>
     f = (x) =>
       @messager.sendMessage
         type: "js.ListFile"
