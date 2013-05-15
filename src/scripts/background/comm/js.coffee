@@ -3,6 +3,8 @@ class comm_JS
     @table["js.ListFiles"] = @listFiles
     @table["js.setBreakpointByUrl"] = @setBreakpointByUrl
     @table["js.removeBreakpoint"] = @removeBreakpoint
+    @table["js.pause"] = @pause
+    @table["js.resume"] = @resume
 
   # js.ListFiles
   # [ { scriptId: int, url: URI, code: <code> }, { ... } .. ]
@@ -41,9 +43,19 @@ class comm_JS
 
   # Remove a breakpoint
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-removeBreakpoint
-  removeBreakpoint: (breakpointId) =>
+  removeBreakpoint: (message) =>
     @messager.sendCommand "Debugger.removeBreakpoint",
-      breakpointId: breakpointId
+      breakpointId: message.breakpointId
+
+  # Pause javascript execution
+  # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-pause
+  pause: (message) =>
+    @messager.sendCommand "Debugger.pause"
+
+  # Resume javascript execution
+  # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-resume
+  resume: (message) =>
+    @messager.sendCommand "Debugger.resume"
 
   ## Local stuff
 
@@ -65,8 +77,3 @@ class comm_JS
     id: scriptId
     col: col
     line: line
-
-  # Remove a breakpoint
-  removeBreakpoint: (message) =>
-    @messager.sendCommand "Debugger.removeBreakpoint",
-      breakpointId: message.breakpointId

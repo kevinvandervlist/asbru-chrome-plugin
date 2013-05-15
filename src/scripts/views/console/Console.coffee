@@ -15,6 +15,10 @@ class Console
     args = @getArgs(command)
     switch cmd
       when "sendmessage" then @_sendMessage args
+      when "pause" then @_js_pause "js.pause"
+      when "p" then @_js_pause "js.pause"
+      when "resume" then @_js_resume "js.resume"
+      when "r" then @_js_resume "js.resume"
       else @logger.log "Command [#{cmd}] not yet implemented"
 
   _sendMessage: (args) ->
@@ -22,3 +26,11 @@ class Console
       @messaging.sendMessage $.parseJSON args
     catch error
       @logger.log "Error: #{error}"
+
+  _js_resume: ->
+    @messaging.sendMessage
+      type: "js.resume"
+
+  _js_pause: ->
+    @messaging.sendMessage
+      type: "js.pause"
