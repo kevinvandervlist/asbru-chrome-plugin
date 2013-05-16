@@ -23,8 +23,19 @@ $ ->
     hoocsd.cli.evaluate value
     false)
 
-  # Ask for resources
-  hoocsd.messaging.sendMessage type: "js.ListFiles"
+  # Bind a bunch of buttons to CLI commands
+  $("#controls-continue").click -> hoocsd.cli.evaluate "resume"
+  $("#controls-pause").click -> hoocsd.cli.evaluate "pause"
+  $("#controls-stepover").click -> hoocsd.cli.evaluate "stepover"
+  $("#controls-stepinto").click -> hoocsd.cli.evaluate "stepinto"
+  $("#controls-stepout").click -> hoocsd.cli.evaluate "stepout"
+  $("#controls-breakpoints-disabled").click -> hoocsd.cli.evaluate "breakpointsActive false"
+  $("#controls-breakpoints-enabled").click -> hoocsd.cli.evaluate "breakpointsActive true"
+
+  # Ask for resources. Timeout is a hack so "it always works"
+  setTimeout( ( ->
+    hoocsd.messaging.sendMessage type: "js.ListFiles")
+    250)
 
 setupGuiElements = (element) ->
   $(element).draggable(

@@ -29,7 +29,6 @@ debuggerResumed = (debuggeeId) ->
 
 # Catch emitted events regarding JS files
 scriptParsed = (debuggeeId, params) ->
-  console.log params
   chrome.debugger.sendCommand(
     debuggeeId,
     "Debugger.getScriptSource",
