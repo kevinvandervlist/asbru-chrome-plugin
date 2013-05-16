@@ -36,9 +36,8 @@ class Debugger
 
   # Bind an eventlistener
     chrome.debugger.onEvent.addListener ((debuggeeId, method, params) =>
-      @lookup_table[method](debuggeeId, params)
       try
-        #@lookup_table[method](debuggeeId, params)
+        @lookup_table[method](debuggeeId, params)
       catch error
         console.log "Method #{method} is still unsupported."
         console.log params)
@@ -46,6 +45,10 @@ class Debugger
   # External access to the debugger. Abstract the need of @tabid away
   sendCommand: (command, message, cb = null) ->
     chrome.debugger.sendCommand @tabid, command, message, cb
+
+  # Forward messages to the messager
+  sendMessage: (message) ->
+    @messager.sendMessage message
 
   # Call this to stop the whole debugging session
   stopDebugging: ->

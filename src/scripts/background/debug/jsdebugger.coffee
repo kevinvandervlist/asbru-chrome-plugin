@@ -6,17 +6,16 @@ class debug_debugger
 
   # Event that the execution is paused
   debuggerPaused: (debuggeeId, params) =>
-    chrome.browserAction.setIcon(
-      tabId: debuggeeId.tabId
-      path: "images/debuggerContinue.png"
-    )
-    chrome.browserAction.setTitle(
-      tabId: debuggeeId.tabId
-      title: chrome.i18n.getMessage "resumeDesc"
-    )
+    # Put an overlay on the debugged tab
     message =
       message: chrome.i18n.getMessage "pausedMessage"
     @debugger.sendCommand "Debugger.setOverlayMessage", message
+    # Push the data to the frontend
+    @debugger.sendMessage
+      type: "debugger.paused"
+      callFrames: params.callFrames
+      reason: params.reason
+      data: params.data
 
   # Event indicating that the execution is resumed
   debuggerResumed: (debuggeeId, params) =>
