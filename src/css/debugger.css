@@ -17,7 +17,6 @@
 .boxed { 
 	margin: 0 1em 1em 0; 
 	overflow: hidden;
-	height: 250px;
 	width: 250px;
 }
 .boxed-header { 
@@ -67,103 +66,25 @@
   width: 99.5%;
 }
 
-/* * { */
-/* 	margin: 0; */
-/* 	padding: 0; */
-/* } */
-/* html { */
-/* 	height: 100%; */
-/* } */
-/* header, nav, section, article, aside, footer { */
-/* 	display: block; */
-/* } */
-/* body { */
-/* 	font: 12px/18px Arial, Tahoma, Verdana, sans-serif; */
-/* 	height: 100%; */
-/* } */
-/* a { */
-/* 	color: blue; */
-/* 	outline: none; */
-/* 	text-decoration: underline; */
-/* } */
-/* a:hover { */
-/* 	text-decoration: none; */
-/* } */
-/* p { */
-/* 	margin: 0 0 18px */
-/* } */
-/* img { */
-/* 	border: none; */
-/* } */
-/* input { */
-/* 	vertical-align: middle; */
-/* } */
-/* #main { */
-/* 	width: 100%; */
-/* 	min-width: 800px; */
-/* 	min-height: 100%; */
-/* 	height: auto !important; */
-/* 	height: 100%; */
-/* } */
+#controls {
+	heigth: 50px;
+}
 
+#controls-breakpoints-enabled {
+	width: 16px;
+	heigth: 16px;
+}
 
-/* /\* Middle */
-/* -----------------------------------------------------------------------------*\/ */
-/* #middle { */
-/* 	width: 100%; */
-/* 	padding: 0 0 100px; */
-/* 	height: 1%; */
-/* 	position: relative; */
-/* } */
-/* #middle:after { */
-/* 	content: ''; */
-/* 	clear: both; */
-/* 	display: table; */
-/* } */
-/* #container { */
-/* 	width: 100%; */
-/* 	float: left; */
-/* 	overflow: hidden; */
-/* } */
-/* #content { */
-/* 	padding: 0 270px 0 270px; */
-/* } */
+.controls-button {
+	padding-left: 5px;
+	padding-right: 5px;
+}
 
+#controls-breakpoints-disabled {
+	width: 16px;
+	heigth: 16px;
+}
 
-/* /\* Sidebar Left */
-/* -----------------------------------------------------------------------------*\/ */
-/* #main_left { */
-/* 	float: left; */
-/* 	width: 250px; */
-/* 	margin-left: -100%; */
-/* 	position: relative; */
-/* 	background: #B5E3FF; */
-/* } */
-
-
-/* /\* Sidebar Right */
-/* -----------------------------------------------------------------------------*\/ */
-/* #main_right { */
-/* 	float: left; */
-/* 	margin-right: -3px; */
-/* 	width: 250px; */
-/* 	margin-left: -250px; */
-/* 	position: relative; */
-/* 	background: #FFACAA; */
-/* } */
-
-
-/* /\* Footer */
-/* -----------------------------------------------------------------------------*\/ */
-/* #console { */
-/* 	margin: -1.5em auto 0; */
-/* 	min-width: 800px; */
-/* 	height: 1.5em; */
-/* 	background: #BFF08E; */
-/* 	position: relative; */
-/* 	border-style: solid; */
-/* 	border-size: 1px; */
-/* } */
-/* #console input { */
-/*   width: 99.5%; */
-/* } */
+#content-window {
+	overflow: auto;
+}

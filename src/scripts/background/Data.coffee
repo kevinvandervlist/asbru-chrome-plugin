@@ -24,3 +24,4 @@ class Data
     port: null
     files: []
     debugger: null
+    context: null

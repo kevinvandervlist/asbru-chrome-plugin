@@ -1,17 +1,20 @@
 {
-		"pauseDesc": {
-				"message": "Pausing JavaScript"
-		},
-		"resumeDesc": {
-				"message": "Resume JavaScript"
-		},
-		"ext_default_title": {
-				"message": "Debugger samething"
-		},
-		"extName": {
-				"message": "My extension name foo"
-		},
-		"extDesc": {
-				"message": "My extension description bar"
-		}
+  "pauseDesc": {
+    "message": "Pausing JavaScript"
+  },
+  "pausedMessage": {
+    "message": "Paused -- Either explicitly or because of breakpoint."
+  },
+  "resumeDesc": {
+    "message": "Resume JavaScript"
+  },
+  "ext_default_title": {
+    "message": "Debugger samething"
+  },
+  "extName": {
+    "message": "My extension name foo"
+  },
+  "extDesc": {
+    "message": "My extension description bar"
+  }
 }

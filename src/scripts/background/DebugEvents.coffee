@@ -2,8 +2,12 @@
 chrome.debugger.onEvent.addListener ((debuggeeId, method, params) ->
   switch method
     when "Debugger.paused" then debuggerPaused debuggeeId
+    when "Debugger.resumed" then debuggerResumed debuggeeId
     when "Debugger.scriptParsed" then scriptParsed debuggeeId, params
-    else console.log "Method #{method} is still unsupported.")
+    when "Runtime.executionContextCreated" then execContextCreated params
+    else
+      console.log "Method #{method} is still unsupported."
+      console.log params)
 
 # Update UI state on pause
 debuggerPaused = (debuggeeId) ->
@@ -14,11 +18,18 @@ debuggerPaused = (debuggeeId) ->
   )
   chrome.browserAction.setTitle(
     tabId: tabId
-    title: chrome.i18n.getMessage "resumeDesc__"
+    title: chrome.i18n.getMessage "resumeDesc"
   )
+  message =
+    message: chrome.i18n.getMessage "pausedMessage"
+  hoocsd.debugger.sendCommand "Debugger.setOverlayMessage", message
+
+debuggerResumed = (debuggeeId) ->
+  hoocsd.debugger.sendCommand "Debugger.setOverlayMessage"
 
 # Catch emitted events regarding JS files
 scriptParsed = (debuggeeId, params) ->
+  console.log params
   chrome.debugger.sendCommand(
     debuggeeId,
     "Debugger.getScriptSource",
@@ -30,3 +41,7 @@ cacheParsedScript = (params, resource) ->
     scriptId: params.scriptId
     url: params.url
     code: resource.scriptSource)
+
+# Store the execution context reference
+execContextCreated = (params) ->
+  hoocsd.context = params.context

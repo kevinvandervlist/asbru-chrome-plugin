@@ -53,7 +53,6 @@ class SourceFile
   # Make sure callback is in closure because of cnt dependence
   _toggleBreakPoint: (linediv, cnt, id, uri) ->
     # Existing breakpoint?
-    console.log "So"
     linediv.click =>
       if @breakpoints[cnt]?
         @breakpoints[cnt].remove window.hoocsd.messaging
@@ -66,3 +65,4 @@ class SourceFile
           urlRegex: null
           columnNumber: 0
           condition: null
+          scriptId: @id

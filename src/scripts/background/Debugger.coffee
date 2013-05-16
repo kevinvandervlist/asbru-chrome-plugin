@@ -47,14 +47,15 @@ class Debugger
       title: chrome.i18n.getMessage "pauseDesc")
 
     # Finally enable it straight away.
-    f = (debuggeeId) ->
-      chrome.debugger.sendCommand debuggeeId, "Debugger.pause"
+    chrome.debugger.sendCommand(
+      debuggeeId
+      "Runtime.enable"
+      {})
 
     chrome.debugger.sendCommand(
-      debuggeeId,
-      "Debugger.enable",
-      {},
-      f.bind(null, debuggeeId))
+      debuggeeId
+      "Debugger.enable"
+      {})
 
   # Debugger is detached event
   _onDetachCallback: (debuggeeId) ->

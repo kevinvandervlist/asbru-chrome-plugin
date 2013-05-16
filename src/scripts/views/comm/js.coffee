@@ -10,3 +10,4 @@ class comm_JS
 
   setBreakpointSuccess: (message) =>
     window.hoocsd.breakPoints.push new BreakPoint message
+    console.log message

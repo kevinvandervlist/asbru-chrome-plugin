@@ -5,6 +5,7 @@ class comm_JS
     @table["js.removeBreakpoint"] = @removeBreakpoint
     @table["js.pause"] = @pause
     @table["js.resume"] = @resume
+    @table["js.breakpointsActive"] = @breakpointsActive
 
   # js.ListFiles
   # [ { scriptId: int, url: URI, code: <code> }, { ... } .. ]
@@ -56,6 +57,10 @@ class comm_JS
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-resume
   resume: (message) =>
     @messager.sendCommand "Debugger.resume"
+
+  breakpointsActive: (message) =>
+    @messager.sendCommand "Debugger.setBreakpointsActive",
+      active: message.value
 
   ## Local stuff
 
