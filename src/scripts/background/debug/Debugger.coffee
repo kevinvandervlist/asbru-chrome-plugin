@@ -1,5 +1,8 @@
 class Debugger
   constructor: (@tab) ->
+    # Lookup table for extension
+    @lookup_table = {}
+
     # debuggeeId:
     @tabid = tabId: tab.id
 
@@ -12,6 +15,10 @@ class Debugger
 
     # make sure global debugger state is clean
     window.hoocsd = @data.defaultGlobalState()
+
+    # All extension modules
+    @debugger = new debug_debugger @, @lookup_table
+    @runtime = new debug_runtime @, @lookup_table
 
     # Attach the debugger and a callback
     chrome.debugger.attach(
@@ -26,6 +33,19 @@ class Debugger
     chrome.windows.create(
       @data.debuggerPopup()
       f)
+
+  # Bind an eventlistener
+    chrome.debugger.onEvent.addListener ((debuggeeId, method, params) =>
+      @lookup_table[method](debuggeeId, params)
+      try
+        #@lookup_table[method](debuggeeId, params)
+      catch error
+        console.log "Method #{method} is still unsupported."
+        console.log params)
+
+  # External access to the debugger. Abstract the need of @tabid away
+  sendCommand: (command, message, cb = null) ->
+    chrome.debugger.sendCommand @tabid, command, message, cb
 
   # Call this to stop the whole debugging session
   stopDebugging: ->
@@ -67,7 +87,3 @@ class Debugger
       tabId: debuggeeId.tabId
       title: chrome.i18n.getMessage "pauseDesc")
     window.hoocsd.debugger = null
-
-  # External
-  sendCommand: (command, message, cb = null) ->
-    chrome.debugger.sendCommand @tabid, command, message, cb

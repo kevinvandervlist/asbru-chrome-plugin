@@ -1,6 +1,6 @@
 class Messager
   constructor: (@debugger) ->
-      # Lookup table for extension
+    # Lookup table for extension
     @lookup_table = {}
 
     # All extension modules
