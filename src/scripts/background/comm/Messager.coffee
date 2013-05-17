@@ -5,6 +5,7 @@ class Messager
 
     # All extension modules
     @js = new comm_JS @, @lookup_table
+    @runtime = new comm_Runtime @, @lookup_table
 
     # Callback closure
     mec = (message) =>

@@ -4,7 +4,7 @@ $ ->
   vd.init()
 
   # Setup JQUI stuff
-  elements = ["#content", "#console-output", "#console", "#filelist"]
+  elements = ["#content", "#console-output", "#console", "#filelist", "#state-information"]
   setupGuiElements(e) for e in elements
 
   # Allow for minimisation
