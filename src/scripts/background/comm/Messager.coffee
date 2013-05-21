@@ -7,17 +7,11 @@ class Messager
     @js = new comm_JS @, @lookup_table
     @runtime = new comm_Runtime @, @lookup_table
 
-    # Callback closure
-    mec = (message) =>
-      @_messageEventCallback message
-
-    conn = (p) =>
-      if p.name is "hoocsd"
-        @port = p
-        @port.onMessage.addListener mec
-
     # Register port for message passing
-    chrome.runtime.onConnect.addListener conn
+    chrome.runtime.onConnect.addListener @_onConnectCallback
+
+  disconnect: ->
+    @port.disconnect()
 
   # Send a command to the chrome debugger
   sendCommand: (command, message, cb = null) ->
@@ -27,7 +21,7 @@ class Messager
   sendMessage: (message) ->
     @port.postMessage message
 
-  _messageEventCallback: (message) ->
+  _messageEventCallback: (message) =>
     if not message.type?
       console.log "Message cannot be understood. Received: "
       console.log message
@@ -39,3 +33,14 @@ class Messager
       console.log "Message type #{message.type} is not supported yet."
       console.log message
       console.log error
+
+  _onConnectCallback: (p) =>
+    d = new Data
+    if p.name is d.messagePortName()
+      @port = p
+      @port.onMessage.addListener @_messageEventCallback
+
+  # Remove all handlers on destruction
+  removeHandlers: =>
+    @port.onMessage.removeListener @_messageEventCallback
+    chrome.runtime.onConnect.removeListener @_onConnectCallback

@@ -31,7 +31,7 @@ class debug_debugger
 
   # ...make sure the script is cached as well
   _cacheParsedScript: (params, resource) ->
-    hoocsd.files.push (
+    window.hoocsd.files.push (
       scriptId: params.scriptId
       url: params.url
       code: resource.scriptSource)

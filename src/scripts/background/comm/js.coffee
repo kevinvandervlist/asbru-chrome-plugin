@@ -10,13 +10,14 @@ class comm_JS
   # js.ListFiles
   # [ { scriptId: int, url: URI, code: <code> }, { ... } .. ]
   listFiles: (message) =>
+    console.log message
     f = (x) =>
       @messager.sendMessage
         type: "js.ListFile"
         scriptId: x.scriptId
         url: x.url
         code: x.code
-    f x for x in hoocsd.files
+    f x for x in window.hoocsd.files
 
   # js.setBreakpointByUrl
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-setBreakpointByUrl
@@ -77,7 +78,7 @@ class comm_JS
     f = (x) ->
       if x.url is url
         scriptId = x.scriptId
-    f x for x in hoocsd.files
+    f x for x in window.hoocsd.files
 
     id: scriptId
     col: col

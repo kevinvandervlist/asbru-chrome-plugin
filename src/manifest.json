@@ -1,23 +1,32 @@
 {
+  // Required
   "name": "__MSG_extName__",
   "version": "0.1",
+  "manifest_version": 2,
+
+  //recommended
   "description": "__MSG_extDesc__",
-  "default_locale": "en",
-  "permissions": [
-    "tabs",
-    "debugger"
-  ],
-  "background": {
-    "scripts": ["scripts/background.js"]
-  },
-  "browser_action": {
-    "default_icon": "images/debuggerPause.png",
-    "default_title": "__MSG_ext_default_title__"
-  },
 	"icons": {
     "16": "images/icons/black_white/icon_016.png",
     "48": "images/icons/black_white/icon_048.png",
     "128": "images/icons/black_white/icon_128.png" 
   },
-  "manifest_version": 2
+  "default_locale": "en",
+
+  "browser_action": {
+    "default_icon": "images/debuggerPause.png",
+    "default_title": "__MSG_ext_default_title__"
+  },
+
+  "background": {
+    "persistent": false,
+    "scripts": ["scripts/background.js"]
+  },
+
+  "homepage_url": "https://github.com/kevinvandervlist/hoocsd-chrome-plugin",
+
+  "permissions": [
+    "tabs",
+    "debugger"
+  ]
 }

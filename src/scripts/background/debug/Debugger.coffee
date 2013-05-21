@@ -29,18 +29,21 @@ class Debugger
     # Bind this to the correct scope
     f = (w) =>
       @debuggerWindow = w
+      chrome.windows.onRemoved.addListener @_onWindowRemoved
 
     chrome.windows.create(
       @data.debuggerPopup()
       f)
 
-  # Bind an eventlistener
-    chrome.debugger.onEvent.addListener ((debuggeeId, method, params) =>
-      try
-        @lookup_table[method](debuggeeId, params)
-      catch error
-        console.log "Method #{method} is still unsupported."
-        console.log params)
+    # Bind an eventlistener
+    chrome.debugger.onEvent.addListener @_onEventCallback
+
+  # Remove all handlers on destruction
+  removeHandlers: =>
+    @messager.removeHandlers()
+    chrome.windows.onRemoved.removeListener @_onWindowRemoved
+    chrome.debugger.onDetach.removeListener @_onDetachCallback
+    chrome.debugger.onEvent.removeListener @_onEventCallback
 
   # External access to the debugger. Abstract the need of @tabid away
   sendCommand: (command, message, cb = null) ->
@@ -52,8 +55,16 @@ class Debugger
 
   # Call this to stop the whole debugging session
   stopDebugging: ->
+    # Todo: this throws an error when the window is closed via the x button
+    # instead of the program icon.
+    # It cannot be caught, so a harmless error is printed.
     chrome.windows.remove @debuggerWindow.id
     chrome.debugger.detach(@tabid, @_onDetachCallback.bind(null, @tabid))
+
+  # Called when a window is removed.
+  _onWindowRemoved: (w) =>
+    if w is @debuggerWindow.id
+      window.hoocsd.debugger.stopDebugging()
 
   # Debugger attachment callback
   _onDebuggerAttached: (debuggeeId) ->
@@ -89,4 +100,17 @@ class Debugger
     chrome.browserAction.setTitle(
       tabId: debuggeeId.tabId
       title: chrome.i18n.getMessage "pauseDesc")
-    window.hoocsd.debugger = null
+
+    # HACK: cleanup...
+    window.hoocsd.debugger.messager.disconnect()
+    window.hoocsd.debugger.removeHandlers()
+
+    # ...and reset state
+    window.hoocsd = d.defaultGlobalState()
+
+  _onEventCallback: (debuggeeId, method, params) =>
+      try
+        @lookup_table[method](debuggeeId, params)
+      catch error
+        console.log "Method #{method} is still unsupported."
+        console.log params

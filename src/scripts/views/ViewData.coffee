@@ -20,3 +20,6 @@ class ViewData
 
   mainContentId: ->
     "#content-window"
+
+  stateInfoId: ->
+    "#state-information"

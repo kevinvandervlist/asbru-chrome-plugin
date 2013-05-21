@@ -4,5 +4,5 @@ class debug_runtime
 
   # Store the execution context reference
   execContextCreated: (debuggeeId, params) =>
-    hoocsd.context = params.context
+    window.hoocsd.context = params.context
 

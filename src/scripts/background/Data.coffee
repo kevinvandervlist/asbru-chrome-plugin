@@ -25,3 +25,7 @@ class Data
     files: []
     debugger: null
     context: null
+
+  # Message passing port name
+  messagePortName: ->
+    "hoocsd"
