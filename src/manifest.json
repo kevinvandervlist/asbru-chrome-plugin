@@ -14,5 +14,10 @@
     "default_icon": "images/debuggerPause.png",
     "default_title": "__MSG_ext_default_title__"
   },
+	"icons": {
+    "16": "images/icons/black_white/icon_016.png",
+    "48": "images/icons/black_white/icon_048.png",
+    "128": "images/icons/black_white/icon_128.png" 
+  },
   "manifest_version": 2
 }
