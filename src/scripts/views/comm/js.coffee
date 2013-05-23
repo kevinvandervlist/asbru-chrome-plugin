@@ -9,4 +9,5 @@ class comm_JS
     @messaging.log message.url
 
   setBreakpointSuccess: (message) =>
-    window.hoocsd.breakPoints.push new BreakPoint message
+    bp = new BreakPoint message
+    window.hoocsd.data.breakPoints.put bp.getIdentifier(), bp

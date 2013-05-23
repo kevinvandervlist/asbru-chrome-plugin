@@ -11,12 +11,12 @@ class SourceFile
     # Cache a bunch of preformatted code views
     @_formatCode()
 
-    window.hoocsd.files[@id] = @
+    parentFile = window.hoocsd.data.files.put @id, @
 
   addBreakpoint: (lineNumber, breakpoint) ->
     @breakpoints[lineNumber] = breakpoint
 
-  addToList: (docid, contentid) ->
+  addToList: ->
     vd = new ViewData
     $("<li>#{@filename}</li>",
       id: @id

@@ -1,3 +1,13 @@
 # Add an isEqual prototype to arrays...
 Array.prototype.isEqual = (other) ->
-  this.length is other.length and this.every (elem, i) -> elem is other[i]
+  @length is other.length and @every (elem, i) -> elem is other[i]
+
+# And a remove operation
+Array.prototype.remove = (object) ->
+  i = 0
+  removed = null
+  for element in @
+    if element.isEqual object
+      removed = @splice(i, 1)[0]
+    i++
+  removed

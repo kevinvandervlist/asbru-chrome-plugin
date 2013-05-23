@@ -9,11 +9,15 @@ class ViewData
     window.hoocsd = @defaultGlobalState()
 
   defaultGlobalState: ->
-    files: []
-    breakPoints: []
-    logger: null
-    messaging: null
-    cli: null
+    dataStores =
+      files: new DataStore
+      breakPoints: new DataStore
+
+    ret =
+      data: dataStores
+      logger: null
+      messaging: null
+      cli: null
 
   filelistContentId: ->
     "#filelist-content"

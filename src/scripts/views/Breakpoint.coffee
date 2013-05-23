@@ -8,7 +8,7 @@ class BreakPoint
     line = $(".file-#{@scriptId}-line-#{@lineNumber}")
     line.css "background-color", "#BDDEFF"
 
-    parentFile = window.hoocsd.files[@scriptId]
+    parentFile = window.hoocsd.data.files.get @scriptId
     parentFile.addBreakpoint @lineNumber, @
 
   remove: (messaging) ->
@@ -17,3 +17,6 @@ class BreakPoint
     messaging.sendMessage
       type: "js.removeBreakpoint"
       breakpointId: @breakpointId
+
+  getIdentifier: ->
+    @breakpointId

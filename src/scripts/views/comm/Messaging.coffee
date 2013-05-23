@@ -5,7 +5,7 @@ class Messaging
 
     # All extension modules
     @js = new comm_JS @, @lookup_table
-    @js = new comm_debugger @, @lookup_table
+    @debugger = new comm_debugger @, @lookup_table
 
     # Finally open up connection port and add a listener
     @port = chrome.runtime.connect name: @portName
@@ -31,3 +31,4 @@ class Messaging
       @logger.log "#{message.type}: unsupported."
       console.log "#{message.type}: unsupported."
       console.log message
+      @lookup_table[message.type] message
