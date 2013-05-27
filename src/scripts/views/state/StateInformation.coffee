@@ -8,6 +8,7 @@ class StateInformation
   # pausedevent:
   # https://developers.google.com/chrome-developer-tools/docs/protocol/tot/debugger#event-paused
   pausedEvent: (pe) =>
+    $(@divid).empty()
     reason = $("<p>Paused because of: #{pe.reason}</p>")
     $(@divid).append reason
 
@@ -41,11 +42,11 @@ class StateInformation
   # get properties of an object. The returning value is an "AsyncVariable", which
   # needs to have a callback found to it.
   # If the object already exists, return an existing AsyncVariable
-  _getProperties: (object) ->
+  _getProperties: (object, cb = null) ->
     if @properties[object.objectId]?
       return @properties[object.objectId]
     else
-      ret = new AsyncVariable null, null, object.objectId
+      ret = new AsyncVariable null, cb, object.objectId
       @properties[object.objectId] = ret
 
       @messaging.sendMessage
@@ -98,14 +99,14 @@ class StateInformation
     for scope in chain
       title = null
       subtitle = scope.object.description
-      extraProperties = null
+      thisReference = null
       # Handle according to the frame type
       switch scope.type
         when "local"
           title = "Local"
           subtitle = null
           if frame.this
-            extraProperties = @_getProperties frame.this
+            thisReference = frame.this
         when "closure"
           title = "Closure"
           subtitle = null
@@ -117,19 +118,19 @@ class StateInformation
         when "global"
           title = "Global"
 
-      remoteObject = @_getProperties scope.object
-      n = new TreeNode
-        title: title
-        subtitle: subtitle
-        extraProperties: extraProperties
-        remoteObject: remoteObject
-        type: "scopevariables"
-      tree.addChild n
+      tree.addChild @_newScopeVariableNode scope.object, title, subtitle, thisReference
     tree
+
+  _newScopeVariableNode: (scopeObject, title = null, subtitle = null, thisReference = null) ->
+    new TreeNode
+      title: title
+      subtitle: subtitle
+      thisReference: thisReference
+      scopeObject: scopeObject
+      type: "scopevariables"
 
   _writeHTML: ->
     html = $("<ul />")
-    console.log "x"
     for node in @tree.getChildren()
       switch node.value.type
         when "scopevariables" then html.append @_writeHTML_scopeVariables(node)
@@ -137,9 +138,7 @@ class StateInformation
 
     $(@divid).append html
 
-  _writeHTML_scopeVariables: (node) ->
-    console.log node
-
+  # Callstack stuff
   _writeHTML_callStack: (node) ->
     html = $("<li />")
     html.append $("<h3>#{node.value.title}</h3>")
@@ -149,8 +148,81 @@ class StateInformation
       stack.append $("<li>#{call.value.functionName} -> #{call.value.fileName}:#{call.value.lineNumber}</li>")
 
     html.append stack
-    console.log html
     return html
+
+  # Scope variables stuff
+  _writeHTML_scopeVariables: (node) ->
+    html = $("<li />")
+    html.append $("<h3>#{node.value.title}</h3>")
+    scope = $("<ul />")
+
+    # For each scope create a recursive tree:
+    for scopeNode in node.getChildren()
+      title = scopeNode.value.title
+      subtitle = scopeNode.value.subtitle
+
+      text = title
+      text += " (#{subtitle})" if subtitle?
+      scope.append $("<li>#{text}</li>")
+
+      scope.append @_nestedScopeVariables(scopeNode)
+
+    # end for
+    html.append scope
+    return html
+
+  _nestedScopeVariables: (scopeNode) ->
+    object = scopeNode.value.scopeObject
+    thisReference = scopeNode.value.thisReference
+
+    list = $("<ul />")
+
+    cb = (value, id) =>
+      # Callback triggered when we receive a variable update from the chrome debugger.
+      for item in value
+        text = "<ERR>"
+        if item.value.objectId?
+          # Chain; remote object
+          # First of all, add it to the current node
+          scopeNode.addChild @_newScopeVariableNode item.value
+          text = "#{item.name}: #{item.value.description}"
+        else
+          # Local object
+          text = "#{item.name}: #{item.value.value} :: #{item.value.type}"
+
+        line = $("<li>#{text}</li>")
+        list.append line
+      # End for
+
+    # The normal objects retrieval, including above defined callback
+    @_getProperties object, cb
+
+    if thisReference?
+      thisNode = @_newScopeVariableNode(thisReference, "this")
+      scopeNode.addChild thisNode
+
+      line = $("<li>this: #{thisReference.description}</li>")
+      list.append line
+
+      @_newScopeVariableNode thisReference
+      thisCallback = (value, id) =>
+        for item in value
+          itemNode = @_newScopeVariableNode(item.value, "this")
+          thisNode.addChild itemNode
+          if item.value.objectId?
+            # First of all, add it to the current node
+            # Recurse
+            console.log "recursing "
+            line = @_nestedScopeVariables(itemNode)
+          else
+            # Do not recurse
+            line = "#{item.name}: #{item.value.value} :: #{item.value.type}"
+        list.append line
+
+      # And the remote this object
+      @_getProperties thisReference, thisCallback
+
+    return list
 
 #    $(@divid).append reason
 

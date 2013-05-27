@@ -26,4 +26,4 @@ class ViewData
     "#content-window"
 
   stateInfoId: ->
-    "#state-information"
+    "#state-information-panel"

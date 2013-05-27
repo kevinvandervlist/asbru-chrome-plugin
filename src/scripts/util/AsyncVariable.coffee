@@ -5,7 +5,7 @@ class AsyncVariable
 
   setValue: (v) ->
     @value = v
-    cb() for cb in @onChange
+    cb @value, @id for cb in @onChange
 
   addCallback: (cb) ->
     @onChange.push cb
