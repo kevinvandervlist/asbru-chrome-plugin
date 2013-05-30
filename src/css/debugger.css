@@ -88,3 +88,7 @@
 #content-window {
 	overflow: auto;
 }
+
+.selected-item {
+  background-color: #BDDEFF;
+}

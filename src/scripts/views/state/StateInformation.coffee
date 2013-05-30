@@ -1,12 +1,18 @@
 class StateInformation
   constructor: (@messaging) ->
     @properties = {}
+    @sim = new StateInformationMarkup @
 
   # pausedevent:
   # https://developers.google.com/chrome-developer-tools/docs/protocol/tot/debugger#event-paused
   pausedEvent: (pe) =>
     @tree = @_createStateTree pe.reason, pe.callFrames
-    @sim = new StateInformationMarkup @, @tree
+    @sim = new StateInformationMarkup @
+    @sim.update()
+
+  # Return a reference to the state tree
+  getStateTree: ->
+    @tree
 
   destroy: =>
     # Cleanup
@@ -16,21 +22,35 @@ class StateInformation
   updatePropDesc: (objectId, propDescArray) =>
     @properties[objectId].setValue propDescArray
 
+  #
+  changeCallstackContext: (oldCtx, newCtx) ->
+    oldCtx.getValue().active = false
+    newCtx.getValue().active = true
+    console.log "Changing!"
+    for node in @tree.getChildren()
+      if node.constructor.name is "ScopeVariableStack"
+        node.clear()
+        node.addChild newCtx.getValue().scopeVars
+
+
   # Given a scopeNode (e.g. node in the scopevariables part of the tree)
   # retrieve its child elements and put them in the tree as well
   addChildScopeVariables: (scopeNode) ->
-    if scopeNode.hasChildren()
-      return
-    object = scopeNode.value.scopeObject
+    # Scopenode can be undefined if callbacks of
+    # async values aren't completed yet
+    return if not scopeNode?
+    # Return if it already has children, we've done this before then.
+    return if scopeNode.hasChildren()
+
+    object = scopeNode.getValue().scopeObject
     if object.value?
       object = object.value
 
-    thisReference = scopeNode.value.thisReference
+    thisReference = scopeNode.getValue().thisReference
 
     # Callback triggered when we receive a variable update from the chrome debugger.
     cb = (value, id) =>
       proto = @_newProtoNode()
-      scopeNode.addChild proto
 
       for item in value
         itemNode = @_newScopeVariableNode(item, item.name)
@@ -38,20 +58,21 @@ class StateInformation
           # Own object
           scopeNode.addChild itemNode
         else
-          # __proto__
+          # __proto__, items should be invisible by default
           proto.addChild itemNode
+          itemNode.setVisible false
+
+      scopeNode.addChild proto if proto.hasChildren()
 
     # The normal objects retrieval, including above defined callback
     @_getProperties object, cb
 
     # If there is a thisReference then we should also include it
     if thisReference?
-      thisNode = @_newScopeVariableNode(thisReference, "this")
+      thisNode = @_newScopeVariableNode(thisReference, "this: #{thisReference.description}")
       scopeNode.addChild thisNode
       @addChildScopeVariables @thisNode
     # End of if thisReference?
-
-    @tree
 
   _newProtoNode: ->
     new ScopeVariable
@@ -90,8 +111,7 @@ class StateInformation
       # But add all of them to the tree
       call.getValue().scopeVars = scopeVars
 
-    #end of for
-    tree
+    return tree
 
   # get properties of an object. The returning value is an "AsyncVariable", which
   # needs to have a callback (updatePropDesc via comm_debugger) found to it.

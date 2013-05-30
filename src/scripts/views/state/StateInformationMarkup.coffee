@@ -1,37 +1,53 @@
 class StateInformationMarkup
-  constructor: (@stateInformation, @stateTree) ->
+  constructor: (@stateInformation) ->
     vd = new ViewData
     @divid = vd.stateInfoId()
 
-    @interval = setInterval @_updateCallback, 1000
-
   destroy: ->
     $(@divid).empty()
-    clearInterval @interval
 
-  # If this is called, the @stateTree will be used to render a tree representing JS state
+  # If this is called, the @stateInformation.getStateTree will be used to render a tree representing JS state
   writeHTML: ->
+    $(@divid).empty()
     html = $("<ul />")
 
-    for node in @stateTree.getChildren()
+    tree = @stateInformation.getStateTree()
+
+    for node in tree.getChildren()
       switch node.constructor.name
         when "ScopeVariableStack" then html.append @_scopeVariablesStart(node)
         when "CallStack" then html.append @_callStack(node)
 
     $(@divid).append html
 
+  update: ->
+    # Execute one now, and one a bit later from now.
+    @_updateCallback()
+    setTimeout @_updateCallback, 1000
+
+  _click: (element, callback) ->
+    element.effect("highlight", {}, 100, callback);
+
   _updateCallback: =>
-    $(@divid).empty()
     @writeHTML()
 
   _stateTitle: (title, child) ->
-    $("<h4>#{title}</h4>").click -> child.toggle()
+    element = $("<h4>#{title}</h4>")
+    element.click =>
+      cb = -> child.toggle()
+      @_click element, cb
+    return element
 
   _clickableTreeItem: (node, text, child, callback = null) ->
-    $("<li>#{text}</li>").click ->
-      child.toggle()
-      n.toggleVisible() for n in node.getChildren()
-      callback() if callback?
+    element = $("<li>#{text}</li>")
+    element.click =>
+      cb = =>
+        child.toggle()
+        n.toggleVisible() for n in node.getChildren()
+        callback() if callback?
+        @update()
+      @_click element, cb
+    return element
 
   # Callstack stuff
   _callStack: (node) ->
@@ -39,10 +55,29 @@ class StateInformationMarkup
     stack = $("<ul />")
     title = @_stateTitle(node.value.title, stack)
 
+    activeCallStack = null
+    for cs in node.getChildren()
+      if cs.value.active
+        activeCallStack = cs
+
     html.append title
 
     for call in node.getChildren()
-      stack.append $("<li>#{call.value.functionName} -> #{call.value.fileName}:#{call.value.lineNumber}</li>")
+      csline = $("<li>#{call.value.functionName} -> #{call.value.fileName}:#{call.value.lineNumber}</li>")
+      if call.value.active
+        csline.addClass "selected-item"
+
+      stack.append csline
+
+      # Create a callback to change the stack
+      f = (active, selected, element) =>
+        element.click =>
+          cb = =>
+            @stateInformation.changeCallstackContext(active, selected)
+            @update()
+          @_click element, cb
+        return element
+      f activeCallStack, call, csline
 
     html.append stack
     return html
@@ -108,4 +143,7 @@ class StateInformationMarkup
       return "#{scopeObject.name}: #{scopeObject.value.description}"
     else
       # Local object
-      return "#{scopeObject.name}: [#{scopeObject.value.value}] :: #{scopeObject.value.type}"
+      switch scopeObject.value.type
+        when "string" then return "#{scopeObject.name}: \"#{scopeObject.value.value}\""
+        when "number" then return "#{scopeObject.name}: #{scopeObject.value.value}"
+        else return "#{scopeObject.name}: #{scopeObject.value.value} :: #{scopeObject.value.type}"
