@@ -3,6 +3,9 @@ class TreeNode
   constructor: (@value) ->
     @children = []
 
+  clear: ->
+    @children = []
+
   getValue: ->
     @value
 
@@ -10,7 +13,7 @@ class TreeNode
     @children
 
   hasChildren: ->
-    @children isnt []
+    @children.length isnt 0
 
   addChild: (node) ->
     @children.push node

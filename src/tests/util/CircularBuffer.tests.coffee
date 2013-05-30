@@ -1,3 +1,7 @@
+# Add an isEqual prototype to arrays...
+Array.prototype.isEqual = (other) ->
+  @length is other.length and @every (elem, i) -> elem is other[i]
+
 test "Circular Buffer initialisation size.", ->
   x = 5
   cb = new CircularBuffer x

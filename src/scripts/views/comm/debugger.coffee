@@ -12,5 +12,7 @@ class comm_debugger
     @stateInfo = new StateInformation @messaging
     @stateInfo.pausedEvent message
 
+  # If in pause a property description is requested, a reply is send back.
+  # This reply needs to be bound to the stateinfo again
   propReply: (message) =>
     @stateInfo.updatePropDesc message.objectId, message.propDescArray
