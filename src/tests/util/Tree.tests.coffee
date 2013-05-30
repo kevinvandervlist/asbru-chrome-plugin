@@ -34,3 +34,30 @@ test "Children addition and removal", ->
 
   ok a and not b
 
+test "Specific removal", ->
+  x = new TreeNode "foo"
+  y = new TreeNode "bar"
+  z = new TreeNode "abc"
+  q = new TreeNode "q"
+
+  x.addChild q
+  x.addChild y
+  x.addChild z
+  x.removeChild y
+
+  t = []
+
+  t.push child for child in x.getChildren()
+
+  a = (t.length is 2)
+  b = true
+  for c in x.getChildren
+    if c.value is "bar"
+      b = false
+
+  x.removeChild z
+  x.removeChild q
+
+  c = not x.hasChildren()
+
+  ok a and b and c

@@ -19,7 +19,15 @@ class TreeNode
     @children.push node
 
   removeChild: (node) ->
-    @children.remove node
+    remove = (array, object) ->
+      i = 0
+      for element in array
+        if element is object
+          console.log array[i]
+          array.splice(i, 1)[0]
+        i++
+
+    remove @children, node
 
   isLeaf: ->
     !@hasChildren()

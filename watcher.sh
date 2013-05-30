@@ -14,11 +14,12 @@ function trapHUP {
 }
 
 function info {
-		echo ""
-		echo "SIGINT to quit"
-		echo "SIGUSR1 to bake cake"
-		echo "Example:"
-		echo "kill -SIGUSR1 $$"
+		echo "Build helper. Usage:"
+		echo -e "\t* SIGINT to quit"
+		echo -e "\t* SIGUSR1 to bake cake"
+		echo "Example usage:"
+		echo -e "\t* kill -SIGUSR1 $$ to compile"
+		echo -e "\t* kill $$ to quit"
 		echo ""
 }
 
@@ -36,9 +37,9 @@ if [ ! -f ${CWD}/.settings ]; then
   echo "and configure"
 fi
 
-bake_cake
-
 info 
+
+bake_cake
 
 while true; do
   sleep 1

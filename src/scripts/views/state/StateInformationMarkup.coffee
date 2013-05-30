@@ -21,7 +21,7 @@ class StateInformationMarkup
     $(@divid).append html
 
   update: ->
-    # Execute one now, and one a bit later from now.
+    # Execute one now, and one a tad later
     @_updateCallback()
     setTimeout @_updateCallback, 1000
 

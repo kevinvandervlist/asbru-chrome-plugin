@@ -22,15 +22,16 @@ class StateInformation
   updatePropDesc: (objectId, propDescArray) =>
     @properties[objectId].setValue propDescArray
 
-  #
+  # Change the context of the call stack in the tree.
   changeCallstackContext: (oldCtx, newCtx) ->
     oldCtx.getValue().active = false
     newCtx.getValue().active = true
-    console.log "Changing!"
     for node in @tree.getChildren()
       if node.constructor.name is "ScopeVariableStack"
-        node.clear()
-        node.addChild newCtx.getValue().scopeVars
+        console.log node
+        @tree.removeChild node
+        @tree.addChild newCtx.getValue().scopeVars
+        console.log newCtx.getValue().scopeVars
 
 
   # Given a scopeNode (e.g. node in the scopevariables part of the tree)
@@ -108,7 +109,7 @@ class StateInformation
       # Only the most specific callstack should show scope variables
       if call.getValue().active
         tree.addChild scopeVars
-      # But add all of them to the tree
+      # But make sure to add all of them to the tree
       call.getValue().scopeVars = scopeVars
 
     return tree
