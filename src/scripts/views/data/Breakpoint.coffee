@@ -5,15 +5,15 @@ class BreakPoint
     @lineNumber = message.lineNumber
     @scriptId = message.scriptId
 
-    line = $(".file-#{@scriptId}-line-#{@lineNumber}")
-    line.addClass "selected-item"
+    @markup = new BreakPointMarkup
+    @markup.setBreakpoint @scriptId, @lineNumber
 
+    # Get the parent file and register the breakpoint with it
     parentFile = window.hoocsd.data.files.get @scriptId
     parentFile.addBreakpoint @lineNumber, @
 
   remove: (messaging) ->
-    line = $(".file-#{@scriptId}-line-#{@lineNumber}")
-    line.removeClass "selected-item"
+    @markup.removeBreakpoint @scriptId, @lineNumber
     messaging.sendMessage
       type: "js.removeBreakpoint"
       breakpointId: @breakpointId

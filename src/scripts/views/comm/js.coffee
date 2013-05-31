@@ -5,7 +5,6 @@ class comm_JS
 
   listFile: (message) =>
     m = new SourceFile message
-    m.addToList()
     @messaging.log message.url
 
   setBreakpointSuccess: (message) =>
