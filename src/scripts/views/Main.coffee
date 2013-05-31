@@ -1,6 +1,7 @@
 #= require comm/Messaging.coffee
 #= require console/Console.coffee
 #= require data/ViewData.coffee
+#= require gui/GuiBase.coffee
 #= require Logger.coffee
 #= require Tree.coffee
 $ ->

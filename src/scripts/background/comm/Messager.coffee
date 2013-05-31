@@ -1,3 +1,5 @@
+#= require comm/js.coffee
+#= require comm/runtime.coffee
 class Messager
   constructor: (@debugger) ->
     # Lookup table for extension

@@ -34,7 +34,16 @@ class SourceFileMarkup extends GuiBase
       linediv.append loc
       @formatted_code.append linediv
 
-      #@_toggleBreakPoint.call(linediv, cnt, @id, @uri)
-      breakpointCallback linediv, cnt, @id, @uri
+      # Put linediv and the line number in a closure...
+      f = (element, line) =>
+        callback = =>
+          breakpointCallback line, @id, @uri
+
+        linediv.click =>
+          @click element, callback
+
+      # ...and call it
+      f linediv, cnt
+
 
       cnt++

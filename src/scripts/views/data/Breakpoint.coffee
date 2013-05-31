@@ -1,3 +1,5 @@
+#= require gui/BreakPointMarkup.coffee
+#= require gui/GuiBase.coffee
 class BreakPoint
   constructor: (message) ->
     @breakpointId = message.breakpointId

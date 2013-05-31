@@ -1,3 +1,6 @@
+#= require debug/jsdebugger.coffee
+#= require debug/runtime.coffee
+#= require comm/Messager.coffee
 class Debugger
   constructor: (@tab) ->
     # Lookup table for extension

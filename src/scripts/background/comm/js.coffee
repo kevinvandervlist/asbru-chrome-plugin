@@ -10,7 +10,6 @@ class comm_JS
   # js.ListFiles
   # [ { scriptId: int, url: URI, code: <code> }, { ... } .. ]
   listFiles: (message) =>
-    console.log message
     f = (x) =>
       @messager.sendMessage
         type: "js.ListFile"

@@ -1,3 +1,6 @@
+#= require Data.coffee
+#= require debug/Debugger.coffee
+
 # Base global program state structure.
 d = new Data
 window.hoocsd = d.defaultGlobalState()
