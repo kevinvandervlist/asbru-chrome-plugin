@@ -29,7 +29,7 @@ findDependencies = (file) ->
   while (result = dependencyRegex.exec(txt)) != null
     resolved = false
     for dir in includeDirs
-      if path.existsSync(dir + result[1]) and not _.include(dependencies, dir + result[1])
+      if fs.existsSync(dir + result[1]) and not _.include(dependencies, dir + result[1])
         dependencies.push(dir + result[1])
         resolved = true
     if not resolved
@@ -90,9 +90,9 @@ includeDirs.push ""
 _.each args, (arg, index) ->
   sourceFiles.push(args[index + 1]) if arg is "-F" and
     /\.coffee$/.test(args[index + 1]) and
-    path.existsSync(args[index + 1])
+    fs.existsSync(args[index + 1])
   includeDirs.push(ensureDirHasTrailingSlash(args[index + 1])) if arg is "-I" and
-    path.existsSync(args[index + 1])
+    fs.existsSync(args[index + 1])
 
 # check if at least 1 source + 1 directory is defined
 # if so, run the concatenation, if not log an error message
