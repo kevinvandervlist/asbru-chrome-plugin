@@ -1,3 +1,8 @@
+#= require comm/Messaging.coffee
+#= require console/Console.coffee
+#= require data/ViewData.coffee
+#= require Logger.coffee
+#= require Tree.coffee
 $ ->
   # Initialise global state
   vd = new ViewData

@@ -1,3 +1,5 @@
+#= require gui/GuiBase.coffee
+#= require gui/SourceFileMarkup.coffee
 class SourceFile
   constructor: (file) ->
     @code = file.code
@@ -21,7 +23,7 @@ class SourceFile
 
   # Attach a click handler to enable the creation of breakpoints
   # Make sure callback is in closure because of cnt dependence
-  _toggleBreakPoint: (linediv, cnt, id, uri) ->
+  _toggleBreakPoint: (linediv, cnt, id, uri) =>
     # Existing breakpoint?
     linediv.click =>
       if @breakpoints[cnt]?

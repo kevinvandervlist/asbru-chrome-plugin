@@ -1,3 +1,6 @@
+#= require gui/StateInformationMarkup.coffee
+#= require state/StateTree.coffee
+#= require AsyncVariable.coffee
 class StateInformation
   constructor: (@messaging) ->
     @properties = {}

@@ -1,3 +1,5 @@
+#= require state/StateInformation.coffee
+
 class comm_debugger
   constructor: (@messaging, @table) ->
     @table["debugger.paused"] = @paused

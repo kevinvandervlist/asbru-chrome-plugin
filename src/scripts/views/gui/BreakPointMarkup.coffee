@@ -1,3 +1,4 @@
+#= require gui/GuiBase.coffee
 class BreakPointMarkup extends GuiBase
   constructor: ->
 

@@ -1,3 +1,5 @@
+#= require DataStore.coffee
+#
 # Some global state for the debugger
 window.hoocsd = {}
 

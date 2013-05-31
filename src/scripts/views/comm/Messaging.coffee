@@ -1,3 +1,6 @@
+#= require comm/js.coffee
+#= require comm/debugger.coffee
+
 class Messaging
   constructor: (@portName, @logger) ->
     # Lookup table for extension

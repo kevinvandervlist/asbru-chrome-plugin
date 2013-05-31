@@ -1,3 +1,6 @@
+#= require data/Breakpoint.coffee
+#= require data/SourceFile.coffee
+
 class comm_JS
   constructor: (@messaging, @table) ->
     @table["js.ListFile"] = @listFile

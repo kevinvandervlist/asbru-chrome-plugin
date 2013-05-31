@@ -1,3 +1,4 @@
+#= require data/ViewData.coffee
 class GuiBase
   constructor: () ->
     @vdata = new ViewData

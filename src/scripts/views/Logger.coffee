@@ -1,3 +1,4 @@
+#= require CircularBuffer.coffee
 class Logger
   constructor: (@id, size = 50) ->
     @cb = new CircularBuffer size

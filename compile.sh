@@ -13,9 +13,12 @@ UTIL="${SRC_DIR}/scripts/util/"
 cp -r ${SRC_DIR} ${DEST_DIR}
 find ${DEST_DIR} -type f -name "*.coffee" -exec rm -f {} \;
 
-# Compile plugin
+# Compile plugin - background process
 coffee -j "${DEST_DIR}/scripts/background.js" -c "${UTIL}" "${SRC_DIR}/scripts/background/"
-coffee -j "${DEST_DIR}/scripts/views.js" -c "${UTIL}" "${SRC_DIR}/scripts/views/"
+
+# Compile plugin - view scripts
+coffee simple-coffee-dependencies.coffee -I "${SRC_DIR}/scripts/views/" -I "${UTIL}" -F "${SRC_DIR}/scripts/views/Main.coffee" > "${DEST_DIR}/scripts/views.coffee"
+coffee -o "${DEST_DIR}/scripts/" -c "${DEST_DIR}/scripts/views.coffee"
 
 # Setup test env
 coffee -j "${DEST_DIR}/tests/background.tests.js" -c "${UTIL}" "${SRC_DIR}/scripts/background/" "${SRC_DIR}/tests/background/" "${SRC_DIR}/tests/util/"

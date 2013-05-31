@@ -1,3 +1,4 @@
+#= require Tree.coffee
 # Node types for the state tree
 class StateTree extends TreeNode
   constructor: (value) ->

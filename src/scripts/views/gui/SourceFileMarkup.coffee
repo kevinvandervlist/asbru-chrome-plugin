@@ -1,3 +1,5 @@
+#= require data/ViewData.coffee
+#= require gui/GuiBase.coffee
 class SourceFileMarkup extends GuiBase
   constructor: (@filename, @id, @uri) ->
     @formatted_code = null
