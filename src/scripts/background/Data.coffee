@@ -25,6 +25,7 @@ class Data
     files: []
     debugger: null
     context: null
+    clientOrigin: "FooBar"
 
   # Message passing port name
   messagePortName: ->

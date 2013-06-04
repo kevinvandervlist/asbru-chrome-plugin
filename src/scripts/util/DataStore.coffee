@@ -30,3 +30,7 @@ class DataStore
 
   valueExists: (value) ->
     @getByValue value isnt null
+
+  remove: (key) ->
+    delete @store[key]
+    @keys.splice @keys.indexOf(key), 1

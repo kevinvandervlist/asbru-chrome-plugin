@@ -1,8 +1,9 @@
 #= require gui/StateInformationMarkup.coffee
 #= require state/StateTree.coffee
 #= require AsyncVariable.coffee
+
 class StateInformation
-  constructor: (@messaging) ->
+  constructor: (@context, @messaging) ->
     @properties = {}
     @sim = new StateInformationMarkup @
 
@@ -12,6 +13,10 @@ class StateInformation
     @tree = @_createStateTree pe.reason, pe.callFrames
     @sim = new StateInformationMarkup @
     @sim.update()
+
+  # Which context does this StateInformation represent?
+  getContext: ->
+    @context
 
   # Return a reference to the state tree
   getStateTree: ->

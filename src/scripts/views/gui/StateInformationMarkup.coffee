@@ -1,5 +1,8 @@
-class StateInformationMarkup
+#= require gui/GuiBase.coffee
+
+class StateInformationMarkup extends GuiBase
   constructor: (@stateInformation) ->
+    super()
     @divid = @vdata.stateInfoId()
 
   destroy: ->

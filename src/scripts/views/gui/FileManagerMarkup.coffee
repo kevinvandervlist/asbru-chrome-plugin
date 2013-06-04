@@ -14,17 +14,17 @@ class FileManagerMarkup extends GuiBase
     originList = $("<ul />")
 
     flci.append originList
+
     for origin in @fileManager.getOrigins()
       title = $("<li><h4>#{origin}</h4></li>")
       fileList = $("<ul />")
       originList.append title
       originList.append fileList
 
-      files = @fileManager.getAllFilesByOrigin origin
-      for file in files
+      for file in @fileManager.getAllFilesByOrigin origin
         element = file.getSourceFileLine()
         fileList.append element
-        # And wrap it in a closure
+        # Wrap the click stuff in a closure...
         f = (element, file) =>
           callback = =>
             $(@vdata.mainContentId()).empty()
@@ -32,8 +32,5 @@ class FileManagerMarkup extends GuiBase
 
           element.click =>
             @click element, callback
+        # ... and call it
         f element, file
-
-
-
-

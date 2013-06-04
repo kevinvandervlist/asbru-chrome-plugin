@@ -2,13 +2,13 @@
 #= require gui/GuiBase.coffee
 
 class SourceFileMarkup extends GuiBase
-  constructor: (@filename, @id, @uri) ->
+  constructor: (@filename, @id, @uri, @sourceFile) ->
     @formatted_code = null
-    @element = null
+    @element = $("<li>#{@filename}</li>", id: @id)
     super()
 
   getFormattedCode: ->
-    @formatted_code
+    return @formatCode @sourceFile.getRawSourceCode(), @sourceFile.getBreakpointCallback()
 
   getSourceFileLine: ->
     @element
@@ -42,7 +42,6 @@ class SourceFileMarkup extends GuiBase
       # ...and call it
       f linediv, cnt
 
-
       cnt++
 
-    @element = $("<li>#{@filename}</li>", id: @id)
+    return @formatted_code

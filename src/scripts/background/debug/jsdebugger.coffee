@@ -16,6 +16,7 @@ class debug_debugger
       callFrames: params.callFrames
       reason: params.reason
       data: params.data
+      origin: window.hoocsd.clientOrigin
 
   # Event indicating that the execution is resumed
   debuggerResumed: (debuggeeId, params) =>

@@ -1,5 +1,5 @@
-#= require DataStore.coffee
 #= require data/FileManager.coffee
+#= require data/BreakpointManager.coffee
 
 # Some global state for the debugger
 window.hoocsd = {}
@@ -14,7 +14,7 @@ class ViewData
   defaultGlobalState: ->
     dataStores =
       files: new FileManager
-      breakPoints: new DataStore
+      breakpoints: new BreakpointManager
 
     ret =
       data: dataStores

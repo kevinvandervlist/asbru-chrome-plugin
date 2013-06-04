@@ -1,4 +1,5 @@
 #= require gui/SourceFileMarkup.coffee
+#= require Origin.coffee
 
 class SourceFile
   constructor: (fileMessage) ->
@@ -7,14 +8,13 @@ class SourceFile
     @uri = fileMessage.url
     @filename = @uri.substr(@uri.lastIndexOf("/") + 1)
 
-    @origin = @_createOriginFromUri @uri
+    @origin = Origin.createOriginFromUri @uri
 
     # Array to store the breakpoints
     @breakpoints = []
 
     # Do the actual markup stuff
-    @markup = new SourceFileMarkup @filename, @id, @uri
-    @markup.formatCode @code, @_toggleBreakPoint
+    @markup = new SourceFileMarkup @filename, @id, @uri, @
 
     @saveFile()
 
@@ -24,12 +24,21 @@ class SourceFile
   getFormattedCode: ->
     @markup.getFormattedCode()
 
+  getRawSourceCode: ->
+    @code
+
   saveFile: ->
     # Cache this file in the file store:
     window.hoocsd.data.files.saveFile @origin, @id, @
 
   addBreakpoint: (lineNumber, breakpoint) ->
     @breakpoints[lineNumber] = breakpoint
+
+  removeBreakpoint: (lineNumber, breakpoint) ->
+    @breakpoints[lineNumber] = null
+
+  getBreakpointCallback: ->
+    @_toggleBreakPoint
 
   # Attach a click handler to enable the creation of breakpoints
   # Make sure callback is in closure because of cnt dependence

@@ -1,4 +1,5 @@
 #= require gui/BreakPointMarkup.coffee
+#= require Origin.coffee
 
 class BreakPoint
   constructor: (message) ->
@@ -7,15 +8,23 @@ class BreakPoint
     @lineNumber = message.lineNumber
     @scriptId = message.scriptId
 
-    @markup = new BreakPointMarkup
-    @markup.setBreakpoint @scriptId, @lineNumber
+    @markup = new BreakPointMarkup @scriptId, @lineNumber
+    @markup.setBreakpoint()
+
+    @origin = Origin.createOriginFromUri @getIdentifier()
 
     # Get the parent file and register the breakpoint with it
-    parentFile = window.hoocsd.data.files.get @scriptId
+    parentFile = window.hoocsd.data.files.getFile @scriptId
     parentFile.addBreakpoint @lineNumber, @
 
+    @saveBreakpoint()
+
+  saveBreakpoint: ->
+    window.hoocsd.data.breakpoints.saveBreakpoint @origin, @getIdentifier(), @
+
   remove: (messaging) ->
-    @markup.removeBreakpoint @scriptId, @lineNumber
+    window.hoocsd.data.breakpoints.removeBreakpoint @origin, @getIdentifier()
+    @markup.removeBreakpoint()
     messaging.sendMessage
       type: "js.removeBreakpoint"
       breakpointId: @breakpointId
