@@ -1,7 +1,6 @@
 #= require gui/GuiBase.coffee
-class BreakPointMarkup extends GuiBase
-  constructor: ->
 
+class BreakPointMarkup extends GuiBase
   setBreakpoint: (id, lineNumber) ->
     console.log "Set breakpoint"
     line = $(".file-#{id}-line-#{lineNumber}")

@@ -3,6 +3,7 @@
 # Description   : Simple Utility-Script which lets you require other Coffee-Files in a CoffeeScript
 #				  and manage your dependencies
 # Author        : Bastian Behrens, 2012
+# Author        : Kevin van der Vlist, 2013
 #
 # Requirements  : needs node.js, CoffeeScript and underscore.js installed
 # Usage         : runs from your command-line with the options (-I) for Include-Directories and (-F) for all
@@ -41,11 +42,12 @@ findDependencies = (file) ->
 # ensured, that every dependency is only
 # included once
 resolveDependencies = (file) ->
-  deps = []
   deps = findDependencies(file)
+  result = []
   for dep in deps
-    deps = deps.concat(resolveDependencies dep)
-  _.uniq(deps)
+    result = result.concat(resolveDependencies dep)
+    result.push dep
+  _.uniq(result)
 
 # readsContent from the specified file
 readFileContents = (file) ->

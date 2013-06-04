@@ -1,7 +1,6 @@
 class StateInformationMarkup
   constructor: (@stateInformation) ->
-    vd = new ViewData
-    @divid = vd.stateInfoId()
+    @divid = @vdata.stateInfoId()
 
   destroy: ->
     $(@divid).empty()

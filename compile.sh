@@ -26,4 +26,4 @@ coffee -j "${DEST_DIR}/tests/background.tests.js" -c "${UTIL}" "${SRC_DIR}/scrip
 coffee -j "${DEST_DIR}/tests/views.tests.js" -c "${UTIL}" "${SRC_DIR}/scripts/views/" "${SRC_DIR}/tests/views/" "${SRC_DIR}/tests/util/"
 
 # Clean up old coffee files
-find ${DEST_DIR} -type f -name "*.coffee" -exec rm -f {} \;
+#find ${DEST_DIR} -type f -name "*.coffee" -exec rm -f {} \;

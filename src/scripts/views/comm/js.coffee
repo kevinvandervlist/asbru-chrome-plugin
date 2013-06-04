@@ -7,7 +7,7 @@ class comm_JS
     @table["js.setBreakpointSuccess"] = @setBreakpointSuccess
 
   listFile: (message) =>
-    m = new SourceFile message
+    new SourceFile message
     @messaging.log message.url
 
   setBreakpointSuccess: (message) =>

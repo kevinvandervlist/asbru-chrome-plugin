@@ -1,11 +1,13 @@
-#= require gui/GuiBase.coffee
 #= require gui/SourceFileMarkup.coffee
+
 class SourceFile
-  constructor: (file) ->
-    @code = file.code
-    @id = file.scriptId
-    @uri = file.url
+  constructor: (fileMessage) ->
+    @code = fileMessage.code
+    @id = fileMessage.scriptId
+    @uri = fileMessage.url
     @filename = @uri.substr(@uri.lastIndexOf("/") + 1)
+
+    @origin = @_createOriginFromUri @uri
 
     # Array to store the breakpoints
     @breakpoints = []
@@ -13,10 +15,18 @@ class SourceFile
     # Do the actual markup stuff
     @markup = new SourceFileMarkup @filename, @id, @uri
     @markup.formatCode @code, @_toggleBreakPoint
-    @markup.addToList()
 
+    @saveFile()
+
+  getSourceFileLine: ->
+    @markup.getSourceFileLine()
+
+  getFormattedCode: ->
+    @markup.getFormattedCode()
+
+  saveFile: ->
     # Cache this file in the file store:
-    window.hoocsd.data.files.put @id, @
+    window.hoocsd.data.files.saveFile @origin, @id, @
 
   addBreakpoint: (lineNumber, breakpoint) ->
     @breakpoints[lineNumber] = breakpoint
@@ -24,7 +34,6 @@ class SourceFile
   # Attach a click handler to enable the creation of breakpoints
   # Make sure callback is in closure because of cnt dependence
   _toggleBreakPoint: (cnt, id, uri) =>
-    console.log @
     # Existing breakpoint?
     if @breakpoints[cnt]?
       @breakpoints[cnt].remove window.hoocsd.messaging
@@ -39,20 +48,17 @@ class SourceFile
         condition: null
         scriptId: @id
 
-  # # Attach a click handler to enable the creation of breakpoints
-  # # Make sure callback is in closure because of cnt dependence
-  # _toggleBreakPoint: (linediv, cnt, id, uri) =>
-  #   # Existing breakpoint?
-  #   linediv.click =>
-  #     if @breakpoints[cnt]?
-  #       @breakpoints[cnt].remove window.hoocsd.messaging
-  #       @breakpoints[cnt] = null
-  #     else
-  #       window.hoocsd.messaging.sendMessage
-  #         type: "js.setBreakpointByUrl"
-  #         lineNumber: cnt
-  #         url: uri
-  #         urlRegex: null
-  #         columnNumber: 0
-  #         condition: null
-  #         scriptId: @id
+  _createOriginFromUri: (uri) ->
+    origin = null
+
+    switch uri.split(':')[0]
+      when "file"
+        origin = "file"
+      when "http", "https"
+        split = uri.split '/'
+        splice = split.splice 0, 3
+        origin = splice.join "/"
+      else
+        throw "origin for #{uri} is not defined"
+
+    return origin

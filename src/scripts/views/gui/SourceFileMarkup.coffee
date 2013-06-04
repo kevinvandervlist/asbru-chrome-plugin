@@ -1,20 +1,17 @@
 #= require data/ViewData.coffee
 #= require gui/GuiBase.coffee
+
 class SourceFileMarkup extends GuiBase
   constructor: (@filename, @id, @uri) ->
     @formatted_code = null
-    @vd = new ViewData
+    @element = null
+    super()
 
-  addToList: ->
-    element = $("<li>#{@filename}</li>", id: @id)
+  getFormattedCode: ->
+    @formatted_code
 
-    callback = =>
-      $(@vd.mainContentId()).empty()
-      $(@vd.mainContentId()).append @formatted_code
-
-    element.click =>
-      @click element, callback
-    .appendTo "#{@vd.filelistContentId()} ul"
+  getSourceFileLine: ->
+    @element
 
   # Create HTML code to represent a source file
   formatCode: (code, breakpointCallback) ->
@@ -47,3 +44,5 @@ class SourceFileMarkup extends GuiBase
 
 
       cnt++
+
+    @element = $("<li>#{@filename}</li>", id: @id)
