@@ -17,7 +17,7 @@ class Debugger
     @messager = new Messager @
 
     # make sure global debugger state is clean
-    window.hoocsd = @data.defaultGlobalState()
+    window.hoocsd = @data.defaultGlobalState(@tab.url)
 
     # All extension modules
     @debugger = new debug_debugger @, @lookup_table

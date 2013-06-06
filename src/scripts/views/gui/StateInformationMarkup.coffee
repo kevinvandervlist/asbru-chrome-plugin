@@ -3,41 +3,28 @@
 class StateInformationMarkup extends GuiBase
   constructor: (@stateInformation) ->
     super()
-    @divid = @vdata.stateInfoId()
+    @html = $("<ul />")
 
   destroy: ->
-    $(@divid).empty()
 
   # If this is called, the @stateInformation.getStateTree will be used to render a tree representing JS state
-  writeHTML: ->
-    $(@divid).empty()
-    html = $("<ul />")
+  updateHTML: ->
+    @html.empty()
 
     tree = @stateInformation.getStateTree()
 
     for node in tree.getChildren()
       switch node.constructor.name
-        when "ScopeVariableStack" then html.append @_scopeVariablesStart(node)
-        when "CallStack" then html.append @_callStack(node)
+        when "ScopeVariableStack" then @html.append @_scopeVariablesStart(node)
+        when "CallStack" then @html.append @_callStack(node)
 
-    $(@divid).append html
-
-  update: ->
-    # Execute one now, and one a tad later
-    @_updateCallback()
-    setTimeout @_updateCallback, 1000
-
-  _click: (element, callback) ->
-    element.effect("highlight", {}, 100, callback);
-
-  _updateCallback: =>
-    @writeHTML()
+    return @html
 
   _stateTitle: (title, child) ->
     element = $("<h4>#{title}</h4>")
     element.click =>
       cb = -> child.toggle()
-      @_click element, cb
+      @click element, cb
     return element
 
   _clickableTreeItem: (node, text, child, callback = null) ->
@@ -47,8 +34,8 @@ class StateInformationMarkup extends GuiBase
         child.toggle()
         n.toggleVisible() for n in node.getChildren()
         callback() if callback?
-        @update()
-      @_click element, cb
+        @updateHTML()
+      @click element, cb
     return element
 
   # Callstack stuff
@@ -76,8 +63,8 @@ class StateInformationMarkup extends GuiBase
         element.click =>
           cb = =>
             @stateInformation.changeCallstackContext(active, selected)
-            @update()
-          @_click element, cb
+            @updateHTML()
+          @click element, cb
         return element
       f activeCallStack, call, csline
 

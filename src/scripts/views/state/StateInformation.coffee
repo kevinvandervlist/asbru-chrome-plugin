@@ -3,16 +3,16 @@
 #= require AsyncVariable.coffee
 
 class StateInformation
-  constructor: (@context, @messaging) ->
+  # pausedevent pe:
+  # https://developers.google.com/chrome-developer-tools/docs/protocol/tot/debugger#event-paused
+  constructor: (@context, @messaging, pe) ->
+    @tree = @_createStateTree pe.reason, pe.callFrames
     @properties = {}
     @sim = new StateInformationMarkup @
 
-  # pausedevent:
-  # https://developers.google.com/chrome-developer-tools/docs/protocol/tot/debugger#event-paused
-  pausedEvent: (pe) =>
-    @tree = @_createStateTree pe.reason, pe.callFrames
-    @sim = new StateInformationMarkup @
-    @sim.update()
+  # Update the HTML view of this data structure
+  updateHTML: ->
+    @sim.updateHTML()
 
   # Which context does this StateInformation represent?
   getContext: ->

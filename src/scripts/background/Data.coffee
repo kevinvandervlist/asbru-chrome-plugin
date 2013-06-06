@@ -20,12 +20,12 @@ class Data
     "views/debugger.html"
 
   # Default global state
-  defaultGlobalState: ->
+  defaultGlobalState: (origin = null) ->
     port: null
     files: []
     debugger: null
     context: null
-    clientOrigin: "FooBar"
+    clientOrigin: origin
 
   # Message passing port name
   messagePortName: ->

@@ -7,10 +7,12 @@ class comm_Runtime
   # https://developers.google.com/chrome-developer-tools/docs/protocol/tot/runtime#command-getProperties
   getProperties: (message) =>
     cb = (res) =>
+      throw "result undefined!" if not res?
       @messager.sendMessage
         type: "debugger.getPropertiesReply"
         objectId: message.objectId
         propDescArray: res.result
+        origin: window.hoocsd.clientOrigin
 
     cm =
       objectId: message.objectId

@@ -41,6 +41,7 @@ class comm_JS
       lineNumber: dbp.line
       columnNumber: dbp.col
       scriptId: dbp.id
+      origin: window.hoocsd.clientOrigin
 
   # Remove a breakpoint
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-removeBreakpoint
@@ -67,17 +68,21 @@ class comm_JS
   # Hackily retrieve the scriptId based on a breakpoint URI
   _dissectBreakpointId: (breakpointId) ->
     t = breakpointId.split(":");
+    # The array ends with line:col, so reverse and shift
     t.reverse()
     col = t.shift()
     line = t.shift()
+    # The url is the rest, reversed and joined
     t.reverse()
-    url = t.shift() + ":" + t.shift()
+    url = t.join(":")
     scriptId = -1
 
     f = (x) ->
       if x.url is url
         scriptId = x.scriptId
     f x for x in window.hoocsd.files
+
+    throw "scriptId of breakpointId cannot be found!" if scriptId is -1
 
     id: scriptId
     col: col
