@@ -7,6 +7,7 @@ class SourceFile
     @id = fileMessage.scriptId
     @uri = fileMessage.url
     @filename = @uri.substr(@uri.lastIndexOf("/") + 1)
+    @filename = "index" if @filename is ""
 
     @origin = Origin.createOriginFromUri @uri
 

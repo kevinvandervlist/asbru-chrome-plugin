@@ -1,5 +1,6 @@
 #= require Data.coffee
 #= require debug/Debugger.coffee
+#= require tcp/TCPClient.coffee
 
 # Base global program state structure.
 d = new Data
@@ -19,3 +20,4 @@ clickCallback = (tab) ->
     # window.hoocsd.debugger = new Debugger tab
     x = new Debugger tab
     window.hoocsd.debugger = x
+

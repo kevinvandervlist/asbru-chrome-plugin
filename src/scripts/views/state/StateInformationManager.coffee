@@ -23,6 +23,7 @@ class StateInformationManager extends GuiBase
 
   updatePropDesc: (context, objectId, propDescArray) ->
     @store[context].updatePropDesc objectId, propDescArray
+    # Make sure to update the view as soon as we received the data
     @updateHTML()
 
   updateHTML: ->

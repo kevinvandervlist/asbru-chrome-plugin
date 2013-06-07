@@ -17,7 +17,6 @@
     "default_icon": "images/debuggerPause.png",
     "default_title": "__MSG_ext_default_title__"
   },
-
   "background": {
     "persistent": false,
     "scripts": ["scripts/background.js"]
@@ -28,5 +27,9 @@
   "permissions": [
     "tabs",
     "debugger"
+		// This does not work with an extension
+    //{"socket": [
+    //  "tcp-connect:*:5858"
+    //]}
   ]
 }
