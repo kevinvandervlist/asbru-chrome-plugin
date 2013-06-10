@@ -1,5 +1,11 @@
 #!/bin/bash
 CWD=$(pwd)
+
+if [ ! -f ${CWD}/.settings ]; then
+		echo "ERROR: Create a .settings file."
+		exit 1
+fi
+
 source ${CWD}/.settings
 
 if [ -d ${DEST_DIR} ]; then

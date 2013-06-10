@@ -19,6 +19,10 @@ class Messager
   sendCommand: (command, message, cb = null) ->
     @debugger.sendCommand command, message, cb
 
+  # Send a command ta the remote node instance
+  sendNodeMessage: (remoteReq, cb = null) ->
+    window.hoocsd.nodecomm.sendMessage remoteReq, cb
+
   # Send a message to the popup window
   sendMessage: (message) ->
     @port.postMessage message

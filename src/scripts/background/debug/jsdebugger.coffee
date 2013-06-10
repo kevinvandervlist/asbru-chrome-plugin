@@ -1,3 +1,5 @@
+#= require Origin.coffee
+
 class debug_debugger
   constructor: (@debugger, @table) ->
     @table["Debugger.paused"] = @debuggerPaused
@@ -22,7 +24,7 @@ class debug_debugger
   debuggerResumed: (debuggeeId, params) =>
     @debugger.sendCommand "Debugger.setOverlayMessage"
 
-  # Catch emitted events regarding JS files
+  # Catch emitted events regarding JS files. This happens on attaching the debugger
   scriptParsed: (debuggeeId, params) =>
     chrome.debugger.sendCommand(
       debuggeeId,
@@ -32,7 +34,9 @@ class debug_debugger
 
   # ...make sure the script is cached as well
   _cacheParsedScript: (params, resource) ->
-    window.hoocsd.files.push (
+    val =
       scriptId: params.scriptId
       url: params.url
-      code: resource.scriptSource)
+      code: resource.scriptSource
+    origin = Origin.createOriginFromUri params.url
+    window.hoocsd.files.saveFile origin, params.scriptId, val

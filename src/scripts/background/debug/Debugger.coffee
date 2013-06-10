@@ -1,6 +1,7 @@
 #= require debug/jsdebugger.coffee
 #= require debug/runtime.coffee
 #= require comm/Messager.coffee
+
 class Debugger
   constructor: (@tab) ->
     # Lookup table for extension
@@ -40,6 +41,25 @@ class Debugger
 
     # Bind an eventlistener
     chrome.debugger.onEvent.addListener @_onEventCallback
+
+    # Request scripts from the remote location
+    remoteReq =
+      type: "request"
+      command: "scripts"
+      arguments:
+        includeSource: true
+
+    cb = (data) =>
+      baseorigin = window.hoocsd.nodecomm.baseURL()
+      for element in data.body
+        url = baseorigin + element.name
+        val =
+          scriptId: element.id
+          url: url
+          code: element.source
+        window.hoocsd.files.saveFile url, element.id, val
+
+    @messager.sendNodeMessage remoteReq, cb
 
   # Remove all handlers on destruction
   removeHandlers: =>

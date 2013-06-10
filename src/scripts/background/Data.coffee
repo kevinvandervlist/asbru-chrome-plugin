@@ -1,3 +1,6 @@
+#= require node/NodeComm.coffee
+#= require FileManager.coffee
+
 # Some global state for the debugger
 window.hoocsd = {}
 
@@ -20,12 +23,13 @@ class Data
     "views/debugger.html"
 
   # Default global state
-  defaultGlobalState: (origin = null) ->
+  defaultGlobalState: (origin = "file://") ->
     port: null
-    files: []
+    files: new FileManager
     debugger: null
     context: null
-    clientOrigin: origin
+    clientOrigin: Origin.createOriginFromUri(origin)
+    nodecomm: new NodeComm "http://localhost:8080/"
 
   # Message passing port name
   messagePortName: ->

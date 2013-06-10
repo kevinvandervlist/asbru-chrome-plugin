@@ -1,3 +1,5 @@
+#= require Origin.coffee
+
 class comm_JS
   constructor: (@messager, @table) ->
     @table["js.ListFiles"] = @listFiles
@@ -7,8 +9,9 @@ class comm_JS
     @table["js.resume"] = @resume
     @table["js.breakpointsActive"] = @breakpointsActive
 
-  # js.ListFiles
+  # js.ListFiles: local
   # [ { scriptId: int, url: URI, code: <code> }, { ... } .. ]
+  # Also try remote site:
   listFiles: (message) =>
     f = (x) =>
       @messager.sendMessage
@@ -16,13 +19,26 @@ class comm_JS
         scriptId: x.scriptId
         url: x.url
         code: x.code
-    f x for x in window.hoocsd.files
+
+    for origin in window.hoocsd.files.getOrigins()
+      for file in window.hoocsd.files.getAllFilesByOrigin origin
+        f file
+
+    return undefined
+
+  # This function must make a distinction between the different targets
+  setBreakpointByUrl: (message) =>
+    origin = Origin.createOriginFromUri message.url
+    if origin is window.hoocsd.clientOrigin
+      @setBreakpointByUrl_local message
+    else
+      @setBreakpointByUrl_remote message
 
   # js.setBreakpointByUrl
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-setBreakpointByUrl
-  setBreakpointByUrl: (message) =>
+  setBreakpointByUrl_local: (message) ->
     cb = (res) =>
-      @_setBreakpointSuccess res.breakpointId
+      @_setBreakpointSuccess_local res.breakpointId
     cm =
       lineNumber: message.lineNumber
       url: message.url
@@ -31,10 +47,24 @@ class comm_JS
       condition: message.condition
     @messager.sendCommand "Debugger.setBreakpointByUrl", cm, cb
 
+  # Remote; nodejs
+  # https://code.google.com/p/v8/wiki/DebuggerProtocol
+  setBreakpointByUrl_remote: (message) ->
+    cb = (res) =>
+      @_setBreakpointSuccess_remote res
+    cm =
+      type: "request"
+      command: "setbreakpoint"
+      arguments:
+        type: "scriptId"
+        target: message.url
+        line: message.lineNumber
+    @messager.sendNodeMessage cm, cb
+
   # js.setBreakpointSuccess
   # { breakpointId: string, scriptId: int }
-  _setBreakpointSuccess: (breakpointId) ->
-    dbp = @_dissectBreakpointId breakpointId
+  _setBreakpointSuccess_local: (breakpointId) ->
+    dbp = @_dissectBreakpointId_local breakpointId
     @messager.sendMessage
       type: "js.setBreakpointSuccess"
       breakpointId: breakpointId
@@ -42,6 +72,15 @@ class comm_JS
       columnNumber: dbp.col
       scriptId: dbp.id
       origin: window.hoocsd.clientOrigin
+
+  _setBreakpointSuccess_remote: (message) ->
+    @messager.sendMessage
+      type: "js.setBreakpointSuccess"
+      breakpointId: message
+      lineNumber: message.body.line
+      columnNumber: message.body.column
+      scriptId: @_scriptIdFromURL(message.body.script_id)
+      origin: Origin.createOriginFromUri(message.body.script_id)
 
   # Remove a breakpoint
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-removeBreakpoint
@@ -66,7 +105,7 @@ class comm_JS
   ## Local stuff
 
   # Hackily retrieve the scriptId based on a breakpoint URI
-  _dissectBreakpointId: (breakpointId) ->
+  _dissectBreakpointId_local: (breakpointId) ->
     t = breakpointId.split(":");
     # The array ends with line:col, so reverse and shift
     t.reverse()
@@ -75,15 +114,22 @@ class comm_JS
     # The url is the rest, reversed and joined
     t.reverse()
     url = t.join(":")
-    scriptId = -1
-
-    f = (x) ->
-      if x.url is url
-        scriptId = x.scriptId
-    f x for x in window.hoocsd.files
-
-    throw "scriptId of breakpointId cannot be found!" if scriptId is -1
+    scriptId = @_scriptIdFromURL url
 
     id: scriptId
     col: col
     line: line
+
+  _scriptIdFromURL: (url) ->
+    scriptId = -1
+    f = (x) ->
+      if x.url is url
+        scriptId = x.scriptId
+
+    for origin in window.hoocsd.files.getOrigins()
+      for file in window.hoocsd.files.getAllFilesByOrigin origin
+        f file
+
+    throw "scriptId of breakpointId cannot be found!" if scriptId is -1
+
+    return scriptId

@@ -1,35 +1,30 @@
 {
-  // Required
   "name": "__MSG_extName__",
   "version": "0.1",
   "manifest_version": 2,
-
-  //recommended
   "description": "__MSG_extDesc__",
-	"icons": {
+  "icons": {
     "16": "images/icons/black_white/icon_016.png",
     "48": "images/icons/black_white/icon_048.png",
-    "128": "images/icons/black_white/icon_128.png" 
+    "128": "images/icons/black_white/icon_128.png"
   },
   "default_locale": "en",
-
   "browser_action": {
     "default_icon": "images/debuggerPause.png",
     "default_title": "__MSG_ext_default_title__"
   },
   "background": {
     "persistent": false,
-    "scripts": ["scripts/background.js"]
+    "scripts": [
+      "libs/socket.io.js",
+      "scripts/background.js"
+    ]
   },
-
   "homepage_url": "https://github.com/kevinvandervlist/hoocsd-chrome-plugin",
-
   "permissions": [
     "tabs",
-    "debugger"
-		// This does not work with an extension
-    //{"socket": [
-    //  "tcp-connect:*:5858"
-    //]}
+    "debugger",
+		"http://*/",
+		"https://*/"
   ]
 }
