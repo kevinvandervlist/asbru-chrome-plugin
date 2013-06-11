@@ -6,6 +6,7 @@ class NodeComm
     @callbacks = []
 
   sendMessage: (message, callback = null) =>
+    console.log "TODO: Deprecated"
     # Add a sequence identifier and increment it afterwards
     message["seq"] = @seqCounter++
 
@@ -15,6 +16,14 @@ class NodeComm
 
     console.log "Sending: "
     console.log message
+
+  sendCommand: (command, callback = null) =>
+    # Add a sequence identifier and increment it afterwards
+    command["seq"] = @seqCounter++
+
+    @callbacks[command["seq"]] = callback
+
+    @socket.emit "debug", command
 
   _onData: (data) =>
     if data.request_seq? and @callbacks[data.request_seq]?

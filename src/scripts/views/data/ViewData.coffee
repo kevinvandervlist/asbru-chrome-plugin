@@ -21,6 +21,7 @@ class ViewData
       logger: null
       messaging: null
       cli: null
+      omniscient: "omniscient"
 
   filelistContentId: ->
     "#filelist-content"

@@ -1,4 +1,4 @@
-class debug_runtime
+class debug_chrome_runtime
   constructor: (@debugger, @table) ->
     @table["Runtime.executionContextCreated"] = @execContextCreated
 

@@ -6,10 +6,9 @@ class SourceFile
     @code = fileMessage.code
     @id = fileMessage.scriptId
     @uri = fileMessage.url
+    @origin = fileMessage.origin
     @filename = @uri.substr(@uri.lastIndexOf("/") + 1)
     @filename = "index" if @filename is ""
-
-    @origin = Origin.createOriginFromUri @uri
 
     # Array to store the breakpoints
     @breakpoints = []
@@ -51,6 +50,7 @@ class SourceFile
     else
       window.hoocsd.messaging.sendMessage
         type: "js.setBreakpointByUrl"
+        origin: @origin
         lineNumber: cnt
         url: uri
         urlRegex: null
@@ -59,6 +59,7 @@ class SourceFile
         scriptId: @id
 
   _createOriginFromUri: (uri) ->
+    console.log "TODO: Dead code?"
     origin = null
 
     switch uri.split(':')[0]

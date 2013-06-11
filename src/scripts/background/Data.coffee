@@ -1,4 +1,4 @@
-#= require node/NodeComm.coffee
+#= require debug/node/NodeComm.coffee
 #= require FileManager.coffee
 
 # Some global state for the debugger
@@ -22,7 +22,10 @@ class Data
   debuggerURL: ->
     "views/debugger.html"
 
-  nodeOrigin: ->
+  remoteOrigin: ->
+    "http://localhost:5858/"
+
+  remoteProxy: ->
     "http://localhost:8080/"
 
   # Default global state
@@ -32,8 +35,9 @@ class Data
     debugger: null
     context: null
     clientOrigin: Origin.createOriginFromUri(origin)
-    nodeOrigin: @nodeOrigin()
-    nodecomm: new NodeComm @nodeOrigin()
+    remoteOrigin: @remoteOrigin()
+    nodecomm: new NodeComm @remoteProxy()
+    omniscient: "omniscient"
 
   # Message passing port name
   messagePortName: ->

@@ -14,6 +14,7 @@ fi
 
 # Utilities should always be included
 UTIL="${SRC_DIR}/scripts/util/"
+UTILTEST="${SRC_DIR}/tests/util/"
 
 # Prepare output env
 cp -r ${SRC_DIR} ${DEST_DIR}
@@ -27,9 +28,11 @@ coffee simple-coffee-dependencies.coffee -I "${SRC_DIR}/scripts/views/" -I "${UT
 coffee -o "${DEST_DIR}/scripts/" -c "${DEST_DIR}/scripts/views.coffee"
 
 # Setup test env
-coffee -j "${DEST_DIR}/tests/background.tests.js" -c "${UTIL}" "${SRC_DIR}/scripts/background/" "${SRC_DIR}/tests/background/" "${SRC_DIR}/tests/util/"
+coffee simple-coffee-dependencies.coffee -I "${SRC_DIR}/scripts/background/" -I "${UTIL}" -I "${UTILTEST}" -F "${SRC_DIR}/tests/background/Main.tests.coffee" -F > "${DEST_DIR}/tests/background.tests.coffee"
+coffee -o "${DEST_DIR}/tests/" -c "${DEST_DIR}/tests/background.tests.coffee"
 
-coffee -j "${DEST_DIR}/tests/views.tests.js" -c "${UTIL}" "${SRC_DIR}/scripts/views/" "${SRC_DIR}/tests/views/" "${SRC_DIR}/tests/util/"
+coffee simple-coffee-dependencies.coffee -I "${SRC_DIR}/scripts/views/" -I "${UTIL}" -I "${UTILTEST}" -F "${SRC_DIR}/tests/views/Main.tests.coffee" -F > "${DEST_DIR}/tests/views.tests.coffee"
+coffee -o "${DEST_DIR}/tests/" -c "${DEST_DIR}/tests/views.tests.coffee"
 
 # Clean up old coffee files
 #find ${DEST_DIR} -type f -name "*.coffee" -exec rm -f {} \;

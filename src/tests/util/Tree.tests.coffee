@@ -1,3 +1,5 @@
+#= require Tree.coffee
+
 test "Create a simple treenode without children", ->
   x = new TreeNode "foo"
   ok x.hasChildren() is false

@@ -20,6 +20,3 @@ clickCallback = (tab) ->
     # window.hoocsd.debugger = new Debugger tab
     x = new Debugger tab
     window.hoocsd.debugger = x
-
-window.hoocsd.nodecomm.sendMessage
-  command: "attach"

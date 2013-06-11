@@ -1,5 +1,6 @@
 #= require comm/js.coffee
 #= require comm/runtime.coffee
+
 class Messager
   constructor: (@debugger) ->
     # Lookup table for extension
@@ -15,12 +16,12 @@ class Messager
   disconnect: ->
     @port.disconnect()
 
-  # Send a command to the chrome debugger
+  # Send a command to the appropriate debugger
   sendCommand: (command, message, cb = null) ->
     @debugger.sendCommand command, message, cb
 
-  # Send a command ta the remote node instance
   sendNodeMessage: (remoteReq, cb = null) ->
+    console.log "TODO: Deprecated"
     window.hoocsd.nodecomm.sendMessage remoteReq, cb
 
   # Send a message to the popup window
@@ -39,6 +40,7 @@ class Messager
       console.log "Message type #{message.type} is not supported yet."
       console.log message
       console.log error
+      @lookup_table[message.type](message)
 
   _onConnectCallback: (p) =>
     d = new Data

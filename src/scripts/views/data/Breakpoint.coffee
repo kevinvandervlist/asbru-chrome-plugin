@@ -7,14 +7,15 @@ class BreakPoint
     @columnNumber = message.columnNumber
     @lineNumber = message.lineNumber
     @scriptId = message.scriptId
+    @origin = message.origin
 
     @markup = new BreakPointMarkup @scriptId, @lineNumber
     @markup.setBreakpoint()
 
-    @origin = Origin.createOriginFromUri @getIdentifier()
+
 
     # Get the parent file and register the breakpoint with it
-    parentFile = window.hoocsd.data.files.getFile @scriptId
+    parentFile = window.hoocsd.data.files.getFile @scriptId, @origin
     parentFile.addBreakpoint @lineNumber, @
 
     @saveBreakpoint()
@@ -28,6 +29,7 @@ class BreakPoint
     messaging.sendMessage
       type: "js.removeBreakpoint"
       breakpointId: @breakpointId
+      origin: @origin
 
   getIdentifier: ->
     @breakpointId

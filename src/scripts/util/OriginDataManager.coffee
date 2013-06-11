@@ -19,7 +19,7 @@ class OriginDataManager
       @data[origin].get key
     else
       for availableOrigin in @getOrigins()
-        if @data[availableOrigin]?
+        if @data[availableOrigin]? and @data[availableOrigin].get(key)?
           return @data[availableOrigin].get key
 
   remove: (key, origin = null) ->

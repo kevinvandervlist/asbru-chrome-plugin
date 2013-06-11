@@ -32,14 +32,17 @@ class Console
     @logger.log "Resuming JavaScript execution"
     @messaging.sendMessage
       type: "js.resume"
+      origin: window.hoocsd.omniscient
 
   _js_pause: ->
     @logger.log "Pausing JavaScript execution"
     @messaging.sendMessage
       type: "js.pause"
+      origin: window.hoocsd.omniscient
 
   _js_breakpointsActive: (args) ->
     @logger.log "breakpointsActive #{args} given"
     @messaging.sendMessage
       type: "js.breakpointsActive"
       value: (args is "true")
+      origin: window.hoocsd.omniscient

@@ -17,6 +17,7 @@ class comm_JS
       @messager.sendMessage
         type: "js.ListFile"
         scriptId: x.scriptId
+        origin: x.origin
         url: x.url
         code: x.code
 
@@ -26,45 +27,24 @@ class comm_JS
 
     return undefined
 
-  # This function must make a distinction between the different targets
-  setBreakpointByUrl: (message) =>
-    origin = Origin.createOriginFromUri message.url
-    if origin is window.hoocsd.clientOrigin
-      @setBreakpointByUrl_local message
-    else
-      @setBreakpointByUrl_remote message
-
   # js.setBreakpointByUrl
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-setBreakpointByUrl
-  setBreakpointByUrl_local: (message) ->
+  setBreakpointByUrl: (message) =>
     cb = (res) =>
-      @_setBreakpointSuccess_local res.breakpointId
+      @_setBreakpointSuccess res.breakpointId, message.origin
     cm =
       lineNumber: message.lineNumber
       url: message.url
       urlRegex: message.urlRegex
+      origin: message.origin
       columnNumber: message.columnNumber
       condition: message.condition
     @messager.sendCommand "Debugger.setBreakpointByUrl", cm, cb
 
-  # Remote; nodejs
-  # https://code.google.com/p/v8/wiki/DebuggerProtocol
-  setBreakpointByUrl_remote: (message) ->
-    cb = (res) =>
-      @_setBreakpointSuccess_remote res
-    cm =
-      type: "request"
-      command: "setbreakpoint"
-      arguments:
-        type: "script"
-        enabled: true
-        target: message.url.substring(window.hoocsd.nodeOrigin.length)
-        line: message.lineNumber
-    @messager.sendNodeMessage cm, cb
 
   # js.setBreakpointSuccess
   # { breakpointId: string, scriptId: int }
-  _setBreakpointSuccess_local: (breakpointId) ->
+  _setBreakpointSuccess: (breakpointId, origin) ->
     dbp = @_dissectBreakpointId_local breakpointId
     @messager.sendMessage
       type: "js.setBreakpointSuccess"
@@ -72,38 +52,30 @@ class comm_JS
       lineNumber: dbp.line
       columnNumber: dbp.col
       scriptId: dbp.id
-      origin: window.hoocsd.clientOrigin
-
-  _setBreakpointSuccess_remote: (message) ->
-    console.log "succes: "
-    console.log message
-    @messager.sendMessage
-      type: "js.setBreakpointSuccess"
-      breakpointId: message
-      lineNumber: message.body.line
-      columnNumber: message.body.actual_locations[0].column
-      #scriptId: @_scriptIdFromURL(window.hoocsd.nodeOrigin + message.body.script_name)
-      scriptId: message.body.actual_locations[0].script_id
-      origin: window.hoocsd.nodeOrigin
+      origin: origin
 
   # Remove a breakpoint
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-removeBreakpoint
   removeBreakpoint: (message) =>
     @messager.sendCommand "Debugger.removeBreakpoint",
       breakpointId: message.breakpointId
+      origin: message.origin
 
   # Pause javascript execution
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-pause
   pause: (message) =>
-    @messager.sendCommand "Debugger.pause"
+    @messager.sendCommand "Debugger.pause",
+      origin: message.origin
 
   # Resume javascript execution
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-resume
   resume: (message) =>
-    @messager.sendCommand "Debugger.resume"
+    @messager.sendCommand "Debugger.resume",
+      origin: message.origin
 
   breakpointsActive: (message) =>
     @messager.sendCommand "Debugger.setBreakpointsActive",
+      origin: message.origin
       active: message.value
 
   ## Local stuff

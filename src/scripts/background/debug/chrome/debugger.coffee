@@ -1,6 +1,6 @@
 #= require Origin.coffee
 
-class debug_debugger
+class debug_chrome_debugger
   constructor: (@debugger, @table) ->
     @table["Debugger.paused"] = @debuggerPaused
     @table["Debugger.resumed"] = @debuggerResumed
@@ -33,10 +33,13 @@ class debug_debugger
       @_cacheParsedScript.bind(null, params))
 
   # ...make sure the script is cached as well
-  _cacheParsedScript: (params, resource) ->
-    val =
-      scriptId: params.scriptId
-      url: params.url
-      code: resource.scriptSource
+  _cacheParsedScript: (params, resource) =>
     origin = Origin.createOriginFromUri params.url
-    window.hoocsd.files.saveFile origin, params.scriptId, val
+    file = @_createFile params.scriptId, origin, params.url, resource.scriptSource
+    window.hoocsd.files.saveFile origin, params.scriptId, file
+
+  _createFile: (scriptId, origin, url, code) ->
+    scriptId: scriptId
+    origin: origin
+    url: url
+    code: code

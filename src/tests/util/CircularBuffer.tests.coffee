@@ -1,3 +1,5 @@
+#= require CircularBuffer.coffee
+
 # Add an isEqual prototype to arrays...
 Array.prototype.isEqual = (other) ->
   @length is other.length and @every (elem, i) -> elem is other[i]

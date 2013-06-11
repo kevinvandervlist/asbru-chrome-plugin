@@ -23,7 +23,6 @@ class TreeNode
       i = 0
       for element in array
         if element is object
-          console.log array[i]
           array.splice(i, 1)[0]
         i++
 

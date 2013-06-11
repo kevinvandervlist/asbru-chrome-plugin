@@ -1,10 +1,11 @@
-#= require debug/jsdebugger.coffee
-#= require debug/runtime.coffee
 #= require comm/Messager.coffee
+#= require debug/chrome/ChromeDebugger.coffee
+#= require debug/node/NodeDebugger.coffee
+#= require debug/omniscient/OmniscientDebugger.coffee
 
 class Debugger
   constructor: (@tab) ->
-    # Lookup table for extension
+    # Lookup table for origins
     @lookup_table = {}
 
     # debuggeeId:
@@ -15,16 +16,18 @@ class Debugger
 
     # Dependencies
     @data = new Data
-    @messager = new Messager @
-
-    # make sure global debugger state is clean
     window.hoocsd = @data.defaultGlobalState(@tab.url)
 
-    # All extension modules
-    @debugger = new debug_debugger @, @lookup_table
-    @runtime = new debug_runtime @, @lookup_table
+    # More dependencies
+    @messager = new Messager @
 
-    # Attach the debugger and a callback
+    # Extend for dispatching
+    @chrome_dbg = new ChromeDebugger @, @lookup_table, @tabid
+    @node_dbg = new NodeDebugger @, @lookup_table, @data.remoteOrigin()
+    @omniscient_dbg = new OmniscientDebugger @, @lookup_table
+
+    # Attach the debugger and a callback. This makes the local debugger
+    # emit "Debugger.scriptParsed" events.
     chrome.debugger.attach(
       @tabid
       @data.debugProtoVersion()
@@ -39,28 +42,6 @@ class Debugger
       @data.debuggerPopup()
       f)
 
-    # Bind an eventlistener
-    chrome.debugger.onEvent.addListener @_onEventCallback
-
-    # Request scripts from the remote location
-    remoteReq =
-      type: "request"
-      command: "scripts"
-      arguments:
-        includeSource: true
-
-    cb = (data) =>
-      baseorigin = window.hoocsd.nodecomm.baseURL()
-      for element in data.body
-        url = baseorigin + element.name
-        val =
-          scriptId: element.id
-          url: url
-          code: element.source
-        window.hoocsd.files.saveFile url, element.id, val
-
-    @messager.sendNodeMessage remoteReq, cb
-
   # Remove all handlers on destruction
   removeHandlers: =>
     @messager.removeHandlers()
@@ -70,7 +51,7 @@ class Debugger
 
   # External access to the debugger. Abstract the need of @tabid away
   sendCommand: (command, message, cb = null) ->
-    chrome.debugger.sendCommand @tabid, command, message, cb
+    @lookup_table[message.origin].sendCommand command, message, cb
 
   # Forward messages to the messager
   sendMessage: (message) ->
@@ -130,10 +111,3 @@ class Debugger
 
     # ...and reset state
     window.hoocsd = d.defaultGlobalState()
-
-  _onEventCallback: (debuggeeId, method, params) =>
-      try
-        @lookup_table[method](debuggeeId, params)
-      catch error
-        console.log "Method #{method} is still unsupported."
-        console.log params
