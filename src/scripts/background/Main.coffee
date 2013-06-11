@@ -21,24 +21,5 @@ clickCallback = (tab) ->
     x = new Debugger tab
     window.hoocsd.debugger = x
 
-m =
-  type: "request"
-  command: "version"
-
-n =
-  type: "request"
-  command: "scripts"
-  arguments:
-    includeSource: true
-
-f = (data) ->
-  console.log "Gotcha!"
-  console.log data
-
-window.hoocsd.nodecomm.sendMessage m, f
-
-window.hoocsd.nodecomm.sendMessage n, f
-
 window.hoocsd.nodecomm.sendMessage
-  type: "request"
-  command: "version"
+  command: "attach"

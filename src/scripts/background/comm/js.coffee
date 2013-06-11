@@ -56,8 +56,9 @@ class comm_JS
       type: "request"
       command: "setbreakpoint"
       arguments:
-        type: "scriptId"
-        target: message.url
+        type: "script"
+        enabled: true
+        target: message.url.substring(window.hoocsd.nodeOrigin.length)
         line: message.lineNumber
     @messager.sendNodeMessage cm, cb
 
@@ -74,13 +75,16 @@ class comm_JS
       origin: window.hoocsd.clientOrigin
 
   _setBreakpointSuccess_remote: (message) ->
+    console.log "succes: "
+    console.log message
     @messager.sendMessage
       type: "js.setBreakpointSuccess"
       breakpointId: message
       lineNumber: message.body.line
-      columnNumber: message.body.column
-      scriptId: @_scriptIdFromURL(message.body.script_id)
-      origin: Origin.createOriginFromUri(message.body.script_id)
+      columnNumber: message.body.actual_locations[0].column
+      #scriptId: @_scriptIdFromURL(window.hoocsd.nodeOrigin + message.body.script_name)
+      scriptId: message.body.actual_locations[0].script_id
+      origin: window.hoocsd.nodeOrigin
 
   # Remove a breakpoint
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-removeBreakpoint

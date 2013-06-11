@@ -22,6 +22,9 @@ class Data
   debuggerURL: ->
     "views/debugger.html"
 
+  nodeOrigin: ->
+    "http://localhost:8080/"
+
   # Default global state
   defaultGlobalState: (origin = "file://") ->
     port: null
@@ -29,7 +32,8 @@ class Data
     debugger: null
     context: null
     clientOrigin: Origin.createOriginFromUri(origin)
-    nodecomm: new NodeComm "http://localhost:8080/"
+    nodeOrigin: @nodeOrigin()
+    nodecomm: new NodeComm @nodeOrigin()
 
   # Message passing port name
   messagePortName: ->
