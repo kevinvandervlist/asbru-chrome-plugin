@@ -92,3 +92,11 @@
 .selected-item {
   background-color: #BDDEFF;
 }
+
+.filename {
+  color: #990000;
+}
+
+.foldername {
+  color: #141466;
+}

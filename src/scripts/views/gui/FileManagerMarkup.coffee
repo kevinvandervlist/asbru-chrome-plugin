@@ -3,10 +3,9 @@
 class FileManagerMarkup extends GuiBase
   constructor: (@fileManager) ->
     super()
-    @dispatcher.addCallback @_update
 
   updateFileListing: ->
-    @dispatcher.setTimeoutCallback 10
+    @_update()
 
   _update: =>
     flci = $("#{@vdata.filelistContentId()}")
@@ -21,9 +20,29 @@ class FileManagerMarkup extends GuiBase
       originList.append title
       originList.append fileList
 
+      # Create an array with a hierarchical layout
+      allPaths = []
+
+      f = (target, nodename, cur, file) ->
+        # Create target if it is new
+        if not target[nodename]?
+          target[nodename] = []
+        if cur.length is 0
+          # Root node without a path
+          target[nodename].push file
+        else
+          _nodename = cur.shift()
+          target[nodename] = f target[nodename], _nodename, cur, file
+        return target
+
       for file in @fileManager.getAllFilesByOrigin origin
+        allPaths = f allPaths, "/", file.getPath(), file
+
+      # Create a file node line
+      fileNodeLine = (file, parent) =>
         element = file.getSourceFileLine()
-        fileList.append element
+        element.addClass "filename"
+        parent.append element
         # Wrap the click stuff in a closure...
         f = (element, file) =>
           callback = =>
@@ -34,3 +53,22 @@ class FileManagerMarkup extends GuiBase
             @click element, callback
         # ... and call it
         f element, file
+
+      fileNodeTree = (array, parent) =>
+        for key, value of array
+          if value instanceof Array
+            title = $("<li>#{key}</li>").addClass "foldername"
+            child = $("<ul />")
+            parent.append title
+            parent.append child
+            child.hide() if key isnt "/"
+            closure = (title, child) =>
+              title.click =>
+                cb = -> child.toggle()
+                @click title, cb
+            closure title, child
+            fileNodeTree value, child
+          else
+            fileNodeLine value, parent
+
+      fileNodeTree allPaths, fileList

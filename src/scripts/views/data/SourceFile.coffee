@@ -1,14 +1,19 @@
 #= require gui/SourceFileMarkup.coffee
 #= require Origin.coffee
+#= require String.coffee
 
 class SourceFile
   constructor: (fileMessage) ->
     @code = fileMessage.code
     @id = fileMessage.scriptId
     @uri = fileMessage.url
+
     @origin = fileMessage.origin
     @filename = @uri.substr(@uri.lastIndexOf("/") + 1)
     @filename = "index" if @filename is ""
+
+    # Create an array consisting of all path elements.
+    @path = @_hierarchicalArray fileMessage.url, fileMessage.origin
 
     # Array to store the breakpoints
     @breakpoints = []
@@ -17,6 +22,10 @@ class SourceFile
     @markup = new SourceFileMarkup @filename, @id, @uri, @
 
     @saveFile()
+
+  # Return an array of path elements, excluding the filename
+  getPath: ->
+    return [].concat(@path)
 
   getSourceFileLine: ->
     @markup.getSourceFileLine()
@@ -58,18 +67,20 @@ class SourceFile
         condition: null
         scriptId: @id
 
-  _createOriginFromUri: (uri) ->
-    console.log "TODO: Dead code?"
-    origin = null
+  # Uri is either a base filename, a path or an origin followed by base filename or path.
+  _hierarchicalArray: (uri, origin) ->
+    # Origin is removed
+    ostr = new String origin
+    if ostr.substringOf uri
+      uri = uri.substring origin.length
 
-    switch uri.split(':')[0]
-      when "file"
-        origin = "file"
-      when "http", "https"
-        split = uri.split '/'
-        splice = split.splice 0, 3
-        origin = splice.join "/"
-      else
-        throw "origin for #{uri} is not defined"
+    # Optional path; split at /'s
+    uri = uri.split("/");
 
-    return origin
+    # If a first item is an empty string, it means that it had an explicit root /. Remove it
+    uri.shift() if uri[0] is ""
+
+    # The last element is now the plain filename (only used for visualising).
+    uri.pop()
+
+    return uri
