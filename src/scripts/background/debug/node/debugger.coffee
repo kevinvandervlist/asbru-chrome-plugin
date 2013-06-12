@@ -1,10 +1,19 @@
 class debug_node_debugger
-  constructor: (@dbg, @messager, @table) ->
+  constructor: (@dbg, @debugger, @table) ->
     @table["Debugger.setBreakpointByUrl"] = @setBreakpointByUrl
+    @table["Debugger.removeBreakpoint"] = @removeBreakpoint
     @table["Debugger.resume"] = @resume
+    @table["Debugger.pause"] = @pause
 
-  resume: (message, cb) =>
-    console.log "TODO: Node resume #{message}"
+  resume: (message, callback) =>
+    m =
+      type: "request"
+      command: "continue"
+    @dbg._sendCommand m, callback
+
+  pause: (message, callback) =>
+    # Unsupported, do nothing
+    return undefined
 
   setBreakpointByUrl: (command, callback) =>
     cb = (res) =>
@@ -20,13 +29,21 @@ class debug_node_debugger
     #target: message.url.substring(window.hoocsd.nodeOrigin.length)
     @dbg._sendCommand cm, cb
 
-  _setBreakpointSuccess: (message) ->
-    @messager.sendMessage
+  _setBreakpointSuccess: (message) =>
+    console.log "Set breakpoint"
+    @debugger.sendMessage
       type: "js.setBreakpointSuccess"
-      breakpointId: message
+      breakpointId: message.body
       lineNumber: message.body.line
       columnNumber: message.body.actual_locations[0].column
-      #scriptId: @_scriptIdFromURL(window.hoocsd.nodeOrigin + message.body.script_name)
       scriptId: message.body.actual_locations[0].script_id
-      origin: window.hoocsd.nodeOrigin
+      origin: @dbg.origin()
 
+  # Request the removal of a breakpoint in node
+  removeBreakpoint: (message, callback) =>
+    m =
+      type: "request"
+      command: "clearbreakpoint"
+      arguments:
+        breakpoint: message.breakpoint
+    @dbg._sendCommand m, callback

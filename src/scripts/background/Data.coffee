@@ -1,4 +1,3 @@
-#= require debug/node/NodeComm.coffee
 #= require FileManager.coffee
 
 # Some global state for the debugger
@@ -36,7 +35,6 @@ class Data
     context: null
     clientOrigin: Origin.createOriginFromUri(origin)
     remoteOrigin: @remoteOrigin()
-    nodecomm: new NodeComm @remoteProxy()
     omniscient: "omniscient"
 
   # Message passing port name

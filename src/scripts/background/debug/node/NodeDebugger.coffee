@@ -1,18 +1,25 @@
 #= require debug/node/debugger.coffee
+#= require debug/node/NodeComm.coffee
 
 class NodeDebugger
-  constructor: (@debugger, @parent_table, @remoteOrigin) ->
+  constructor: (@debugger, @parent_table, @remoteOrigin, @nodeProxy) ->
     # Bind to parent
     @parent_table[@remoteOrigin] = @
 
     # Lookup table for extension
     @lookup_table = {}
 
+    # Handle communications with the node proxy
+    @nodecomm = new NodeComm @nodeProxy
+
     # All extension modules
-    @node_debugger = new debug_node_debugger @, @messager, @lookup_table
+    @node_debugger = new debug_node_debugger @, @debugger, @lookup_table
 
     # Request scripts from remote location, since these are not automatically emitted.
     @_remoteScripts @remoteOrigin
+
+  origin: ->
+    @remoteOrigin
 
   sendCommand: (command, message, cb) ->
     try
@@ -24,7 +31,7 @@ class NodeDebugger
 
   _sendCommand: (message, callback) ->
     console.log message
-    window.hoocsd.nodecomm.sendMessage message, callback
+    @nodecomm.sendMessage message, callback
 
   _createFile: (scriptId, origin, url, code) ->
     scriptId: scriptId

@@ -23,7 +23,7 @@ class Debugger
 
     # Extend for dispatching
     @chrome_dbg = new ChromeDebugger @, @lookup_table, @tabid
-    @node_dbg = new NodeDebugger @, @lookup_table, @data.remoteOrigin()
+    @node_dbg = new NodeDebugger @, @lookup_table, @data.remoteOrigin(), @data.remoteProxy()
     @omniscient_dbg = new OmniscientDebugger @, @lookup_table
 
     # Attach the debugger and a callback. This makes the local debugger
