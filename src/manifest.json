@@ -16,6 +16,7 @@
   "background": {
     "persistent": false,
     "scripts": [
+      "libs/async.js",
       "libs/socket.io.js",
       "scripts/background.js"
     ]

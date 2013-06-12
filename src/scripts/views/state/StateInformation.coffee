@@ -5,7 +5,7 @@
 class StateInformation
   # pausedevent pe:
   # https://developers.google.com/chrome-developer-tools/docs/protocol/tot/debugger#event-paused
-  constructor: (@context, @messaging, pe) ->
+  constructor: (@origin, @messaging, pe) ->
     @tree = @_createStateTree pe.reason, pe.callFrames
     @properties = {}
     @sim = new StateInformationMarkup @
@@ -15,8 +15,8 @@ class StateInformation
     @sim.updateHTML()
 
   # Which context does this StateInformation represent?
-  getContext: ->
-    @context
+  getOrigin: ->
+    @origin
 
   # Return a reference to the state tree
   getStateTree: ->
@@ -136,6 +136,7 @@ class StateInformation
         type: "Runtime.getProperties"
         objectId: object.objectId
         ownProperties: false
+        origin: @origin
       return ret
 
   # Create a callstack based on an array of callframes

@@ -1,6 +1,5 @@
 #= require Data.coffee
 #= require debug/Debugger.coffee
-#= require tcp/TCPClient.coffee
 
 # Base global program state structure.
 d = new Data

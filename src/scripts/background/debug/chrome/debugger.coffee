@@ -12,6 +12,8 @@ class debug_chrome_debugger
     message =
       message: chrome.i18n.getMessage "pausedMessage"
     @debugger.sendCommand "Debugger.setOverlayMessage", message
+    console.log "TODO: Remove. Chrome debug message:"
+    console.log params
     # Push the data to the frontend
     @debugger.sendMessage
       type: "debugger.paused"

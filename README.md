@@ -11,3 +11,7 @@ Resume JavaScript execution on the page.
 Pause JavaScript execution on the page.
 * breakpointsActive <true | false>
 Activate / deactivate all breakpoints
+
+# Code
+## node-inspector
+Some code is taken from node-inspector. These files can be found in src/scripts/background/debug/node/inspector_utils/

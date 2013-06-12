@@ -5,24 +5,24 @@
 class StateInformationManager extends GuiBase
   constructor: ->
     @store = []
-    @contexts = []
+    @origins = []
     super()
 
   saveStateInformation: (stateInfo) ->
-    @store[stateInfo.getContext()] = stateInfo
-    @contexts.push stateInfo.getContext()
+    @store[stateInfo.getOrigin()] = stateInfo
+    @origins.push stateInfo.getOrigin()
     @updateHTML()
 
-  deleteStateInformation: (context) ->
-    @store[context].destroy()
-    delete @store[context]
-    @contexts.splice @contexts.indexOf(context), 1
+  deleteStateInformation: (origin) ->
+    @store[origin].destroy()
+    delete @store[origin]
+    @origins.splice @origins.indexOf(origin), 1
 
-  exists: (context) ->
-    @store[context]?
+  exists: (origin) ->
+    @store[origin]?
 
-  updatePropDesc: (context, objectId, propDescArray) ->
-    @store[context].updatePropDesc objectId, propDescArray
+  updatePropDesc: (origin, objectId, propDescArray) ->
+    @store[origin].updatePropDesc objectId, propDescArray
     # Make sure to update the view as soon as we received the data
     @updateHTML()
 
@@ -32,7 +32,7 @@ class StateInformationManager extends GuiBase
     list = $("<ul />")
     rootel.append list
 
-    for ctx in @contexts
+    for ctx in @origins
       title = $("<li><h4>#{ctx}</h4></li>")
       child = @store[ctx].updateHTML()
 

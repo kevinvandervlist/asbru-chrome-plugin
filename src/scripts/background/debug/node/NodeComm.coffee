@@ -4,6 +4,10 @@ class NodeComm
     @socket.on "debug", @_onData
     @seqCounter = 1
     @callbacks = []
+    @genericCallback = null
+
+  setGenericCallback: (callback) ->
+    @genericCallback = callback
 
   sendMessage: (message, callback = null) =>
     console.log "TODO: Deprecated"
@@ -29,8 +33,11 @@ class NodeComm
     if data.request_seq? and @callbacks[data.request_seq]?
       @callbacks[data.request_seq](data)
     else
-      console.log "Received data without callback: "
-      console.log data
+      if @genericCallback?
+        @genericCallback data
+      else
+        console.log "Received data without callback: "
+        console.log data
 
   baseURL: ->
     @host
