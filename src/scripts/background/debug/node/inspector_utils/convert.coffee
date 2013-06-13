@@ -80,6 +80,13 @@ class Convert
       description: message
 
   v8ResultToInspectorResult: (result) ->
+    if not result?
+      console.log "This should not happen"
+      ret =
+        type: "ERR"
+        value: "undefined"
+        description: "ERR: undefiend result"
+      return ret
     if result.type is "object" or result.type is "function"
       return @v8RefToInspectorObject(result)
 

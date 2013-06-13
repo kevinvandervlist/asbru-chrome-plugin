@@ -1,6 +1,10 @@
-#= require debug/node/event/break.coffee
-#= require debug/node/debugger.coffee
 #= require debug/node/NodeComm.coffee
+#= require debug/node/debugger.coffee
+#= require debug/node/runtime.coffee
+
+#= require debug/node/event/break.coffee
+
+#= require debug/node/inspector_utils/CallFramesProvider.coffee
 
 class NodeDebugger
   constructor: (@debugger, @parent_table, @remoteOrigin, @nodeProxy) ->
@@ -15,10 +19,15 @@ class NodeDebugger
     @nodecomm = new NodeComm @nodeProxy
     @nodecomm.setGenericCallback @_eventHandler
 
+    # CF provider for node <-> chrome translation
+    @cfprovider = new CallFramesProvider @
+
     # All extension modules
     @node_debugger = new debug_node_debugger @, @debugger, @lookup_table
+    @node_runtime = new debug_node_runtime @, @debugger, @lookup_table, @cfprovider
 
-    @event_break = new debug_node_event_break @, @debugger, @event_table
+    # Extensions for events
+    @event_break = new debug_node_event_break @, @debugger, @event_table, @cfprovider
 
     # Request scripts from remote location, since these are not automatically emitted.
     @_remoteScripts @remoteOrigin

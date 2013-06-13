@@ -1,9 +1,6 @@
-#= require debug/node/inspector_utils/CallFramesProvider.coffee
-
 class debug_node_event_break
-  constructor: (@dbg, @debugger, @table) ->
+  constructor: (@dbg, @debugger, @table, @cfprovider) ->
     @table["break"] = @break
-    @cfprovider = new CallFramesProvider @dbg
 
   break: (data) =>
     console.log "Breakpoint hit in NodeJS!"
@@ -12,6 +9,12 @@ class debug_node_event_break
     cb = (err, data) =>
       console.log "fetchCallFrames callback: "
       console.log data
+
+      @debugger.sendMessage
+        type: "debugger.paused"
+        callFrames: data
+        reason: "Node paused"
+        origin: @dbg.origin()
 
     @cfprovider.fetchCallFrames cb
 

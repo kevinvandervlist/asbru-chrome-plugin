@@ -63,20 +63,18 @@ class CallFramesProvider
         frameNumber: Number(scopeIdMatch[1]),
         inlineRefs: true
 
-    cb = (done) =>
-      @_processScopeProperties done
+    cb = (data) =>
+      console.log "DATA::::::"
+      console.log data
+      @_processScopeProperties done, data.body, data.refs
 
     @dbg._sendCommand m, cb
 
-  _processScopeProperties: (done, err, response, refs) ->
-    if err
-      done err
-      return undefined
-
+  _processScopeProperties: (done, response, refs) ->
     props = response.object.properties
 
     if props
-      props = props.map( (p) ->
+      props = props.map( (p) =>
         name: String(p.name)
         value: @convert.v8ResultToInspectorResult(refs[p.value.ref])
       )
