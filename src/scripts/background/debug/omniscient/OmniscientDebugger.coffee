@@ -11,6 +11,10 @@ class OmniscientDebugger
     # All extension modules
     @dod = new debug_omniscient_debugger @, @lookup_table, @parent_table, window.hoocsd.omniscient
 
+  # This is called when the debugger is closed.
+  # Use it to clean up state
+  destroy: ->
+
   sendCommand: (command, message, cb) ->
     try
       @lookup_table[command](command, message, cb)

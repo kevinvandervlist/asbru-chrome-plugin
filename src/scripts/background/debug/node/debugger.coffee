@@ -4,6 +4,7 @@ class debug_node_debugger
     @table["Debugger.removeBreakpoint"] = @removeBreakpoint
     @table["Debugger.resume"] = @resume
     @table["Debugger.pause"] = @pause
+    @bps = []
 
   resume: (message, callback) =>
     m =
@@ -26,11 +27,12 @@ class debug_node_debugger
         enabled: true
         target: command.url
         line: command.lineNumber
-    #target: message.url.substring(window.hoocsd.nodeOrigin.length)
     @dbg._sendCommand cm, cb
 
   _setBreakpointSuccess: (message) =>
-    console.log "Set breakpoint"
+    # Store in local cache (for cleanup)
+    @bps[message.body.breakpoint] = true
+
     @debugger.sendMessage
       type: "js.setBreakpointSuccess"
       breakpointId: message.body
@@ -41,9 +43,20 @@ class debug_node_debugger
 
   # Request the removal of a breakpoint in node
   removeBreakpoint: (message, callback) =>
+    # Remove from local cache
+    delete @bps[message.breakpointId.breakpoint]
+
     m =
       type: "request"
       command: "clearbreakpoint"
       arguments:
-        breakpoint: message.breakpoint
+        breakpoint: message.breakpointId.breakpoint
     @dbg._sendCommand m, callback
+
+  removeAllBreakpoints: ->
+    for id,v of @bps
+      @dbg._sendCommand
+        type: "request"
+        command: "clearbreakpoint"
+        arguments:
+          breakpoint: id

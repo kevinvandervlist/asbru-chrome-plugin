@@ -32,6 +32,11 @@ class NodeDebugger
     # Request scripts from remote location, since these are not automatically emitted.
     @_remoteScripts @remoteOrigin
 
+  # This is called when the debugger is closed.
+  # Use it to clean up state
+  destroy: ->
+    @node_debugger.removeAllBreakpoints()
+
   origin: ->
     @remoteOrigin
 

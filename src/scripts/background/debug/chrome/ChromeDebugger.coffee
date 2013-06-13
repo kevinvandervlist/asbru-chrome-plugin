@@ -22,6 +22,10 @@ class ChromeDebugger
   sendCommand: (command, message, cb = null) ->
     chrome.debugger.sendCommand @tabid, command, message, cb
 
+  # This is called when the debugger is closed.
+  # Use it to clean up state
+  destroy: ->
+
   # Forward messages to the messager
   sendMessage: (message) ->
     @debugger.sendMessage message

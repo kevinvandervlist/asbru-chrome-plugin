@@ -44,6 +44,8 @@ class Debugger
 
   # Remove all handlers on destruction
   removeHandlers: =>
+    for origin, dbg of @lookup_table
+      dbg.destroy()
     @messager.removeHandlers()
     chrome.windows.onRemoved.removeListener @_onWindowRemoved
     chrome.debugger.onDetach.removeListener @_onDetachCallback
