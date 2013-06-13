@@ -129,6 +129,7 @@ class CallFramesProvider
           props.push
             name: '__proto__'
             value: @convert.v8RefToInspectorObject(refs[proto.ref])
+            isOwn: false
 
       done null, result: props
 

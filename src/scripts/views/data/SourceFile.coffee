@@ -36,6 +36,10 @@ class SourceFile
   getRawSourceCode: ->
     @code
 
+  # Return an array of breakpoints
+  getBreakpoints: ->
+    @breakpoints
+
   saveFile: ->
     # Cache this file in the file store:
     window.hoocsd.data.files.saveFile @origin, @id, @

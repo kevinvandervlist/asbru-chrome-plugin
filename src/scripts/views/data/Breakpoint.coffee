@@ -33,3 +33,6 @@ class BreakPoint
 
   getIdentifier: ->
     @breakpointId
+
+  setBreakpoint: ->
+    @markup.setBreakpoint()

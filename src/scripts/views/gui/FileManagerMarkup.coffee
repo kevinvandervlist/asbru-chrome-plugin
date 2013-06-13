@@ -43,11 +43,15 @@ class FileManagerMarkup extends GuiBase
         element = file.getSourceFileLine()
         element.addClass "filename"
         parent.append element
+
         # Wrap the click stuff in a closure...
         f = (element, file) =>
           callback = =>
             $(@vdata.mainContentId()).empty()
             $(@vdata.mainContentId()).append file.getFormattedCode()
+            for k,bp of file.getBreakpoints()
+              bp.setBreakpoint()
+            return undefined
 
           element.click =>
             @click element, callback

@@ -5,7 +5,6 @@ class BreakPointMarkup extends GuiBase
     super()
 
   setBreakpoint: ->
-    console.log "Set breakpoint"
     line = $(".file-#{@id}-line-#{@lineNumber}")
     line.addClass "selected-item"
 
