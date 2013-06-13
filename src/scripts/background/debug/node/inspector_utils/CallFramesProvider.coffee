@@ -53,7 +53,12 @@ class CallFramesProvider
 
   getScopeProperties: (objectId, done) ->
     scopeIdMatch = @SCOPE_ID_MATCHER.exec objectId
-    throw "Invalid scope id #{objectId}" if not scopeIdMatch
+    if not scopeIdMatch
+      if not isNaN objectId
+        # We must do a lookup instead of scope request
+        @_doHandleLookup done, objectId
+      else
+        throw "Invalid scope id: #{objectId}" if not scopeIdMatch
 
     m =
       type: "request"
@@ -84,6 +89,47 @@ class CallFramesProvider
           console.log refs
         name: String(p.name)
         value: @convert.v8ResultToInspectorResult(indexed_refs[p.value.ref])
+        isOwn: true
       )
 
     done null, result: props
+
+  _doHandleLookup: (done, objectId) ->
+    console.log "Do a lookup for #{objectId}"
+
+    m =
+      type: "request"
+      command: "lookup"
+      arguments:
+        handles: [objectId]
+        includeSource: false
+
+    cb = (data) =>
+      console.log "Lookup data for #{objectId}: "
+      console.log data
+
+      if data.refs and Array.isArray data.refs
+        refs = {}
+        props = []
+
+        obj = data.body[objectId]
+        objProps = obj.properties
+        proto = obj.protoObject
+
+        refs[r.handle] = r for r in data.refs
+
+        props = objProps.map( (p) =>
+          r = refs[p.ref]
+          ret =
+            name: String p.name
+            value: @convert.v8RefToInspectorObject r
+            isOwn: true
+        )
+        if proto
+          props.push
+            name: '__proto__'
+            value: @convert.v8RefToInspectorObject(refs[proto.ref])
+
+      done null, result: props
+
+    @dbg._sendCommand m, cb
