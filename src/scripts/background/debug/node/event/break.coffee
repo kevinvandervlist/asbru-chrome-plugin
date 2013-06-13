@@ -3,6 +3,7 @@ class debug_node_event_break
     @table["break"] = @break
 
   break: (data) =>
+    @debugger.showOverlay()
     console.log "Breakpoint hit in NodeJS!"
     console.log data
 
@@ -17,4 +18,3 @@ class debug_node_event_break
         origin: @dbg.origin()
 
     @cfprovider.fetchCallFrames cb
-

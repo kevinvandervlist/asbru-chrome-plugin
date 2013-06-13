@@ -8,12 +8,7 @@ class debug_chrome_debugger
 
   # Event that the execution is paused
   debuggerPaused: (debuggeeId, params) =>
-    # Put an overlay on the debugged tab
-    message =
-      message: chrome.i18n.getMessage "pausedMessage"
-    @debugger.sendCommand "Debugger.setOverlayMessage", message
-    console.log "TODO: Remove. Chrome debug message:"
-    console.log params
+    @debugger.showOverlay()
     # Push the data to the frontend
     @debugger.sendMessage
       type: "debugger.paused"
@@ -24,7 +19,7 @@ class debug_chrome_debugger
 
   # Event indicating that the execution is resumed
   debuggerResumed: (debuggeeId, params) =>
-    @debugger.sendCommand "Debugger.setOverlayMessage"
+    @debugger.hideOverlay()
 
   # Catch emitted events regarding JS files. This happens on attaching the debugger
   scriptParsed: (debuggeeId, params) =>

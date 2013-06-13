@@ -22,6 +22,12 @@ class ChromeDebugger
   sendCommand: (command, message, cb = null) ->
     chrome.debugger.sendCommand @tabid, command, message, cb
 
+  showOverlay: (message) ->
+    @debugger.showOverlay(message)
+
+  hideOverlay: ->
+    @debugger.hideOverlay()
+
   # This is called when the debugger is closed.
   # Use it to clean up state
   destroy: ->

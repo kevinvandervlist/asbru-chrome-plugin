@@ -7,6 +7,7 @@ class debug_node_debugger
     @bps = []
 
   resume: (message, callback) =>
+    @debugger.hideOverlay()
     m =
       type: "request"
       command: "continue"

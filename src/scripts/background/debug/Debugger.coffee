@@ -51,6 +51,20 @@ class Debugger
     chrome.debugger.onDetach.removeListener @_onDetachCallback
     chrome.debugger.onEvent.removeListener @_onEventCallback
 
+  showOverlay: (message = null) ->
+    console.log "Showing overlay"
+    # Put an overlay on the debugged tab
+    if message?
+      @chrome_dbg.sendCommand "Debugger.setOverlayMessage",
+        message: message
+    else
+      @chrome_dbg.sendCommand "Debugger.setOverlayMessage",
+        message: chrome.i18n.getMessage "pausedMessage"
+
+  hideOverlay: ->
+    console.log "Hiding overlay"
+    @chrome_dbg.sendCommand "Debugger.setOverlayMessage"
+
   # External access to the debugger. Abstract the need of @tabid away
   sendCommand: (command, message, cb = null) ->
     @lookup_table[message.origin].sendCommand command, message, cb
