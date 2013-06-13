@@ -5,18 +5,15 @@
 class StateInformationManager extends GuiBase
   constructor: ->
     @store = []
-    @origins = []
     super()
 
   saveStateInformation: (stateInfo) ->
     @store[stateInfo.getOrigin()] = stateInfo
-    @origins.push stateInfo.getOrigin()
     @updateHTML()
 
   deleteStateInformation: (origin) ->
     @store[origin].destroy()
     delete @store[origin]
-    @origins.splice @origins.indexOf(origin), 1
 
   exists: (origin) ->
     @store[origin]?
@@ -32,9 +29,9 @@ class StateInformationManager extends GuiBase
     list = $("<ul />")
     rootel.append list
 
-    for ctx in @origins
-      title = $("<li><h4>#{ctx}</h4></li>")
-      child = @store[ctx].updateHTML()
+    for origin, info of @store
+      title = $("<li><h4>#{origin}</h4></li>")
+      child = info.updateHTML()
 
       list.append title
       list.append child

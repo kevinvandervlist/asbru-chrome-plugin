@@ -1,11 +1,9 @@
 class DataStore
   constructor: ->
-    @store = {}
-    @keys = []
+    @store = []
 
   put: (key, value) ->
     @store[key] = value
-    @keys.push key
 
   get: (key) ->
     @getByKey key
@@ -16,13 +14,13 @@ class DataStore
 
   getAllValues: ->
     ret = []
-    ret.push @store[key] for key in @keys
+    ret.push value for key, value of @store
     return ret
 
   getByValue: (value) ->
-    for item in @store
-      if item is value
-        return item
+    for key, val of @store
+      if value is val
+        return value
     return null
 
   keyExists: (key) ->
@@ -33,4 +31,3 @@ class DataStore
 
   remove: (key) ->
     delete @store[key]
-    @keys.splice @keys.indexOf(key), 1
