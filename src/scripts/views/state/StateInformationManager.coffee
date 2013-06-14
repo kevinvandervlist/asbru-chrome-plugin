@@ -8,6 +8,10 @@ class StateInformationManager extends GuiBase
     super()
 
   saveStateInformation: (stateInfo) ->
+    # Todo: since we don't support concurrency at this moment anyway,
+    # destroy all states when we receive a new pause event...
+    @deleteAllStateInformation()
+
     @store[stateInfo.getOrigin()] = stateInfo
     @updateHTML()
     @showBreakpoint stateInfo
