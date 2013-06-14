@@ -100,3 +100,7 @@
 .foldername {
   color: #141466;
 }
+
+.active-breakpoint {
+  background-color: #cbbade;
+}

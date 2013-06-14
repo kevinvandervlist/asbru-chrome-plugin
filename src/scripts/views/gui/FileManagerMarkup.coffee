@@ -47,17 +47,14 @@ class FileManagerMarkup extends GuiBase
         # Wrap the click stuff in a closure...
         f = (element, file) =>
           callback = =>
-            $(@vdata.mainContentId()).empty()
-            $(@vdata.mainContentId()).append file.getFormattedCode()
-            for k,bp of file.getBreakpoints()
-              bp.setBreakpoint()
-            return undefined
+            @showFile file
 
           element.click =>
             @click element, callback
         # ... and call it
         f element, file
 
+      # Display files in an hierarchical order.
       fileNodeTree = (array, parent) =>
         for key, value of array
           if value instanceof Array
@@ -74,5 +71,13 @@ class FileManagerMarkup extends GuiBase
             fileNodeTree value, child
           else
             fileNodeLine value, parent
-
+      # And actually call the above
       fileNodeTree allPaths, fileList
+
+  showFile: (file) =>
+    el = $(@vdata.mainContentId())
+    el.empty()
+    el.append file.getFormattedCode()
+    for k,bp of file.getBreakpoints()
+      bp.setBreakpoint()
+    return undefined

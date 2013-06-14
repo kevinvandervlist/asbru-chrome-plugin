@@ -10,6 +10,11 @@ class StateInformationManager extends GuiBase
   saveStateInformation: (stateInfo) ->
     @store[stateInfo.getOrigin()] = stateInfo
     @updateHTML()
+    @showBreakpoint stateInfo
+
+  deleteAllStateInformation: ->
+    for origin,x of @store
+      @deleteStateInformation origin
 
   deleteStateInformation: (origin) ->
     @store[origin].destroy()
@@ -22,6 +27,12 @@ class StateInformationManager extends GuiBase
     @store[origin].updatePropDesc objectId, propDescArray
     # Make sure to update the view as soon as we received the data
     @updateHTML()
+
+  # Show the source file in which the vm stopped as well as a visual marker on the specific line
+  # Kind of hacky though...
+  showBreakpoint: (si) ->
+    loc = si.breakpointHitLocation()
+    window.hoocsd.data.files.showBreakpointAndSourceFile loc.file, loc.scriptId, loc.line
 
   updateHTML: ->
     rootel = $(@vdata.stateInfoId())

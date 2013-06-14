@@ -10,6 +10,17 @@ class StateInformation
     @properties = {}
     @sim = new StateInformationMarkup @
 
+    scriptId = pe.callFrames[0].location.scriptId
+    @breakpointHit =
+      scriptId: scriptId
+      file: @_getFileByScriptId scriptId
+      line: pe.callFrames[0].location.lineNumber
+      column: pe.callFrames[0].location.columnNumber
+
+  # Where did the debugger stop?
+  breakpointHitLocation: ->
+    @breakpointHit
+
   # Update the HTML view of this data structure
   updateHTML: ->
     @sim.updateHTML()
@@ -83,6 +94,10 @@ class StateInformation
       @addChildScopeVariables @thisNode
     # End of if thisReference?
 
+  # Retrieve a SourceFile by their script id
+  _getFileByScriptId: (scriptId) ->
+    window.hoocsd.data.files.get scriptId, @origin
+
   _newProtoNode: ->
     new ScopeVariable
       title: "__proto__"
@@ -152,8 +167,7 @@ class StateInformation
         functionName = "(anonymous function)"
 
       # Get the filename based on the ID
-      id = cf.location.scriptId
-      file = window.hoocsd.data.files.get id
+      file = @_getFileByScriptId cf.location.scriptId
       fileName = file.filename
 
       # Add it to the tree
