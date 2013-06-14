@@ -1,3 +1,4 @@
+#= require comm/debugger.coffee
 #= require comm/js.coffee
 #= require comm/runtime.coffee
 
@@ -8,6 +9,7 @@ class Messager
 
     # All extension modules
     @js = new comm_JS @, @lookup_table
+    @dbg = new comm_debugger @, @lookup_table
     @runtime = new comm_Runtime @, @lookup_table
 
     # Register port for message passing

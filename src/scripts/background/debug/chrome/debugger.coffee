@@ -5,6 +5,9 @@ class debug_chrome_debugger
     @table["Debugger.paused"] = @debuggerPaused
     @table["Debugger.resumed"] = @debuggerResumed
     @table["Debugger.scriptParsed"] = @scriptParsed
+    @table["Debugger.stepOver"] = @stepOver
+    @table["Debugger.stepInto"] = @stepInto
+    @table["Debugger.stepOut"] = @stepOut
 
   # Event that the execution is paused
   debuggerPaused: (debuggeeId, params) =>
@@ -17,14 +20,22 @@ class debug_chrome_debugger
       data: params.data
       origin: window.hoocsd.clientOrigin
 
+  stepOver: (debuggeeId, params) =>
+    @debugger.sendCommand "Debugger.stepOver"
+
+  stepInto: (debuggeeId, params) =>
+    @debugger.sendCommand "Debugger.stepInto"
+
+  stepOut: (debuggeeId, params) =>
+    @debugger.sendCommand "Debugger.stepOut"
+
   # Event indicating that the execution is resumed
   debuggerResumed: (debuggeeId, params) =>
     @debugger.hideOverlay()
 
   # Catch emitted events regarding JS files. This happens on attaching the debugger
   scriptParsed: (debuggeeId, params) =>
-    chrome.debugger.sendCommand(
-      debuggeeId,
+    @debugger.sendCommand(
       "Debugger.getScriptSource",
       scriptId: params.scriptId,
       @_cacheParsedScript.bind(null, params))

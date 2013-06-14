@@ -4,7 +4,38 @@ class debug_node_debugger
     @table["Debugger.removeBreakpoint"] = @removeBreakpoint
     @table["Debugger.resume"] = @resume
     @table["Debugger.pause"] = @pause
+    @table["Debugger.stepOver"] = @stepOver
+    @table["Debugger.stepInto"] = @stepInto
+    @table["Debugger.stepOut"] = @stepOut
+
     @bps = []
+
+  stepOver: (message, callback) =>
+    m =
+      type: "request"
+      command: "continue"
+      arguments:
+        stepaction: "next"
+        stepcount: 1
+    @dbg._sendCommand m, callback
+
+  stepInto: (message, callback) =>
+    m =
+      type: "request"
+      command: "continue"
+      arguments:
+        stepaction: "in"
+        stepcount: 1
+    @dbg._sendCommand m, callback
+
+  stepOut: (message, callback) =>
+    m =
+      type: "request"
+      command: "continue"
+      arguments:
+        stepaction: "out"
+        stepcount: 1
+    @dbg._sendCommand m, callback
 
   resume: (message, callback) =>
     @debugger.hideOverlay()

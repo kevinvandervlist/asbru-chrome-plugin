@@ -20,6 +20,9 @@ class Console
       when "resume" then @_js_resume()
       when "r" then @_js_resume()
       when "breakpointsActive" then @_js_breakpointsActive args
+      when "stepover" then @_js_stepover()
+      when "stepinto" then @_js_stepinto()
+      when "stepout" then @_js_stepout()
       else @logger.log "Command [#{cmd}] not yet implemented"
 
   _sendMessage: (args) ->
@@ -45,4 +48,22 @@ class Console
     @messaging.sendMessage
       type: "js.breakpointsActive"
       value: (args is "true")
+      origin: window.hoocsd.omniscient
+
+  _js_stepover: ->
+    @logger.log "Stepover requested"
+    @messaging.sendMessage
+      type: "Debugger.stepOver"
+      origin: window.hoocsd.omniscient
+
+  _js_stepinto: ->
+    @logger.log "Stepinto requested"
+    @messaging.sendMessage
+      type: "Debugger.stepInto"
+      origin: window.hoocsd.omniscient
+
+  _js_stepout: ->
+    @logger.log "Stepout requested"
+    @messaging.sendMessage
+      type: "Debugger.stepOut"
       origin: window.hoocsd.omniscient
