@@ -7,12 +7,8 @@ class comm_debugger
     @table["debugger.getPropertiesReply"] = @propReply
     @stateInfoManager = new StateInformationManager
 
-    console.log "stateInfoManager temp hack: window.sim"
-    window.sim = @stateInfoManager
-
   # Called when the VM is paused.
   paused: (message) =>
-    console.log message
     if @stateInfoManager.exists message.origin
       @stateInfoManager.deleteStateInformation message.origin
 

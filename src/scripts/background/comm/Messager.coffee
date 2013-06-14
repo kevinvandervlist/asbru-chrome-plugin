@@ -22,20 +22,14 @@ class Messager
   sendCommand: (command, message, cb = null) ->
     @debugger.sendCommand command, message, cb
 
-  sendNodeMessage: (remoteReq, cb = null) ->
-    console.log "TODO: Deprecated"
-    window.hoocsd.nodecomm.sendMessage remoteReq, cb
-
   # Send a message to the popup window
   sendMessage: (message) ->
     @port.postMessage message
 
   _messageEventCallback: (message) =>
     if not message.type?
-      console.log "Message cannot be understood. Received: "
       console.log message
-      undefined
-
+      throw "Message cannot be understood. Received: "
     try
       @lookup_table[message.type](message)
     catch error

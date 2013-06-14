@@ -22,7 +22,6 @@ class debug_omniscient_debugger
     undefined
 
   stepOver: (command, message, cb) =>
-    console.log "stepOver omn"
     for k,v of @parent_table
       if k isnt @origin
         message["origin"] = k
@@ -30,7 +29,6 @@ class debug_omniscient_debugger
     undefined
 
   stepInto: (command, message, cb) =>
-    console.log "stepInto omn"
     for k,v of @parent_table
       if k isnt @origin
         message["origin"] = k
@@ -38,7 +36,6 @@ class debug_omniscient_debugger
     undefined
 
   stepOut: (command, message, cb) =>
-    console.log "stepOut omn"
     for k,v of @parent_table
       if k isnt @origin
         message["origin"] = k

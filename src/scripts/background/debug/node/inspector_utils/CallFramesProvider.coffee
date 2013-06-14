@@ -56,7 +56,7 @@ class CallFramesProvider
     if not scopeIdMatch
       if not isNaN objectId
         # We must do a lookup instead of scope request
-        @_doHandleLookup done, objectId
+        return @_doHandleLookup done, objectId
       else
         throw "Invalid scope id: #{objectId}" if not scopeIdMatch
 
@@ -82,11 +82,7 @@ class CallFramesProvider
       indexed_refs[r.handle] = r for r in refs
 
       props = props.map( (p) =>
-        if not indexed_refs[p.value.ref]?
-          console.log "WTF, this shouldn't happen"
-          console.log response
-          console.log indexed_refs
-          console.log refs
+        throw "Cannot find reference!" if not indexed_refs[p.value.ref]?
         name: String(p.name)
         value: @convert.v8ResultToInspectorResult(indexed_refs[p.value.ref])
         isOwn: true
@@ -95,8 +91,6 @@ class CallFramesProvider
     done null, result: props
 
   _doHandleLookup: (done, objectId) ->
-    console.log "Do a lookup for #{objectId}"
-
     m =
       type: "request"
       command: "lookup"
@@ -105,9 +99,6 @@ class CallFramesProvider
         includeSource: false
 
     cb = (data) =>
-      console.log "Lookup data for #{objectId}: "
-      console.log data
-
       if data.refs and Array.isArray data.refs
         refs = {}
         props = []
@@ -115,6 +106,9 @@ class CallFramesProvider
         obj = data.body[objectId]
         objProps = obj.properties
         proto = obj.protoObject
+
+        if typeof objProps is "undefined"
+          return done()
 
         refs[r.handle] = r for r in data.refs
 

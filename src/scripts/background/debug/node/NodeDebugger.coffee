@@ -49,7 +49,6 @@ class NodeDebugger
       @lookup_table[command](message, cb)
 
   _sendCommand: (message, callback) ->
-    console.log message
     @nodecomm.sendMessage message, callback
 
   _eventHandler: (data) =>

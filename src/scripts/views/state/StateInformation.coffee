@@ -47,10 +47,8 @@ class StateInformation
     newCtx.getValue().active = true
     for node in @tree.getChildren()
       if node.constructor.name is "ScopeVariableStack"
-        console.log node
         @tree.removeChild node
         @tree.addChild newCtx.getValue().scopeVars
-        console.log newCtx.getValue().scopeVars
 
 
   # Given a scopeNode (e.g. node in the scopevariables part of the tree)
