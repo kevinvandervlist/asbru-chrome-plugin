@@ -7,16 +7,13 @@ class SourceFileMarkup extends GuiBase
     @element = $("<li>#{@filename}</li>", id: @id)
     super()
 
-  getFormattedCode: ->
-    return @formatCode @sourceFile.getRawSourceCode(), @sourceFile.getBreakpointCallback()
-
-  getSourceFileLine: ->
-    @element
-
   # Create HTML code to represent a source file
-  formatCode: (code, breakpointCallback) ->
+  getFormattedCode: ->
+    code = @sourceFile.getRawSourceCode()
+    breakpointCallback = @sourceFile.getBreakpointCallback()
+
     @formatted_code = $("<ol></ol>")
-    cnt = 0
+    cnt = @sourceFile.getOffset()
 
     for line in code.split("\n")
       linediv = $("<li></li>")
@@ -45,3 +42,6 @@ class SourceFileMarkup extends GuiBase
       cnt++
 
     return @formatted_code
+
+  getSourceFileLine: ->
+    @element

@@ -43,11 +43,12 @@ class debug_chrome_debugger
   # ...make sure the script is cached as well
   _cacheParsedScript: (params, resource) =>
     origin = Origin.createOriginFromUri params.url
-    file = @_createFile params.scriptId, origin, params.url, resource.scriptSource
+    file = @_createFile params.scriptId, origin, params.url, resource.scriptSource, params.startLine
     window.hoocsd.files.saveFile origin, params.scriptId, file
 
-  _createFile: (scriptId, origin, url, code) ->
+  _createFile: (scriptId, origin, url, code, offset) ->
     scriptId: scriptId
     origin: origin
     url: url
+    offset: offset
     code: code

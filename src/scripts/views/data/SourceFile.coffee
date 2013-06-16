@@ -7,6 +7,7 @@ class SourceFile
     @code = fileMessage.code
     @id = fileMessage.scriptId
     @uri = fileMessage.url
+    @offset = fileMessage.offset
 
     @origin = fileMessage.origin
     @filename = @uri.substr(@uri.lastIndexOf("/") + 1)
@@ -26,6 +27,9 @@ class SourceFile
   # Return an array of path elements, excluding the filename
   getPath: ->
     return [].concat(@path)
+
+  getOffset: ->
+    @offset
 
   getSourceFileLine: ->
     @markup.getSourceFileLine()

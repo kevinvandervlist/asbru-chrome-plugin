@@ -36,6 +36,7 @@ class NodeDebugger
   # Use it to clean up state
   destroy: ->
     @node_debugger.removeAllBreakpoints()
+    @node_debugger.resume()
 
   origin: ->
     @remoteOrigin
@@ -63,10 +64,11 @@ class NodeDebugger
       console.log "_eventHandler: unhandled type #{data.type}. Raw:"
       console.log data
 
-  _createFile: (scriptId, origin, url, code) ->
+  _createFile: (scriptId, origin, url, code, offset) ->
     scriptId: scriptId
     origin: origin
     url: url
+    offset: offset
     code: code
 
   _remoteScripts: (origin) ->
@@ -78,7 +80,7 @@ class NodeDebugger
 
     cb = (response) =>
       for element in response.body
-        file = @_createFile element.id, origin, element.name, element.source
+        file = @_createFile element.id, origin, element.name, element.source, element.lineOffset
         window.hoocsd.files.saveFile origin, element.id, file
 
     @_sendCommand request, cb

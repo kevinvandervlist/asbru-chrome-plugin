@@ -92,5 +92,4 @@ class debug_node_debugger
         command: "clearbreakpoint"
         arguments:
           breakpoint: id
-    @resume()
     return undefined

@@ -19,6 +19,7 @@ class comm_JS
         scriptId: x.scriptId
         origin: x.origin
         url: x.url
+        offset: x.offset
         code: x.code
 
     for origin in window.hoocsd.files.getOrigins()
