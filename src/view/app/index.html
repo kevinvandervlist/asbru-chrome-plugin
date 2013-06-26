@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>My AngularJS App</title>
+  <link rel="stylesheet" href="css/app.css"/>
+  <link rel="stylesheet" href="../../css/debugger.css" />
+  <link rel="stylesheet" href="../../css/jquery-ui.css" />
+  <link rel="icon" href="../../images/icons/black_white/icon_32.png" sizes="32x32">
+  <script type="text/javascript" src="../../libs/jquery-2.0.0.js"></script>
+  <script type="text/javascript" src="../../libs/jquery-ui-1.10.3.js"></script>
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  -->
+  <script src="lib/angular/angular.js"></script>
+	<!-- Include this as the last file -->
+	<script type="text/javascript" src="app.js"></script>
+</head>
+<body>
+  <ul class="menu">
+    <li><a href="#/fileList">File listing</a></li>
+    <li><a href="#/state">State</a></li>
+    <li><a href="#/content">Content</a></li>
+		<li><a href="#/console">Console</a></li>
+  </ul>
+
+	<div id="controls" class="boxed ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+		<div class="boxed-header ui-widget-header ui-corner-all ">
+			<span class="ui-icon ui-icon-minusthick"></span>
+			<div>Controls</div>
+		</div>
+		<div id="controls-content" class="boxed-content">
+			<img id="controls-continue" class="controls-button" alt="Debugger continue" src="../../images/debuggerContinue.png" />
+			<img id="controls-pause" class="controls-button" alt="Debugger pause" src="../../images/debuggerPause.png" />
+			<img id="controls-stepover" class="controls-button" alt="Debugger step over" src="../../images/debuggerStepOver.png" />
+			<img id="controls-stepinto" class="controls-button" alt="Debugger step into" src="../../images/debuggerStepInto.png" />
+			<img id="controls-stepout" class="controls-button" alt="Debugger step out" src="../../images/debuggerStepOut.png" />
+			<img id="controls-breakpoints-enabled" class="controls-button" alt="Enable debugger breakpoints" src="../../images/debuggerBreakpointsEnabled.png" />
+			<img id="controls-breakpoints-disabled" class="controls-button" alt="Disable debugger breakpoints" src="../../images/debuggerBreakpointsDisabled.png" />
+		</div>
+	</div>
+
+  <div ng-view></div>
+
+  <div>Angular seed app: v<span app-version></span></div>
+</body>
+</html>

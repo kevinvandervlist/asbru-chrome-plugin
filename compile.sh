@@ -24,8 +24,8 @@ coffee simple-coffee-dependencies.coffee -I "${SRC_DIR}/scripts/background/" -I 
 coffee -o "${DEST_DIR}/scripts/" -c "${DEST_DIR}/scripts/background.coffee"
 
 # Compile plugin - view scripts
-coffee simple-coffee-dependencies.coffee -I "${SRC_DIR}/scripts/views/" -I "${UTIL}" -F "${SRC_DIR}/scripts/views/Main.coffee" > "${DEST_DIR}/scripts/views.coffee"
-coffee -o "${DEST_DIR}/scripts/" -c "${DEST_DIR}/scripts/views.coffee"
+coffee simple-coffee-dependencies.coffee -I "${SRC_DIR}/view/app/coffee/" -I "${UTIL}" -F "${SRC_DIR}/view/app/coffee/app.coffee" > "${DEST_DIR}/view/app/coffee/app.coffee"
+coffee -o "${DEST_DIR}/view/app/" -c "${DEST_DIR}/view/app/coffee/app.coffee"
 
 # Setup test env
 coffee simple-coffee-dependencies.coffee -I "${SRC_DIR}/scripts/background/" -I "${UTIL}" -I "${UTILTEST}" -F "${SRC_DIR}/tests/background/Main.tests.coffee" -F > "${DEST_DIR}/tests/background.tests.coffee"

@@ -7,7 +7,7 @@ window.hoocsd = {}
 class Data
   debuggerPopup: ->
     data =
-      url: chrome.extension.getURL("views/debugger.html")
+      url: chrome.extension.getURL(@debuggerURL())
       top: 0
       left: 0
       width: 800
@@ -19,7 +19,7 @@ class Data
 
   # Debugger URL name
   debuggerURL: ->
-    "views/debugger.html"
+    "view/app/index.html"
 
   remoteOrigin: ->
     "http://localhost:5858/"
