@@ -3,8 +3,10 @@
 		<span class="ui-icon ui-icon-minusthick"></span>
 		<div>File listing</div>
 	</div>
-	<div id="filelist-content" class="boxed-content">
+	<div id="filelist-content" class="boxed-content" ng-controller="FileListController">
 		<ul>
+			<li ng-repeat="node in files.nodes" ng-include="'partials/fileListNode.html'">
+			</li>
 		</ul>
 	</div>
 </div>

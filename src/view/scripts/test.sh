@@ -2,7 +2,8 @@
 
 BASE_DIR=`dirname $0`
 
-java -jar "$BASE_DIR/../test/lib/jstestdriver/JsTestDriver.jar" \
-     --config "$BASE_DIR/../config/jsTestDriver.conf" \
-     --basePath "$BASE_DIR/.." \
-     --tests all
+echo ""
+echo "Starting Karma Server (http://karma-runner.github.io)"
+echo "-------------------------------------------------------------------"
+
+karma start $BASE_DIR/../config/karma.conf.js $*

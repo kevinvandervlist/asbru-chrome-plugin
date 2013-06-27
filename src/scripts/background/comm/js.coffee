@@ -21,6 +21,7 @@ class comm_JS
         url: x.url
         offset: x.offset
         code: x.code
+        request_seq: message.seq
 
     for origin in window.hoocsd.files.getOrigins()
       for file in window.hoocsd.files.getAllFilesByOrigin origin

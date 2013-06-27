@@ -27,6 +27,8 @@ class Messager
     @port.postMessage message
 
   _messageEventCallback: (message) =>
+    console.log "Receiving message: "
+    console.log message
     if not message.type?
       console.log message
       throw "Message cannot be understood. Received: "
