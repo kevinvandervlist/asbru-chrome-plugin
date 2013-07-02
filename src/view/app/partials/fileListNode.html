@@ -1,4 +1,7 @@
-<span>{{ fileListingName(node) }}</span>
+<span ng-controller="FileController">
+	<span class="{{ class }}">{{ title }}</span>
+</span>
+<!-- <span ng-class="foldername">{{ fileListingName(node) }}</span> -->
 <ul>
   <li ng-repeat="node in node.nodes" ng-include="'partials/fileListNode.html'">
 	</li>
