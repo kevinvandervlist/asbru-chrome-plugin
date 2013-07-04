@@ -17,6 +17,7 @@ function info {
 		echo "Build helper. Usage:"
 		echo -e "\t* SIGINT to quit"
 		echo -e "\t* SIGUSR1 to bake cake"
+		echo -e "\t* PID can be found in /tmp/__watcher.pid"
 		echo "Example usage:"
 		echo -e "\t* kill -SIGUSR1 $$ to compile"
 		echo -e "\t* kill $$ to quit"
@@ -25,6 +26,7 @@ function info {
 
 function _exit {
 		echo "Exit hook"
+		rm /tmp/__watcher.pid
 		exit 0
 }
 
@@ -35,7 +37,10 @@ if [ ! -f ${CWD}/.settings ]; then
   echo "Settings file not found."
   echo "cp .settings.example .settings"
   echo "and configure"
+	exit 1
 fi
+
+echo $$ > /tmp/__watcher.pid
 
 info 
 

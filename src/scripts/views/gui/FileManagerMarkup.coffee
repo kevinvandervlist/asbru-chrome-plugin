@@ -3,6 +3,7 @@
 class FileManagerMarkup extends GuiBase
   constructor: (@fileManager) ->
     super()
+    @rootelemstr = "/"
 
   updateFileListing: ->
     @_update()
@@ -20,6 +21,13 @@ class FileManagerMarkup extends GuiBase
       originList.append title
       originList.append fileList
 
+      closure = (title, child) =>
+        title.click =>
+          cb = -> child.toggle()
+          @click title, cb
+      closure title, fileList
+
+
       # Create an array with a hierarchical layout
       allPaths = []
 
@@ -36,7 +44,7 @@ class FileManagerMarkup extends GuiBase
         return target
 
       for file in @fileManager.getAllFilesByOrigin origin
-        allPaths = f allPaths, "/", file.getPath(), file
+        allPaths = f allPaths, @rootelemstr, file.getPath(), file
 
       # Create a file node line
       fileNodeLine = (file, parent) =>
@@ -62,7 +70,7 @@ class FileManagerMarkup extends GuiBase
             child = $("<ul />")
             parent.append title
             parent.append child
-            child.hide() if key isnt "/"
+            child.hide() if key isnt @rootelemstr
             closure = (title, child) =>
               title.click =>
                 cb = -> child.toggle()
@@ -72,7 +80,7 @@ class FileManagerMarkup extends GuiBase
           else
             fileNodeLine value, parent
       # And actually call the above
-      fileNodeTree allPaths, fileList
+      fileNodeTree allPaths[@rootelemstr], fileList
 
   showFile: (file) =>
     el = $(@vdata.mainContentId())

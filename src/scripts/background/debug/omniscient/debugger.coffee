@@ -9,35 +9,35 @@ class debug_omniscient_debugger
   # For now, forward resume to all contexts
   resume: (command, message, cb) =>
     for k,v of @parent_table
-      if k isnt @origin
+      if k isnt @origin and v.isPaused()
         message["origin"] = k
         v.sendCommand command, message, cb
     undefined
 
   pause: (command, message, cb) =>
     for k,v of @parent_table
-      if k isnt @origin
+      if k isnt @origin and not v.isPaused()
         message["origin"] = k
         v.sendCommand command, message, cb
     undefined
 
   stepOver: (command, message, cb) =>
     for k,v of @parent_table
-      if k isnt @origin
+      if k isnt @origin and v.isPaused()
         message["origin"] = k
         v.sendCommand command, message, cb
     undefined
 
   stepInto: (command, message, cb) =>
     for k,v of @parent_table
-      if k isnt @origin
+      if k isnt @origin and v.isPaused()
         message["origin"] = k
         v.sendCommand command, message, cb
     undefined
 
   stepOut: (command, message, cb) =>
     for k,v of @parent_table
-      if k isnt @origin
+      if k isnt @origin  and v.isPaused()
         message["origin"] = k
         v.sendCommand command, message, cb
     undefined

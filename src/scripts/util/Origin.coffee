@@ -10,6 +10,6 @@ class Origin
         splice = split.splice 0, 3
         origin = splice.join "/"
       else
-        throw "origin for #{uri} is not defined"
+        origin = "chrome-extension"
 
     return origin

@@ -19,6 +19,7 @@ class debug_chrome_debugger
       reason: params.reason
       data: params.data
       origin: window.hoocsd.clientOrigin
+    @debugger.paused = true
 
   stepOver: (debuggeeId, params) =>
     @debugger.sendCommand "Debugger.stepOver"
@@ -31,7 +32,11 @@ class debug_chrome_debugger
 
   # Event indicating that the execution is resumed
   debuggerResumed: (debuggeeId, params) =>
+    @debugger.paused = false
     @debugger.hideOverlay()
+    @debugger.sendMessage
+      type: "debugger.resume"
+      origin: window.hoocsd.clientOrigin
 
   # Catch emitted events regarding JS files. This happens on attaching the debugger
   scriptParsed: (debuggeeId, params) =>

@@ -52,7 +52,7 @@ class SourceFile
     @breakpoints[lineNumber] = breakpoint
 
   removeBreakpoint: (lineNumber, breakpoint) ->
-    @breakpoints[lineNumber] = null
+    delete @breakpoints[lineNumber]
 
   getBreakpointCallback: ->
     @_toggleBreakPoint

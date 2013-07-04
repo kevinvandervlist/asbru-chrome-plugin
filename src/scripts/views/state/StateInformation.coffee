@@ -6,6 +6,8 @@ class StateInformation
   # pausedevent pe:
   # https://developers.google.com/chrome-developer-tools/docs/protocol/tot/debugger#event-paused
   constructor: (@origin, @messaging, pe) ->
+    throw "No callframes to show!" if pe.callFrames.length is 0
+
     @tree = @_createStateTree pe.reason, pe.callFrames
     @properties = {}
     @sim = new StateInformationMarkup @

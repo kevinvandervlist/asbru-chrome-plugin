@@ -32,6 +32,8 @@ class NodeDebugger
     # Request scripts from remote location, since these are not automatically emitted.
     @_remoteScripts @remoteOrigin
 
+    @paused = false
+
   # This is called when the debugger is closed.
   # Use it to clean up state
   destroy: ->
@@ -40,6 +42,9 @@ class NodeDebugger
 
   origin: ->
     @remoteOrigin
+
+  isPaused: ->
+    @paused
 
   sendCommand: (command, message, cb) ->
     try

@@ -19,6 +19,8 @@ class ChromeDebugger
     # Bind an eventlistener
     chrome.debugger.onEvent.addListener @_onEventCallback
 
+    @paused = false
+
   sendCommand: (command, message, cb = null) ->
     chrome.debugger.sendCommand @tabid, command, message, cb
 
@@ -35,6 +37,9 @@ class ChromeDebugger
   # Forward messages to the messager
   sendMessage: (message) ->
     @debugger.sendMessage message
+
+  isPaused: ->
+    @paused
 
   # Callbakc for chrome events
   _onEventCallback: (debuggeeId, method, params) =>
