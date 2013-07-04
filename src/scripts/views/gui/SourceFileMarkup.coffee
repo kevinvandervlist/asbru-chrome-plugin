@@ -12,7 +12,7 @@ class SourceFileMarkup extends GuiBase
     code = @sourceFile.getRawSourceCode()
     breakpointCallback = @sourceFile.getBreakpointCallback()
 
-    @formatted_code = $("<ol></ol>")
+    @formatted_code = $("<ol start=\"#{@sourceFile.getOffset()}\"></ol>")
     cnt = @sourceFile.getOffset()
 
     for line in code.split("\n")
