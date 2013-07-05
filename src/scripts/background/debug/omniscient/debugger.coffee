@@ -8,10 +8,17 @@ class debug_omniscient_debugger
 
   # For now, forward resume to all contexts
   resume: (command, message, cb) =>
-    for k,v of @parent_table
-      if k isnt @origin and v.isPaused()
-        message["origin"] = k
-        v.sendCommand command, message, cb
+    if message.target is ""
+      for k,v of @parent_table
+        if k isnt @origin and v.isPaused()
+          message["origin"] = k
+          v.sendCommand command, message, cb
+    else
+      # Not omniscient
+      message["origin"] = message.target
+      # Hack to retrieve the debugger part of the origin
+      dbg = @parent_table[window.hoocsd[message.target]]
+      dbg.sendCommand command, message, cb
     undefined
 
   pause: (command, message, cb) =>

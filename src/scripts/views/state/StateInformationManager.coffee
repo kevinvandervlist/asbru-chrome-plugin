@@ -19,6 +19,7 @@ class StateInformationManager extends GuiBase
   deleteStateInformation: (origin) ->
     @store[origin].destroy()
     delete @store[origin]
+    @updateHTML()
 
   exists: (origin) ->
     @store[origin]?
@@ -41,7 +42,7 @@ class StateInformationManager extends GuiBase
     rootel.append list
 
     for origin, info of @store
-      title = $("<li><h4>#{origin}</h4></li>")
+      title = $("<li><h4>#{origin} (#{info.breakpointHitLocation().file.uri})</h4></li>")
       child = info.updateHTML()
 
       list.append title

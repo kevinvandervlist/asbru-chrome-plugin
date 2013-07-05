@@ -17,7 +17,7 @@ class Console
       when "sendmessage" then @_sendMessage args
       when "pause" then @_js_pause()
       when "p" then @_js_pause()
-      when "resume" then @_js_resume()
+      when "resume" then @_js_resume args
       when "r" then @_js_resume()
       when "breakpointsActive" then @_js_breakpointsActive args
       when "stepover" then @_js_stepover()
@@ -31,11 +31,12 @@ class Console
     catch error
       @logger.log "Error: #{error}"
 
-  _js_resume: ->
+  _js_resume: (args) ->
     @logger.log "Resuming JavaScript execution"
     @messaging.sendMessage
       type: "js.resume"
       origin: window.hoocsd.omniscient
+      target: args
 
   _js_pause: ->
     @logger.log "Pausing JavaScript execution"

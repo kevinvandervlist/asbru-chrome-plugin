@@ -31,6 +31,8 @@ $ ->
 
   # Bind a bunch of buttons to CLI commands
   $("#controls-continue").click -> hoocsd.cli.evaluate "resume"
+  $("#controls-continue-local").click -> hoocsd.cli.evaluate "resume clientOrigin"
+  $("#controls-continue-remote").click -> hoocsd.cli.evaluate "resume remoteOrigin"
   $("#controls-pause").click -> hoocsd.cli.evaluate "pause"
   $("#controls-stepover").click -> hoocsd.cli.evaluate "stepover"
   $("#controls-stepinto").click -> hoocsd.cli.evaluate "stepinto"

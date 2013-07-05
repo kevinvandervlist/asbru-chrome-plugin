@@ -73,6 +73,7 @@ class comm_JS
   resume: (message) =>
     @messager.sendCommand "Debugger.resume",
       origin: message.origin
+      target: message.target
 
   breakpointsActive: (message) =>
     @messager.sendCommand "Debugger.setBreakpointsActive",
