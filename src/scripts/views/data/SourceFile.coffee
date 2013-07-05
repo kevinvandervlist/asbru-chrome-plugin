@@ -63,7 +63,7 @@ class SourceFile
     # Existing breakpoint?
     if @breakpoints[cnt]?
       @breakpoints[cnt].remove window.hoocsd.messaging
-      @breakpoints[cnt] = null
+      delete @breakpoints[cnt]
     else
       window.hoocsd.messaging.sendMessage
         type: "js.setBreakpointByUrl"
