@@ -45,3 +45,11 @@ class SourceFileMarkup extends GuiBase
 
   getSourceFileLine: ->
     @element
+
+  show: ->
+    el = $(@vdata.mainContentId())
+    el.empty()
+    el.append @sourceFile.getFormattedCode()
+    for k,bp of @sourceFile.getBreakpoints()
+      bp.setBreakpoint()
+    return undefined

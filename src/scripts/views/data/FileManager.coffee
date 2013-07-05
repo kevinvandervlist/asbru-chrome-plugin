@@ -17,5 +17,5 @@ class FileManager extends OriginDataManager
     @getAllDataByOrigin origin
 
   showBreakpointAndSourceFile: (file, id, line) ->
-    @markup.showFile file
+    file.show()
     $(".file-#{id}-line-#{line}").addClass "active-breakpoint"

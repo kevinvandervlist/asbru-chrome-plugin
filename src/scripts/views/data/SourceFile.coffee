@@ -48,6 +48,9 @@ class SourceFile
     # Cache this file in the file store:
     window.hoocsd.data.files.saveFile @origin, @id, @
 
+  show: ->
+    @markup.show()
+
   addBreakpoint: (lineNumber, breakpoint) ->
     @breakpoints[lineNumber] = breakpoint
 

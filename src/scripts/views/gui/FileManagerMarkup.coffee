@@ -55,7 +55,7 @@ class FileManagerMarkup extends GuiBase
         # Wrap the click stuff in a closure...
         f = (element, file) =>
           callback = =>
-            @showFile file
+            file.show()
 
           element.click =>
             @click element, callback
@@ -81,11 +81,3 @@ class FileManagerMarkup extends GuiBase
             fileNodeLine value, parent
       # And actually call the above
       fileNodeTree allPaths[@rootelemstr], fileList
-
-  showFile: (file) =>
-    el = $(@vdata.mainContentId())
-    el.empty()
-    el.append file.getFormattedCode()
-    for k,bp of file.getBreakpoints()
-      bp.setBreakpoint()
-    return undefined

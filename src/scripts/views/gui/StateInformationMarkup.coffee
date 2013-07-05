@@ -52,6 +52,11 @@ class StateInformationMarkup extends GuiBase
     html.append title
 
     for call in node.getChildren()
+      # Get the accompanying file
+      id = call.value.callFrame.location.scriptId;
+      lineNumber = call.value.callFrame.location.lineNumber
+      file = window.hoocsd.data.files.get id, @stateInformation.getOrigin()
+
       csline = $("<li>#{call.value.functionName} -> #{call.value.fileName}:#{call.value.lineNumber}</li>")
       if call.value.active
         csline.addClass "selected-item"
@@ -59,14 +64,18 @@ class StateInformationMarkup extends GuiBase
       stack.append csline
 
       # Create a callback to change the stack
-      f = (active, selected, element) =>
+      f = (active, selected, element, file, lineNumber) =>
         element.click =>
           cb = =>
-            @stateInformation.changeCallstackContext(active, selected)
+            # file is the SourceFile object of the current file
+            # Use the same hack as in StateInformationManager.coffee...
+            window.hoocsd.data.files.showBreakpointAndSourceFile file, file.id, lineNumber
+
+              @stateInformation.changeCallstackContext(active, selected)
             @updateHTML()
           @click element, cb
         return element
-      f activeCallStack, call, csline
+      f activeCallStack, call, csline, file, lineNumber
 
     html.append stack
     return html
