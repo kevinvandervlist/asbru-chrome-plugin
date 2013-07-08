@@ -13,6 +13,9 @@ $ ->
   elements = ["#content", "#console-output", "#console", "#filelist", "#state-information"]
   setupGuiElements(e) for e in elements
 
+  $("#conditional-breakpoint-form").dialog
+    autoOpen: false
+
   # Allow for minimisation
   $(".boxed-header .ui-icon").click(->
     $(this).toggleClass( "ui-icon-minusthick" ).toggleClass("ui-icon-plusthick")

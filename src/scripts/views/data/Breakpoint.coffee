@@ -8,6 +8,7 @@ class BreakPoint
     @lineNumber = message.lineNumber
     @scriptId = message.scriptId
     @origin = message.origin
+    @condition = message.condition
 
     @markup = new BreakPointMarkup @scriptId, @lineNumber
     @markup.setBreakpoint()
@@ -36,3 +37,6 @@ class BreakPoint
 
   setBreakpoint: ->
     @markup.setBreakpoint()
+
+  getCondition: ->
+    @condition

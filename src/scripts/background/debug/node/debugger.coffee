@@ -55,7 +55,7 @@ class debug_node_debugger
 
   setBreakpointByUrl: (command, callback) =>
     cb = (res) =>
-      @_setBreakpointSuccess res
+      @_setBreakpointSuccess res, command.condition
     cm =
       type: "request"
       command: "setbreakpoint"
@@ -63,10 +63,11 @@ class debug_node_debugger
         type: "script"
         enabled: true
         target: command.url
+        condition: command.condition
         line: command.lineNumber
     @dbg._sendCommand cm, cb
 
-  _setBreakpointSuccess: (message) =>
+  _setBreakpointSuccess: (message, condition) =>
     # Store in local cache (for cleanup)
     @bps[message.body.breakpoint] = true
 
@@ -76,6 +77,7 @@ class debug_node_debugger
       lineNumber: message.body.line
       columnNumber: message.body.actual_locations[0].column
       scriptId: message.body.actual_locations[0].script_id
+      condition: condition
       origin: @dbg.origin()
 
   # Request the removal of a breakpoint in node

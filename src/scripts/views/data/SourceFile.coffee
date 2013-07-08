@@ -58,11 +58,17 @@ class SourceFile
     delete @breakpoints[lineNumber]
 
   getBreakpointCallback: ->
-    @_toggleBreakPoint
+    @_breakpointCallback
+
+  _breakpointCallback: (conditional, cnt, id, uri) =>
+    if conditional
+      @_toggleConditionalBreakPoint cnt, id, uri
+    else
+      @_toggleBreakPoint cnt, id, uri
 
   # Attach a click handler to enable the creation of breakpoints
   # Make sure callback is in closure because of cnt dependence
-  _toggleBreakPoint: (cnt, id, uri) =>
+  _toggleBreakPoint: (cnt, id, uri) ->
     # Existing breakpoint?
     if @breakpoints[cnt]?
       @breakpoints[cnt].remove window.hoocsd.messaging
@@ -76,7 +82,7 @@ class SourceFile
         urlRegex: null
         columnNumber: 0
         condition: null
-        scriptId: @id
+        scriptId: id
 
   # Uri is either a base filename, a path or an origin followed by base filename or path.
   _hierarchicalArray: (uri, origin) ->
@@ -95,3 +101,31 @@ class SourceFile
     uri.pop()
 
     return uri
+
+  _toggleConditionalBreakPoint: (cnt, id, uri) ->
+    origin = @origin
+    saveButton = ->
+      window.hoocsd.messaging.sendMessage
+        type: "js.setBreakpointByUrl"
+        origin: origin
+        lineNumber: cnt
+        url: uri
+        urlRegex: null
+        columnNumber: 0
+        condition: expr.value
+        scriptId: id
+      expr.value = ""
+      $(this).dialog("close");
+
+    if @breakpoints[cnt]?
+      # Check whether there is an existing condition
+      $("#expr").val @breakpoints[cnt].getCondition()
+
+    $("#conditional-breakpoint-form").dialog
+      autoOpen: true
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons:
+        "Set conditional breakpoint": saveButton
+

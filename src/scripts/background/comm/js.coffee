@@ -37,7 +37,7 @@ class comm_JS
   # https://developers.google.com/chrome-developer-tools/docs/protocol/1.0/debugger#command-setBreakpointByUrl
   setBreakpointByUrl: (message) =>
     cb = (res) =>
-      @_setBreakpointSuccess res.breakpointId, message.origin
+      @_setBreakpointSuccess res.breakpointId, message.origin, message.condition
     cm =
       lineNumber: message.lineNumber
       url: message.url
@@ -50,7 +50,7 @@ class comm_JS
 
   # js.setBreakpointSuccess
   # { breakpointId: string, scriptId: int }
-  _setBreakpointSuccess: (breakpointId, origin) ->
+  _setBreakpointSuccess: (breakpointId, origin, condition) ->
     dbp = @_dissectBreakpointId_local breakpointId
     @messager.sendMessage
       type: "js.setBreakpointSuccess"
@@ -58,6 +58,7 @@ class comm_JS
       lineNumber: dbp.line
       columnNumber: dbp.col
       scriptId: dbp.id
+      condition: condition
       origin: origin
 
   # Remove a breakpoint

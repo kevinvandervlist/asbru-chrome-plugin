@@ -30,11 +30,21 @@ class SourceFileMarkup extends GuiBase
 
       # Put linediv and the line number in a closure...
       f = (element, line) =>
+        # leftclick is a breakpoint
         callback = =>
-          breakpointCallback line, @id, @uri
+          breakpointCallback false, line, @id, @uri
 
-        linediv.click =>
+        # Rightclick is a conditional breakpoint
+        rbcallback = =>
+          breakpointCallback true, line, @id, @uri
+
+        linediv.click  =>
           @click element, callback
+
+        # Rightclick
+        linediv.on "contextmenu", =>
+          @click element, rbcallback
+          return false
 
       # ...and call it
       f linediv, cnt

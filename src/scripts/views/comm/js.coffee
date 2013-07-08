@@ -27,5 +27,6 @@ class comm_JS
       type: "js.ListFiles"
 
   setBreakpointSuccess: (message) =>
+    console.log message
     new BreakPoint message
 
