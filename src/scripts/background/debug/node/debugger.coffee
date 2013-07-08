@@ -10,6 +10,11 @@ class debug_node_debugger
 
     @bps = []
 
+  _continueCallback: =>
+    @debugger.sendMessage
+      type: "debugger.resume"
+      origin: @dbg.origin()
+
   stepOver: (message, callback) =>
     m =
       type: "request"
@@ -17,7 +22,7 @@ class debug_node_debugger
       arguments:
         stepaction: "next"
         stepcount: 1
-    @dbg._sendCommand m, callback
+    @dbg._sendCommand m, @_continueCallback
 
   stepInto: (message, callback) =>
     m =
@@ -26,7 +31,7 @@ class debug_node_debugger
       arguments:
         stepaction: "in"
         stepcount: 1
-    @dbg._sendCommand m, callback
+    @dbg._sendCommand m, @_continueCallback
 
   stepOut: (message, callback) =>
     m =
@@ -35,14 +40,14 @@ class debug_node_debugger
       arguments:
         stepaction: "out"
         stepcount: 1
-    @dbg._sendCommand m, callback
+    @dbg._sendCommand m, @_continueCallback
 
   resume: (message, callback) =>
     @debugger.hideOverlay()
     m =
       type: "request"
       command: "continue"
-    @dbg._sendCommand m, callback
+    @dbg._sendCommand m, @_continueCallback
 
   pause: (message, callback) =>
     # Unsupported, do nothing
