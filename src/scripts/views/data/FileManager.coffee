@@ -8,7 +8,6 @@ class FileManager extends OriginDataManager
 
   saveFile: (origin, key, sourceFile) ->
     @put origin, key, sourceFile
-    @markup.updateFileListing()
 
   getFile: (key, origin = null) ->
     @get key, origin

@@ -88,4 +88,9 @@ class NodeDebugger
         file = @_createFile element.id, origin, element.name, element.source, element.lineOffset
         window.hoocsd.files.saveFile origin, element.id, file
 
+      # Send a message to the client that there are new files
+      @debugger.sendMessage
+        type: "js.newFilesAvailable"
+        origin: @origin()
+
     @_sendCommand request, cb

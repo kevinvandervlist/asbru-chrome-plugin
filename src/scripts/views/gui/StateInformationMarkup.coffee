@@ -70,8 +70,7 @@ class StateInformationMarkup extends GuiBase
             # file is the SourceFile object of the current file
             # Use the same hack as in StateInformationManager.coffee...
             window.hoocsd.data.files.showBreakpointAndSourceFile file, file.id, lineNumber
-
-              @stateInformation.changeCallstackContext(active, selected)
+            @stateInformation.changeCallstackContext(active, selected)
             @updateHTML()
           @click element, cb
         return element

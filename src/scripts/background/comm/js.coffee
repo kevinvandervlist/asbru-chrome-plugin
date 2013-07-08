@@ -26,6 +26,11 @@ class comm_JS
       for file in window.hoocsd.files.getAllFilesByOrigin origin
         f file
 
+    # TODO: Hack
+    # Signal completion
+    @messager.sendMessage
+      type: "js.ListFileComplete"
+
     return undefined
 
   # js.setBreakpointByUrl

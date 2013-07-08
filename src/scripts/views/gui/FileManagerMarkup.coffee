@@ -6,9 +6,11 @@ class FileManagerMarkup extends GuiBase
     @rootelemstr = "/"
 
   updateFileListing: ->
-    @_update()
+    # We need to make sure to delay this task, and then execute it only once
+    return @_update()
 
   _update: =>
+    console.log "_update"
     flci = $("#{@vdata.filelistContentId()}")
     flci.empty()
     originList = $("<ul />")
@@ -18,6 +20,7 @@ class FileManagerMarkup extends GuiBase
     for origin in @fileManager.getOrigins()
       title = $("<li><h4>#{origin}</h4></li>")
       fileList = $("<ul />")
+      fileList.hide() if origin is "chrome-extension"
       originList.append title
       originList.append fileList
 
@@ -68,9 +71,12 @@ class FileManagerMarkup extends GuiBase
           if value instanceof Array
             title = $("<li>#{key}</li>").addClass "foldername"
             child = $("<ul />")
+
             parent.append title
             parent.append child
+
             child.hide() if key isnt @rootelemstr
+
             closure = (title, child) =>
               title.click =>
                 cb = -> child.toggle()
@@ -81,3 +87,4 @@ class FileManagerMarkup extends GuiBase
             fileNodeLine value, parent
       # And actually call the above
       fileNodeTree allPaths[@rootelemstr], fileList
+    return undefined
