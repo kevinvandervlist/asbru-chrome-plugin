@@ -29,5 +29,8 @@ class ViewData
   mainContentId: ->
     "#content-window"
 
+  mainContentBookmarkId: ->
+    "#content-window-bookmark-button"
+
   stateInfoId: ->
     "#state-information-panel"

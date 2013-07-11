@@ -5,7 +5,9 @@ source ${CWD}/.settings
 function bake_cake {
 		cd ${EXT_DIR}
 		./compile.sh
-		echo "Cake done at $(date)"
+		echo "Build finished at $(date)"
+		# This transient stuff does not leave a trailing notification.
+		notify-send --hint=int:transient:1 "Build finished at $(date +'%H:%M:%S (%s)')"
 }
 
 function trapHUP {

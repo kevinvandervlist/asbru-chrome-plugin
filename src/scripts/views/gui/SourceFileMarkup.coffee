@@ -62,4 +62,15 @@ class SourceFileMarkup extends GuiBase
     el.append @sourceFile.getFormattedCode()
     for k,bp of @sourceFile.getBreakpoints()
       bp.setBreakpoint()
+
+    @_setBookmarkAction()
+
     return undefined
+
+  _setBookmarkAction: ->
+    # Bookmark stuff
+    bm = $(@vdata.mainContentBookmarkId())
+    callback = =>
+      @sourceFile.setBookmark()
+    bm.click  =>
+      @click bm, callback

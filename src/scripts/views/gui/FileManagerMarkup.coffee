@@ -20,7 +20,7 @@ class FileManagerMarkup extends GuiBase
     for origin in @fileManager.getOrigins()
       title = $("<li><h4>#{origin}</h4></li>")
       fileList = $("<ul />")
-      fileList.hide() if origin is "chrome-extension"
+      fileList.hide() if origin is "chrome-extension" or "favourites"
       originList.append title
       originList.append fileList
 

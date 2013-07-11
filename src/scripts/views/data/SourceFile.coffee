@@ -48,6 +48,12 @@ class SourceFile
     # Cache this file in the file store:
     window.hoocsd.data.files.saveFile @origin, @id, @
 
+  setBookmark: ->
+    window.hoocsd.data.files.saveFile "favourites", @id, @
+    # TODO: Hack. Update the filelisting again.
+    window.hoocsd.data.files.markup.updateFileListing()
+    return undefined
+
   show: ->
     @markup.show()
 
