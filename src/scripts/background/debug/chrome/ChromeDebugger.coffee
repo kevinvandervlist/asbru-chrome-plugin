@@ -4,7 +4,7 @@
 class ChromeDebugger
   constructor: (@debugger, @parent_table, @tabid) ->
     # Bind to parent
-    @parent_table[window.hoocsd.clientOrigin] = @
+    @parent_table[window.asbru.clientOrigin] = @
 
     # Lookup table for extension
     @lookup_table = {}

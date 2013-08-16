@@ -22,8 +22,8 @@ class comm_JS
         offset: x.offset
         code: x.code
 
-    for origin in window.hoocsd.files.getOrigins()
-      for file in window.hoocsd.files.getAllFilesByOrigin origin
+    for origin in window.asbru.files.getOrigins()
+      for file in window.asbru.files.getAllFilesByOrigin origin
         f file
 
     # TODO: Hack
@@ -110,8 +110,8 @@ class comm_JS
       if x.url is url
         scriptId = x.scriptId
 
-    for origin in window.hoocsd.files.getOrigins()
-      for file in window.hoocsd.files.getAllFilesByOrigin origin
+    for origin in window.asbru.files.getOrigins()
+      for file in window.asbru.files.getAllFilesByOrigin origin
         f file
 
     throw "scriptId of breakpointId cannot be found!" if scriptId is -1

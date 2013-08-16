@@ -18,7 +18,7 @@ class debug_chrome_debugger
       callFrames: params.callFrames
       reason: params.reason
       data: params.data
-      origin: window.hoocsd.clientOrigin
+      origin: window.asbru.clientOrigin
     @debugger.paused = true
 
   stepOver: (debuggeeId, params) =>
@@ -36,7 +36,7 @@ class debug_chrome_debugger
     @debugger.hideOverlay()
     @debugger.sendMessage
       type: "debugger.resume"
-      origin: window.hoocsd.clientOrigin
+      origin: window.asbru.clientOrigin
 
   # Catch emitted events regarding JS files. This happens on attaching the debugger
   scriptParsed: (debuggeeId, params) =>
@@ -49,7 +49,7 @@ class debug_chrome_debugger
   _cacheParsedScript: (params, resource) =>
     origin = Origin.createOriginFromUri params.url
     file = @_createFile params.scriptId, origin, params.url, resource.scriptSource, params.startLine
-    window.hoocsd.files.saveFile origin, params.scriptId, file
+    window.asbru.files.saveFile origin, params.scriptId, file
 
   _createFile: (scriptId, origin, url, code, offset) ->
     scriptId: scriptId

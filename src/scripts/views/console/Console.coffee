@@ -35,36 +35,36 @@ class Console
     @logger.log "Resuming JavaScript execution"
     @messaging.sendMessage
       type: "js.resume"
-      origin: window.hoocsd.omniscient
+      origin: window.asbru.omniscient
       target: args
 
   _js_pause: ->
     @logger.log "Pausing JavaScript execution"
     @messaging.sendMessage
       type: "js.pause"
-      origin: window.hoocsd.omniscient
+      origin: window.asbru.omniscient
 
   _js_breakpointsActive: (args) ->
     @logger.log "breakpointsActive #{args} given"
     @messaging.sendMessage
       type: "js.breakpointsActive"
       value: (args is "true")
-      origin: window.hoocsd.omniscient
+      origin: window.asbru.omniscient
 
   _js_stepover: ->
     @logger.log "Stepover requested"
     @messaging.sendMessage
       type: "Debugger.stepOver"
-      origin: window.hoocsd.omniscient
+      origin: window.asbru.omniscient
 
   _js_stepinto: ->
     @logger.log "Stepinto requested"
     @messaging.sendMessage
       type: "Debugger.stepInto"
-      origin: window.hoocsd.omniscient
+      origin: window.asbru.omniscient
 
   _js_stepout: ->
     @logger.log "Stepout requested"
     @messaging.sendMessage
       type: "Debugger.stepOut"
-      origin: window.hoocsd.omniscient
+      origin: window.asbru.omniscient

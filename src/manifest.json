@@ -21,7 +21,7 @@
       "scripts/background.js"
     ]
   },
-  "homepage_url": "https://github.com/kevinvandervlist/hoocsd-chrome-plugin",
+  "homepage_url": "https://github.com/kevinvandervlist/asbru-chrome-plugin",
   "permissions": [
     "tabs",
     "debugger",

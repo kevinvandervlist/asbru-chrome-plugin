@@ -2,14 +2,14 @@
 #= require data/BreakpointManager.coffee
 
 # Some global state for the debugger
-window.hoocsd = {}
+window.asbru = {}
 
 # Data class for some data objects
 class ViewData
   constructor: ->
 
   init: ->
-    window.hoocsd = @defaultGlobalState()
+    window.asbru = @defaultGlobalState()
 
   defaultGlobalState: ->
     dataStores =

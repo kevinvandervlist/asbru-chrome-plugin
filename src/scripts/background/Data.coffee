@@ -1,7 +1,7 @@
 #= require FileManager.coffee
 
 # Some global state for the debugger
-window.hoocsd = {}
+window.asbru = {}
 
 # Data class for some data objects
 class Data
@@ -39,4 +39,4 @@ class Data
 
   # Message passing port name
   messagePortName: ->
-    "hoocsd"
+    "asbru"

@@ -96,7 +96,7 @@ class StateInformation
 
   # Retrieve a SourceFile by their script id
   _getFileByScriptId: (scriptId) ->
-    window.hoocsd.data.files.get scriptId, @origin
+    window.asbru.data.files.get scriptId, @origin
 
   _newProtoNode: ->
     new ScopeVariable

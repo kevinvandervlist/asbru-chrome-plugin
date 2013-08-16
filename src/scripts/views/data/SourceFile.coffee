@@ -46,12 +46,12 @@ class SourceFile
 
   saveFile: ->
     # Cache this file in the file store:
-    window.hoocsd.data.files.saveFile @origin, @id, @
+    window.asbru.data.files.saveFile @origin, @id, @
 
   setBookmark: ->
-    window.hoocsd.data.files.saveFile "favourites", @id, @
+    window.asbru.data.files.saveFile "favourites", @id, @
     # TODO: Hack. Update the filelisting again.
-    window.hoocsd.data.files.markup.updateFileListing()
+    window.asbru.data.files.markup.updateFileListing()
     return undefined
 
   show: ->
@@ -77,10 +77,10 @@ class SourceFile
   _toggleBreakPoint: (cnt, id, uri) ->
     # Existing breakpoint?
     if @breakpoints[cnt]?
-      @breakpoints[cnt].remove window.hoocsd.messaging
+      @breakpoints[cnt].remove window.asbru.messaging
       delete @breakpoints[cnt]
     else
-      window.hoocsd.messaging.sendMessage
+      window.asbru.messaging.sendMessage
         type: "js.setBreakpointByUrl"
         origin: @origin
         lineNumber: cnt
@@ -111,7 +111,7 @@ class SourceFile
   _toggleConditionalBreakPoint: (cnt, id, uri) ->
     origin = @origin
     saveButton = ->
-      window.hoocsd.messaging.sendMessage
+      window.asbru.messaging.sendMessage
         type: "js.setBreakpointByUrl"
         origin: origin
         lineNumber: cnt

@@ -33,7 +33,7 @@ class StateInformationManager extends GuiBase
   # Kind of hacky though...
   showBreakpoint: (si) ->
     loc = si.breakpointHitLocation()
-    window.hoocsd.data.files.showBreakpointAndSourceFile loc.file, loc.scriptId, loc.line
+    window.asbru.data.files.showBreakpointAndSourceFile loc.file, loc.scriptId, loc.line
 
   updateHTML: ->
     rootel = $(@vdata.stateInfoId())

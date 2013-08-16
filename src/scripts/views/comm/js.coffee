@@ -17,13 +17,13 @@ class comm_JS
     # TODO: Hack.
     # If all source files are pushed to the client, this function is called.
     # It is triggered by a comm message containing "js.ListFileComplete"...
-    window.hoocsd.data.files.markup.updateFileListing()
+    window.asbru.data.files.markup.updateFileListing()
 
   newFilesAvailable: (message) =>
     # TODO: hack
     # There are new files at the backend.
     # Again, this is an ugly hack
-    hoocsd.messaging.sendMessage
+    asbru.messaging.sendMessage
       type: "js.ListFiles"
 
   setBreakpointSuccess: (message) =>

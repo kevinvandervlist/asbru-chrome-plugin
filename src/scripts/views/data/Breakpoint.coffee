@@ -16,16 +16,16 @@ class BreakPoint
 
 
     # Get the parent file and register the breakpoint with it
-    parentFile = window.hoocsd.data.files.getFile @scriptId, @origin
+    parentFile = window.asbru.data.files.getFile @scriptId, @origin
     parentFile.addBreakpoint @lineNumber, @
 
     @saveBreakpoint()
 
   saveBreakpoint: ->
-    window.hoocsd.data.breakpoints.saveBreakpoint @origin, @getIdentifier(), @
+    window.asbru.data.breakpoints.saveBreakpoint @origin, @getIdentifier(), @
 
   remove: (messaging) ->
-    window.hoocsd.data.breakpoints.removeBreakpoint @origin, @getIdentifier()
+    window.asbru.data.breakpoints.removeBreakpoint @origin, @getIdentifier()
     @markup.removeBreakpoint()
     messaging.sendMessage
       type: "js.removeBreakpoint"

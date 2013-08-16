@@ -86,7 +86,7 @@ class NodeDebugger
     cb = (response) =>
       for element in response.body
         file = @_createFile element.id, origin, element.name, element.source, element.lineOffset
-        window.hoocsd.files.saveFile origin, element.id, file
+        window.asbru.files.saveFile origin, element.id, file
 
       # Send a message to the client that there are new files
       @debugger.sendMessage

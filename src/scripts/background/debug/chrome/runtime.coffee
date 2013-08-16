@@ -4,5 +4,5 @@ class debug_chrome_runtime
 
   # Store the execution context reference
   execContextCreated: (debuggeeId, params) =>
-    window.hoocsd.context = params.context
+    window.asbru.context = params.context
 

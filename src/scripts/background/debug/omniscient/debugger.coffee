@@ -17,7 +17,7 @@ class debug_omniscient_debugger
       # Not omniscient
       message["origin"] = message.target
       # Hack to retrieve the debugger part of the origin
-      dbg = @parent_table[window.hoocsd[message.target]]
+      dbg = @parent_table[window.asbru[message.target]]
       dbg.sendCommand command, message, cb
     undefined
 

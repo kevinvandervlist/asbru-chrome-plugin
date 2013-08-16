@@ -16,7 +16,7 @@ class Debugger
 
     # Dependencies
     @data = new Data
-    window.hoocsd = @data.defaultGlobalState(@tab.url)
+    window.asbru = @data.defaultGlobalState(@tab.url)
 
     # More dependencies
     @messager = new Messager @
@@ -84,7 +84,7 @@ class Debugger
   # Called when a window is removed.
   _onWindowRemoved: (w) =>
     if w is @debuggerWindow.id
-      window.hoocsd.debugger.stopDebugging()
+      window.asbru.debugger.stopDebugging()
 
   # Debugger attachment callback
   _onDebuggerAttached: (debuggeeId) ->
@@ -122,8 +122,8 @@ class Debugger
       title: chrome.i18n.getMessage "pauseDesc")
 
     # HACK: cleanup...
-    window.hoocsd.debugger.messager.disconnect()
-    window.hoocsd.debugger.removeHandlers()
+    window.asbru.debugger.messager.disconnect()
+    window.asbru.debugger.removeHandlers()
 
     # ...and reset state
-    window.hoocsd = d.defaultGlobalState()
+    window.asbru = d.defaultGlobalState()

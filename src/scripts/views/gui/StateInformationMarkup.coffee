@@ -55,7 +55,7 @@ class StateInformationMarkup extends GuiBase
       # Get the accompanying file
       id = call.value.callFrame.location.scriptId;
       lineNumber = call.value.callFrame.location.lineNumber
-      file = window.hoocsd.data.files.get id, @stateInformation.getOrigin()
+      file = window.asbru.data.files.get id, @stateInformation.getOrigin()
 
       csline = $("<li>#{call.value.functionName} -> #{call.value.fileName}:#{call.value.lineNumber}</li>")
       if call.value.active
@@ -69,7 +69,7 @@ class StateInformationMarkup extends GuiBase
           cb = =>
             # file is the SourceFile object of the current file
             # Use the same hack as in StateInformationManager.coffee...
-            window.hoocsd.data.files.showBreakpointAndSourceFile file, file.id, lineNumber
+            window.asbru.data.files.showBreakpointAndSourceFile file, file.id, lineNumber
             @stateInformation.changeCallstackContext(active, selected)
             @updateHTML()
           @click element, cb

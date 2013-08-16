@@ -12,7 +12,7 @@
     "message": "Debugger samething"
   },
   "extName": {
-    "message": "HOOCSD"
+    "message": "Bifrost"
   },
   "extDesc": {
     "message": "Remote and locally integrated debugging plugin."
