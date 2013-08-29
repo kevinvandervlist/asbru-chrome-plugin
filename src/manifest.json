@@ -1,12 +1,12 @@
 {
   "name": "__MSG_extName__",
-  "version": "0.1",
+  "version": "0.2",
   "manifest_version": 2,
   "description": "__MSG_extDesc__",
   "icons": {
-    "16": "images/icons/black_white/icon_016.png",
-    "48": "images/icons/black_white/icon_048.png",
-    "128": "images/icons/black_white/icon_128.png"
+    "16": "images/icons/asbru/icon_016.png",
+    "48": "images/icons/asbru/icon_048.png",
+    "128": "images/icons/asbru/icon_128.png"
   },
   "default_locale": "en",
   "browser_action": {
